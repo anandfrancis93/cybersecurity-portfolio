@@ -10,37 +10,39 @@ export const NAV_LINKS = [
 ];
 
 export const NIST_MODULES = [
-  { 
-    id: 'identify', 
-    title: 'IDENTIFY', 
-    icon: Search, 
+  {
+    id: 'identify',
+    title: 'IDENTIFY',
+    icon: Search,
     description: 'Defining core competencies and professional profile.',
     colorClass: 'text-nist-identify',
     borderClass: 'border-nist-identify',
     bgClass: 'bg-nist-identify'
   },
-  { 
-    id: 'protect', 
-    title: 'PROTECT', 
-    icon: Shield, 
+  {
+    id: 'protect',
+    title: 'PROTECT',
+    icon: Shield,
     description: 'Defense architectures and secure development projects.',
     colorClass: 'text-nist-protect',
     borderClass: 'border-nist-protect',
     bgClass: 'bg-nist-protect'
   },
-  { 
-    id: 'detect', 
-    title: 'DETECT', 
-    icon: Activity, 
-    description: 'Experience in monitoring, technical support, and log analysis.',
+  {
+    id: 'detect',
+    title: 'DETECT',
+    icon: Activity,
+    description: `Analyzed AI governance frameworks
+Evaluated latest AI products
+Delivered enterprise and consumer technical support`,
     colorClass: 'text-nist-detect',
     borderClass: 'border-nist-detect',
     bgClass: 'bg-nist-detect'
   },
-  { 
-    id: 'recover', 
-    title: 'RECOVER', 
-    icon: RefreshCw, 
+  {
+    id: 'recover',
+    title: 'RECOVER',
+    icon: RefreshCw,
     description: 'Resilience through industry-standard certifications.',
     colorClass: 'text-nist-recover',
     borderClass: 'border-nist-recover',
@@ -129,8 +131,10 @@ export const EXPERIENCES: Experience[] = [
     company: 'Brigham Young University - Idaho',
     period: 'Jul 2025 - Present',
     description: [
-      'Conducting advanced research into artificial intelligence methodologies applied to data security.',
-      'Developing models to detect anomalies in large data sets.'
+      'Analyzed AI governance frameworks from top-tier institutions to benchmark and improve university policy.',
+      'Evaluated emerging AI tools and conducted pilot tests to determine academic and administrative utility.',
+      'Advised faculty and leadership on the strategic adoption of AI to enhance learning and workflow efficiency.',
+      'Monitored AI industry trends to ensure institutional alignment with the latest technological shifts.'
     ],
     module: 'detect'
   },
@@ -140,9 +144,10 @@ export const EXPERIENCES: Experience[] = [
     company: 'Brigham Young University - Idaho',
     period: 'Oct 2023 - Jul 2025',
     description: [
-      'Managed endpoint security for university devices using Jamf Pro MDM and Active Directory.',
-      'Implemented endpoint hardening policies for Windows and macOS fleets.',
-      'Collaborated on network segmentation projects involving VLANs and RADIUS authentication.'
+      'Achieved 96.2% CSAT score and 96.6% first-time resolution by resolving service requests and incidents.',
+      'Streamlined user and device management across Microsoft Windows and Apple macOS utilizing Active Directory and Jamf Pro MDM.',
+      'Deployed Windows (PXE boot) and Apple (ASM, ADE, Jamf Pro MDM) systems at scale.',
+      'Implemented RBAC and dynamic VLANs with HPE Aruba ClearPass and 802.1X, enhancing network security.'
     ],
     module: 'detect'
   },
@@ -152,9 +157,9 @@ export const EXPERIENCES: Experience[] = [
     company: 'Dell Technologies',
     period: 'May 2019 - Aug 2023',
     description: [
-      'Expert hardware diagnostics and component-level repair for enterprise systems.',
-      'Ensured physical integrity of client hardware and secure disposal of storage media.',
-      'Optimized firmware and BIOS security configurations.'
+      'Maintained 92% CSAT and 86% first-time resolution, earning Outstanding Performance ratings.',
+      'Delivered expert support in device configuration, system performance, diagnostics, and Windows OS troubleshooting.',
+      'Supported North America market in a high-volume technical support environment, driving continuous improvements in knowledge management.'
     ],
     module: 'detect'
   },
@@ -164,11 +169,48 @@ export const EXPERIENCES: Experience[] = [
     company: 'Google',
     period: 'Dec 2017 - Feb 2019',
     description: [
-      'Analyzed complex data sets to optimize client ad performance.',
-      'Ensured data integrity and compliance with strict privacy policies.'
+      'Achieved 92% CSAT and 90% first-time resolution by improving campaign performance and policy compliance.',
+      'Provided B2C client support, optimized ad strategies, and led real-time coaching for a 12+ member team.',
+      'Supported a fast-paced digital advertising environment delivering results for a diverse U.S. client base.'
     ],
     module: 'detect'
   },
+  {
+    id: 'e5',
+    role: 'Associate Product Consultant',
+    company: 'Cvent',
+    period: 'Apr 2017 - Oct 2017',
+    description: [
+      'Collaborated with US clients to customize Cvent solutions and fulfill requirements.',
+      'Provided expert support on Cvent\'s suite of products, troubleshooting problems and answering questions.',
+      'Assisted in implementing and configuring Cvent solutions, including setup and customization.'
+    ],
+    module: 'detect'
+  },
+  {
+    id: 'e6',
+    role: 'Customer Care Professional (Tier 3)',
+    company: 'American Express',
+    period: 'Feb 2016 - Mar 2017',
+    description: [
+      'Provided technical support for digital platforms, troubleshooting mobile app and website issues.',
+      'Combined technical expertise with efficient escalation handling to ensure high customer satisfaction (85-90% resolution rate).',
+      'Collaborated with subject matter experts to resolve complex technical escalations.'
+    ],
+    module: 'detect'
+  },
+  {
+    id: 'e7',
+    role: 'Technical Support Associate (via Convergys)',
+    company: 'AT&T',
+    period: 'May 2015 - Feb 2016',
+    description: [
+      'Provided technical support for AT&T U-Verse services (internet, TV, VoIP) for the US market.',
+      'Resolved 15+ calls daily with ~85% resolution rate, addressing connectivity and hardware issues.',
+      'Collaborated with cross-functional teams to resolve complex problem escalations.'
+    ],
+    module: 'detect'
+  }
 ];
 
 export const CERTIFICATES: Certificate[] = [
@@ -199,7 +241,7 @@ export const CERTIFICATES: Certificate[] = [
     issuer: 'Google for Education',
     date: 'October 19, 2025',
     expirationDate: 'October 18, 2028',
-    status: 'Verified',
+    status: 'Active',
     verificationId: 'GOOG-GEM-7728',
     module: 'recover',
     link: 'https://edu.google.accredible.com/46250148-521d-4362-9d82-1e82955f7e28#acc.hXmfQD9R'

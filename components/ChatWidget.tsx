@@ -45,7 +45,7 @@ const ChatWidget: React.FC = () => {
         role: m.role,
         text: m.text
       }));
-      
+
       const responseText = await sendMessageToGemini(userMsg.text, historyContext);
 
       const aiMsg: ChatMessage = {
@@ -63,47 +63,46 @@ const ChatWidget: React.FC = () => {
   };
 
   return (
-    <div className="fixed bottom-6 right-6 z-50 flex flex-col items-end font-mono">
+    <div className="fixed bottom-4 sm:bottom-6 right-3 sm:right-6 z-50 flex flex-col items-end font-mono">
       {/* Chat Window */}
       {isOpen && (
-        <div className="mb-4 w-[350px] sm:w-[400px] h-[500px] bg-black border border-edition-accent/30 flex flex-col overflow-hidden animate-slide-up shadow-[0_0_30px_rgba(0,255,157,0.1)]">
+        <div className="mb-3 sm:mb-4 w-[calc(100vw-24px)] sm:w-[380px] md:w-[400px] h-[70vh] sm:h-[500px] max-h-[600px] bg-black border border-edition-accent/30 flex flex-col overflow-hidden animate-slide-up shadow-[0_0_30px_rgba(0,255,157,0.1)]">
           {/* Header */}
-          <div className="p-3 border-b border-edition-accent/30 flex justify-between items-center bg-edition-accent/10 backdrop-blur-sm">
+          <div className="p-2.5 sm:p-3 border-b border-edition-accent/30 flex justify-between items-center bg-edition-accent/10 backdrop-blur-sm shrink-0">
             <div className="flex items-center gap-2">
-              <Terminal className="w-4 h-4 text-edition-accent" />
-              <span className="text-xs text-edition-accent uppercase tracking-widest">SECURE_LINK // V.2.0</span>
+              <Terminal className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-edition-accent" />
+              <span className="text-sm sm:text-base text-edition-accent uppercase tracking-widest truncate">SECURE_LINK <span className="hidden xs:inline">// V.2.0</span></span>
             </div>
-            <button 
+            <button
               onClick={() => setIsOpen(false)}
-              className="text-edition-accent/50 hover:text-edition-accent transition-colors"
+              className="text-edition-accent/50 hover:text-edition-accent transition-colors p-1 -mr-1"
             >
               <Minimize2 className="w-4 h-4" />
             </button>
           </div>
 
           {/* Messages */}
-          <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-black/90">
+          <div className="flex-1 overflow-y-auto p-3 sm:p-4 space-y-3 sm:space-y-4 bg-black/90">
             {messages.map((msg) => (
               <div
                 key={msg.id}
                 className={`flex ${msg.role === MessageRole.USER ? 'justify-end' : 'justify-start'}`}
               >
                 <div
-                  className={`max-w-[90%] p-3 text-xs md:text-sm whitespace-pre-wrap ${
-                    msg.role === MessageRole.USER
-                      ? 'bg-edition-accent/10 text-edition-accent border border-edition-accent/30'
-                      : 'text-gray-300'
-                  }`}
+                  className={`max-w-[90%] p-2.5 sm:p-3 text-sm sm:text-base md:text-lg whitespace-pre-wrap ${msg.role === MessageRole.USER
+                    ? 'bg-edition-accent/10 text-edition-accent border border-edition-accent/30'
+                    : 'text-gray-300'
+                    }`}
                 >
-                  <span className="opacity-50 mr-2">{msg.role === MessageRole.USER ? 'USR >' : 'SYS >'}</span>
+                  <span className="opacity-50 mr-2">{msg.role === MessageRole.USER ? 'USR \u003E' : 'SYS \u003E'}</span>
                   {msg.text}
                 </div>
               </div>
             ))}
             {isLoading && (
               <div className="flex justify-start">
-                <div className="text-xs text-edition-accent flex items-center gap-2 animate-pulse">
-                  <span>SYS > Processing Query</span>
+                <div className="text-sm sm:text-base text-edition-accent flex items-center gap-2 animate-pulse">
+                  <span>SYS &gt; Processing Query</span>
                   <span className="inline-block w-2 h-4 bg-edition-accent"></span>
                 </div>
               </div>
@@ -112,7 +111,7 @@ const ChatWidget: React.FC = () => {
           </div>
 
           {/* Input */}
-          <form onSubmit={handleSubmit} className="p-3 border-t border-edition-accent/30 bg-black">
+          <form onSubmit={handleSubmit} className="p-2.5 sm:p-3 border-t border-edition-accent/30 bg-black shrink-0">
             <div className="relative flex items-center gap-2">
               <span className="text-edition-accent">{'>'}</span>
               <input
@@ -126,9 +125,9 @@ const ChatWidget: React.FC = () => {
               <button
                 type="submit"
                 disabled={isLoading || !input.trim()}
-                className="text-edition-accent hover:text-white transition-colors disabled:opacity-30"
+                className="text-edition-accent hover:text-white transition-colors disabled:opacity-30 p-1.5 -mr-1.5"
               >
-                <Send className="w-4 h-4" />
+                <Send className="w-4 h-4 sm:w-5 sm:h-5" />
               </button>
             </div>
           </form>
@@ -138,13 +137,13 @@ const ChatWidget: React.FC = () => {
       {/* Toggle Button */}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="group relative flex items-center justify-center w-14 h-14 bg-black border border-edition-accent/50 hover:border-edition-accent transition-all duration-300 shadow-[0_0_15px_rgba(0,255,157,0.2)]"
+        className="group relative flex items-center justify-center w-12 h-12 sm:w-14 sm:h-14 bg-black border border-edition-accent/50 hover:border-edition-accent transition-all duration-300 shadow-[0_0_15px_rgba(0,255,157,0.2)] active:scale-95"
       >
         <div className="absolute inset-0 bg-edition-accent/5"></div>
         {isOpen ? (
-          <X className="w-6 h-6 text-edition-accent" />
+          <X className="w-5 h-5 sm:w-6 sm:h-6 text-edition-accent" />
         ) : (
-          <MessageSquare className="w-6 h-6 text-edition-accent" />
+          <MessageSquare className="w-5 h-5 sm:w-6 sm:h-6 text-edition-accent" />
         )}
       </button>
     </div>

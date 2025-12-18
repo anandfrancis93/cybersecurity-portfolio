@@ -12,13 +12,13 @@ const BentoGrid: React.FC<BentoGridProps> = ({ projects, moduleColor = 'text-nis
   const accentBg = moduleColor.replace('text-', 'bg-');
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-4 md:gap-6">
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-12 gap-3 sm:gap-4 md:gap-6">
       {projects.map((project, index) => {
         const colSpan = project.cols ? `lg:col-span-${project.cols}` : 'lg:col-span-4';
         const rowSpan = project.rows ? `lg:row-span-${project.rows}` : 'lg:row-span-1';
-        const heightClass = project.rows && project.rows > 1 ? 'min-h-[400px] lg:min-h-[500px]' : 'min-h-[250px]';
+        const heightClass = project.rows && project.rows > 1 ? 'min-h-[300px] sm:min-h-[350px] lg:min-h-[500px]' : 'min-h-[220px] sm:min-h-[250px]';
         const Icon = project.icon;
-        
+
         return (
           <div
             key={project.id}
@@ -26,6 +26,7 @@ const BentoGrid: React.FC<BentoGridProps> = ({ projects, moduleColor = 'text-nis
               group relative ${colSpan} ${rowSpan} ${heightClass} 
               bg-[#0A0A0A] border border-edition-border overflow-hidden
               hover:${accentBorder} transition-colors duration-300
+              active:scale-[0.99] touch-manipulation
             `}
           >
             <div className={`absolute top-0 left-0 w-2 h-2 border-t border-l ${accentBorder} opacity-50 group-hover:opacity-100 transition-opacity`}></div>
@@ -33,46 +34,46 @@ const BentoGrid: React.FC<BentoGridProps> = ({ projects, moduleColor = 'text-nis
             <div className={`absolute bottom-0 left-0 w-2 h-2 border-b border-l ${accentBorder} opacity-50 group-hover:opacity-100 transition-opacity`}></div>
             <div className={`absolute bottom-0 right-0 w-2 h-2 border-b border-r ${accentBorder} opacity-50 group-hover:opacity-100 transition-opacity`}></div>
 
-            <div className="absolute inset-0 z-0 opacity-10" 
-                 style={{ 
-                   backgroundImage: 'linear-gradient(#1f1f1f 1px, transparent 1px), linear-gradient(90deg, #1f1f1f 1px, transparent 1px)', 
-                   backgroundSize: '20px 20px' 
-                 }}>
+            <div className="absolute inset-0 z-0 opacity-10"
+              style={{
+                backgroundImage: 'linear-gradient(#1f1f1f 1px, transparent 1px), linear-gradient(90deg, #1f1f1f 1px, transparent 1px)',
+                backgroundSize: '20px 20px'
+              }}>
             </div>
 
-            <div className="absolute -right-10 -bottom-10 opacity-5 group-hover:opacity-10 transition-opacity duration-500 rotate-12">
-               <Icon className="w-64 h-64 text-white" />
+            <div className="absolute -right-10 -bottom-10 opacity-5 group-hover:opacity-10 transition-opacity duration-500 rotate-12 hidden sm:block">
+              <Icon className="w-48 h-48 sm:w-56 sm:h-56 lg:w-64 lg:h-64 text-white" />
             </div>
 
-            <div className="relative z-10 p-6 flex flex-col h-full justify-between">
+            <div className="relative z-10 p-4 sm:p-5 md:p-6 flex flex-col h-full justify-between">
               <div className="flex justify-between items-start">
-                 <div className={`flex items-center gap-2 text-[10px] font-mono uppercase tracking-widest ${moduleColor}`}>
-                    <Activity size={12} />
-                    <span>MODULE_{project.id.padStart(2, '0')}</span>
-                 </div>
-                 <div className={`${accentBg}/10 border ${accentBorder}/30 p-1.5 rounded-sm group-hover:${accentBg} group-hover:text-black transition-all`}>
-                    <ArrowUpRight size={14} />
-                 </div>
+                <div className={`flex items-center gap-1.5 sm:gap-2 text-sm sm:text-base font-mono uppercase tracking-widest ${moduleColor}`}>
+                  <Activity size={12} className="sm:w-4 sm:h-4" />
+                  <span>MODULE_{project.id.padStart(2, '0')}</span>
+                </div>
+                <div className={`${accentBg}/10 border ${accentBorder}/30 p-1 sm:p-1.5 rounded-sm group-hover:${accentBg} group-hover:text-black transition-all`}>
+                  <ArrowUpRight size={12} className="sm:w-3.5 sm:h-3.5" />
+                </div>
               </div>
 
-              <div className="mt-4">
-                 <div className="inline-block px-2 py-0.5 mb-3 text-[10px] font-mono border border-gray-800 bg-black text-gray-400 uppercase">
-                    {project.category}
-                 </div>
-                 <h3 className="text-2xl md:text-3xl font-display font-bold text-white mb-2 group-hover:text-white transition-colors">
-                    {project.title}
-                 </h3>
-                 <p className="text-gray-400 font-mono text-xs md:text-sm leading-relaxed border-l-2 border-gray-800 pl-3 group-hover:${accentBorder}/50 transition-colors">
-                    {project.description}
-                 </p>
+              <div className="mt-3 sm:mt-4">
+                <div className="inline-block px-2 sm:px-3 py-1 mb-2 sm:mb-3 text-sm sm:text-base font-mono border border-gray-800 bg-black text-gray-400 uppercase">
+                  {project.category}
+                </div>
+                <h3 className="text-xl sm:text-2xl md:text-3xl font-display font-bold text-white mb-1.5 sm:mb-2 group-hover:text-white transition-colors leading-tight">
+                  {project.title}
+                </h3>
+                <p className="text-gray-400 font-mono text-sm sm:text-base md:text-lg leading-relaxed border-l-2 border-gray-800 pl-2.5 sm:pl-3 group-hover:${accentBorder}/50 transition-colors line-clamp-3 sm:line-clamp-none">
+                  {project.description}
+                </p>
               </div>
 
-              <div className="mt-4 pt-4 border-t border-white/5 flex justify-between items-center text-[10px] font-mono uppercase text-gray-600">
-                 <div className="flex items-center gap-1.5">
-                    <div className={`w-1.5 h-1.5 ${accentBg} rounded-full animate-pulse`}></div>
-                    <span>System Active</span>
-                 </div>
-                 <span>SEC_LEVEL_5</span>
+              <div className="mt-3 sm:mt-4 pt-3 sm:pt-4 border-t border-white/5 flex justify-between items-center text-sm sm:text-base font-mono uppercase text-gray-600">
+                <div className="flex items-center gap-1 sm:gap-1.5">
+                  <div className={`w-1.5 h-1.5 sm:w-2 sm:h-2 ${accentBg} rounded-full animate-pulse`}></div>
+                  <span>System Active</span>
+                </div>
+                <span className="hidden xs:inline">SEC_LEVEL_5</span>
               </div>
             </div>
           </div>

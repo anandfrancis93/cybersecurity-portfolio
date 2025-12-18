@@ -1,8 +1,26 @@
 import { GoogleGenAI, GenerateContentResponse } from "@google/genai";
 import { SYSTEM_INSTRUCTION } from '../constants';
 
-// Initialize the Gemini client
-const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+// Lazy-initialize the Gemini client to prevent crashes when API key is missing
+let ai: GoogleGenAI | null = null;
+
+const getAI = (): GoogleGenAI | null => {
+  if (ai) return ai;
+
+  const apiKey = process.env.API_KEY || process.env.GEMINI_API_KEY;
+  if (!apiKey) {
+    console.warn("Gemini API Key not configured. Chat functionality will be limited.");
+    return null;
+  }
+
+  try {
+    ai = new GoogleGenAI({ apiKey });
+    return ai;
+  } catch (error) {
+    console.error("Failed to initialize Gemini AI:", error);
+    return null;
+  }
+};
 
 /**
  * Sends a message to the Gemini model and returns the text response.
@@ -12,13 +30,19 @@ export const sendMessageToGemini = async (
   message: string,
   history: { role: string; text: string }[]
 ): Promise<string> => {
+  const client = getAI();
+
+  if (!client) {
+    return "> API_KEY not configured.\n> Chat functionality is currently offline.\n> Please set your GEMINI_API_KEY in the environment.";
+  }
+
   try {
     const chatHistory = history.map(msg => ({
       role: msg.role,
       parts: [{ text: msg.text }],
     }));
 
-    const chat = ai.chats.create({
+    const chat = client.chats.create({
       model: 'gemini-3-flash-preview',
       config: {
         systemInstruction: SYSTEM_INSTRUCTION,
