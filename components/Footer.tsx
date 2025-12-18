@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Github, Linkedin, ArrowUp, ShieldCheck, X, Terminal, Send, Lock } from 'lucide-react';
+import ScrambleText from './ScrambleText';
 
 interface HandshakeModalProps {
   isOpen: boolean;
@@ -59,7 +60,7 @@ const HandshakeModal: React.FC<HandshakeModalProps> = ({ isOpen, onClose }) => {
                 <ShieldCheck size={28} className="sm:w-8 sm:h-8" />
               </div>
               <div className="space-y-2 px-2">
-                <h3 className="text-white font-display font-bold text-lg sm:text-xl uppercase tracking-wider">Transmission Successful</h3>
+                <h3 className="text-white font-display font-bold text-lg sm:text-xl uppercase tracking-wider"><ScrambleText text="Transmission Successful" duration={500} disableVisualGlitch={true} /></h3>
                 <p className="text-gray-500 font-mono text-sm sm:text-base">Handshake packet delivered to destination node.</p>
               </div>
             </div>
@@ -147,7 +148,9 @@ const Footer: React.FC = () => {
 
           <div className="flex flex-col md:flex-row md:items-end justify-between mb-8 sm:mb-10 md:mb-12 gap-4 sm:gap-6 relative">
             <div>
-              <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-display font-bold mb-2 sm:mb-3 md:mb-4 uppercase text-nist-respond">Respond</h2>
+              <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-display font-bold mb-2 sm:mb-3 md:mb-4 uppercase text-nist-respond">
+                <ScrambleText text="Respond" duration={600} disableVisualGlitch={true} triggerReveal={true} />
+              </h2>
               <p className="text-gray-400 max-w-2xl font-mono text-sm sm:text-base border-l-2 border-edition-border pl-3 sm:pl-4">
                 Incident Response protocol initiated. Available for immediate deployment on select projects and security consultations.
               </p>
@@ -164,7 +167,7 @@ const Footer: React.FC = () => {
                 <ShieldCheck size={28} className="sm:w-8 sm:h-8" />
               </div>
               <div>
-                <h3 className="text-lg sm:text-xl font-bold text-white font-display mb-1">Establish Connection</h3>
+                <h3 className="text-lg sm:text-xl font-bold text-white font-display mb-1"><ScrambleText text="Establish Connection" duration={500} disableVisualGlitch={true} /></h3>
                 <p className="text-xs sm:text-sm text-gray-500 font-mono">Secure communication line available for professional inquiries.</p>
               </div>
             </div>

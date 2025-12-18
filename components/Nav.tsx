@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { NAV_LINKS } from '../constants';
 import { ShieldCheck, Menu, X } from 'lucide-react';
+import ScrambleText from './ScrambleText';
 
 const Nav: React.FC = () => {
   const [time, setTime] = useState(new Date());
@@ -47,7 +48,7 @@ const Nav: React.FC = () => {
                   ${isActive ? `${link.color} text-black font-bold` : 'hover:bg-white/5 hover:text-white'}
                 `}
               >
-                {link.name}
+                <ScrambleText text={link.name} duration={600} disableVisualGlitch={true} />
               </Link>
             );
           })}
@@ -86,7 +87,7 @@ const Nav: React.FC = () => {
                   ${isActive ? `${link.color} text-black font-bold pl-8` : 'text-gray-400 hover:text-white hover:bg-white/5 hover:pl-8'}
                 `}
               >
-                <span>{link.name}</span>
+                <ScrambleText text={link.name} duration={600} disableVisualGlitch={true} />
               </Link>
             );
           })}

@@ -3,6 +3,7 @@ import Nav from '../components/Nav';
 import FooterBar from '../components/FooterBar';
 import TerminalIntro from '../components/TerminalIntro';
 import RadarAnimation from '../components/RadarAnimation';
+import ScrambleText from '../components/ScrambleText';
 import { NIST_MODULES, PROFILE } from '../constants';
 import { User, Terminal, Cpu, ChevronDown, ChevronUp } from 'lucide-react';
 
@@ -30,8 +31,8 @@ const IdentifyPage: React.FC = () => {
                         {/* Left side - Name and details */}
                         <div className="max-w-4xl flex-1">
                             <h1 className="text-4xl sm:text-5xl md:text-7xl lg:text-9xl font-display font-bold tracking-tighter text-white leading-[0.9] sm:leading-[0.85] mb-6 sm:mb-8 md:mb-12">
-                                ANAND <br />
-                                <span className="text-nist-identify">FRANCIS</span>
+                                <ScrambleText text="ANAND" duration={500} disableVisualGlitch={true} triggerReveal={isIntroComplete} /> <br />
+                                <ScrambleText text="FRANCIS" className="text-nist-identify" duration={700} disableVisualGlitch={true} triggerReveal={isIntroComplete} />
                             </h1>
 
                             <div className={`text-base sm:text-lg md:text-xl lg:text-2xl max-w-2xl font-mono leading-tight border-l-2 sm:border-l-4 ${module.borderClass} pl-4 sm:pl-6 md:pl-8 mb-6 md:mb-8 flex flex-col gap-1.5 sm:gap-2 text-white`}>
@@ -55,7 +56,7 @@ const IdentifyPage: React.FC = () => {
                                     <User size={24} className="sm:w-7 sm:h-7 md:w-8 md:h-8" />
                                 </div>
                                 <div className="min-w-0">
-                                    <h3 className="font-display font-bold text-lg sm:text-xl text-white truncate">Anand Francis</h3>
+                                    <h3 className="font-display font-bold text-lg sm:text-xl text-white truncate"><ScrambleText text="Anand Francis" duration={500} disableVisualGlitch={true} /></h3>
                                     <p className="text-sm sm:text-base text-gray-500 font-mono">Based in Rexburg, ID</p>
                                 </div>
                             </div>
@@ -77,14 +78,14 @@ const IdentifyPage: React.FC = () => {
                             <div>
                                 <h4 className={`${accentColor} font-mono text-base sm:text-lg uppercase tracking-widest mb-2 sm:mb-3 md:mb-4 flex items-center gap-2`}>
                                     <Terminal size={12} className="sm:w-3.5 sm:h-3.5" />
-                                    Asset Description
+                                    <ScrambleText text="Asset Description" duration={500} disableVisualGlitch={true} />
                                 </h4>
                                 <p className="text-gray-400 leading-relaxed text-sm sm:text-base">{PROFILE.bio}</p>
                             </div>
                             <div>
                                 <h4 className="text-gray-500 font-mono text-sm sm:text-base uppercase tracking-widest mb-3 sm:mb-4 flex items-center gap-2">
                                     <Cpu size={12} className="sm:w-3.5 sm:h-3.5" />
-                                    Capabilities
+                                    <ScrambleText text="Capabilities" duration={500} disableVisualGlitch={true} />
                                 </h4>
                                 <div className="flex flex-wrap gap-1.5 sm:gap-2">
                                     {visibleSkills.map((skill, i) => (

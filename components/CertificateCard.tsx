@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Certificate } from '../types';
 import { ShieldCheck, Award, Key, Lock, ExternalLink, Fingerprint, ChevronRight, BadgeCheck } from 'lucide-react';
+import ScrambleText from './ScrambleText';
 
 interface CertificateCardProps {
   certificate: Certificate;
@@ -63,7 +64,7 @@ const CertificateCard: React.FC<CertificateCardProps> = ({ certificate, accentCo
 
             <div className="space-y-3">
               <h3 className="text-xl md:text-2xl font-display font-bold text-white tracking-tight leading-tight">
-                {certificate.name}
+                <ScrambleText text={certificate.name} duration={500} disableVisualGlitch={true} />
               </h3>
               <p className="text-sm md:text-base text-gray-500 font-mono tracking-[0.4em] uppercase">
                 {certificate.issuer}
@@ -116,7 +117,8 @@ const CertificateCard: React.FC<CertificateCardProps> = ({ certificate, accentCo
                   <Fingerprint size={70} />
                 </div>
                 <h4 className={`text-sm sm:text-base ${accentColor} font-mono uppercase tracking-[0.3em] mb-4 flex items-center gap-2`}>
-                  <Lock size={12} /> CREDENTIAL_MANIFEST
+                  <Lock size={12} />
+                  <ScrambleText text="CREDENTIAL_MANIFEST" duration={500} disableVisualGlitch={true} />
                 </h4>
                 <div className="space-y-5">
                   <div className="flex flex-col gap-1.5">

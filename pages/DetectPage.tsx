@@ -3,6 +3,7 @@ import Nav from '../components/Nav';
 import FooterBar from '../components/FooterBar';
 import TerminalIntro from '../components/TerminalIntro';
 import ExperienceCard from '../components/ExperienceCard';
+import ScrambleText from '../components/ScrambleText';
 import { EXPERIENCES, NIST_MODULES } from '../constants';
 
 const DetectPage: React.FC = () => {
@@ -26,7 +27,9 @@ const DetectPage: React.FC = () => {
 
                     <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 relative z-10 gap-8">
                         <div className="max-w-3xl">
-                            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-display font-bold mb-4 sm:mb-6 uppercase text-nist-detect">{module.title}</h2>
+                            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-display font-bold mb-4 sm:mb-6 uppercase text-nist-detect">
+                                <ScrambleText text={module.title} duration={600} disableVisualGlitch={true} triggerReveal={isIntroComplete} />
+                            </h2>
                             <p className="text-gray-400 font-mono text-sm sm:text-base border-l-2 border-edition-border pl-4 whitespace-pre-line leading-relaxed">
                                 {module.description}
                             </p>

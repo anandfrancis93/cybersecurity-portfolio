@@ -3,6 +3,7 @@ import Nav from '../components/Nav';
 import FooterBar from '../components/FooterBar';
 import TerminalIntro from '../components/TerminalIntro';
 import CertificateCard from '../components/CertificateCard';
+import ScrambleText from '../components/ScrambleText';
 import { CERTIFICATES, NIST_MODULES } from '../constants';
 
 const RecoverPage: React.FC = () => {
@@ -26,7 +27,9 @@ const RecoverPage: React.FC = () => {
 
                     <div className="flex flex-col md:flex-row md:items-end justify-between mb-8 sm:mb-10 md:mb-12 gap-4 sm:gap-6 relative z-10">
                         <div>
-                            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-display font-bold mb-2 sm:mb-3 md:mb-4 uppercase text-nist-recover">{module.title}</h2>
+                            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-display font-bold mb-2 sm:mb-3 md:mb-4 uppercase text-nist-recover">
+                                <ScrambleText text={module.title} duration={600} disableVisualGlitch={true} triggerReveal={isIntroComplete} />
+                            </h2>
                             <p className="text-gray-400 max-w-2xl font-mono text-sm sm:text-base border-l-2 border-edition-border pl-3 sm:pl-4">
                                 {module.description}
                             </p>
