@@ -4,6 +4,7 @@ import FooterBar from '../components/FooterBar';
 import TerminalIntro from '../components/TerminalIntro';
 import CertificateCard from '../components/CertificateCard';
 import ScrambleText from '../components/ScrambleText';
+import SteganographyRain from '../components/SteganographyRain';
 import { CERTIFICATES, NIST_MODULES } from '../constants';
 
 const RecoverPage: React.FC = () => {
@@ -18,6 +19,7 @@ const RecoverPage: React.FC = () => {
 
     return (
         <div className="min-h-screen bg-[#020202] text-white font-sans pt-24 md:pt-12 animate-fade-in selection:bg-nist-recover selection:text-black flex flex-col">
+            <SteganographyRain color="#7df49f" revealRadius={180} />
             <Nav />
             <main className="max-w-[1600px] mx-auto px-3 sm:px-6 lg:px-8 pb-20 md:pb-32 flex-1">
                 <section className="py-12 sm:py-16 md:py-20 relative">

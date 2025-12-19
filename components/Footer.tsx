@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Github, Linkedin, ArrowUp, ShieldCheck, X, Terminal, Send, Lock } from 'lucide-react';
 import ScrambleText from './ScrambleText';
+import SteganographyRain from './SteganographyRain';
 
 interface HandshakeModalProps {
   isOpen: boolean;
@@ -140,6 +141,7 @@ const Footer: React.FC = () => {
   return (
     <>
       <footer id="respond" className="flex-1 flex flex-col bg-black pt-16 sm:pt-24 md:pt-32 pb-8 sm:pb-12 px-3 sm:px-6 border-t border-edition-border/50 relative overflow-hidden selection:bg-nist-respond selection:text-black">
+        <SteganographyRain color="#f97367" revealRadius={180} />
         <div className="max-w-[1600px] mx-auto relative z-10 flex-1 flex flex-col">
 
           <div className="absolute top-0 right-0 text-[4rem] sm:text-[6rem] md:text-[10rem] font-bold text-white/[0.02] font-display pointer-events-none select-none -translate-y-4 md:-translate-y-8 overflow-hidden whitespace-nowrap">

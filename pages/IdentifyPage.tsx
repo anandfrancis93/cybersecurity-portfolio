@@ -4,6 +4,7 @@ import FooterBar from '../components/FooterBar';
 import TerminalIntro from '../components/TerminalIntro';
 import RadarAnimation from '../components/RadarAnimation';
 import ScrambleText from '../components/ScrambleText';
+import SteganographyRain from '../components/SteganographyRain';
 import { NIST_MODULES, PROFILE } from '../constants';
 import { User, Terminal, Cpu, ChevronDown, ChevronUp } from 'lucide-react';
 
@@ -21,6 +22,7 @@ const IdentifyPage: React.FC = () => {
 
     return (
         <div className="min-h-screen bg-[#020202] text-white font-sans pt-24 md:pt-12 animate-fade-in selection:bg-nist-identify selection:text-black flex flex-col">
+            <SteganographyRain color="#4bb2e0" revealRadius={180} />
             <Nav />
             <main className="max-w-[1600px] mx-auto px-3 sm:px-6 lg:px-8 pb-20 md:pb-32 flex-1">
                 <section className="py-12 sm:py-16 md:py-20 relative">
