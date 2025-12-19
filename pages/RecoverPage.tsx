@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import Nav from '../components/Nav';
 import FooterBar from '../components/FooterBar';
-import TerminalIntro from '../components/TerminalIntro';
+import SensorIntro from '../components/SensorIntro';
 import CertificateCard from '../components/CertificateCard';
 import ScrambleText from '../components/ScrambleText';
 import SteganographyRain from '../components/SteganographyRain';
@@ -14,7 +14,7 @@ const RecoverPage: React.FC = () => {
     const moduleCertificates = CERTIFICATES.filter(c => c.module === 'recover');
 
     if (!isIntroComplete) {
-        return <TerminalIntro moduleName="recover" accentColor="text-nist-recover" onComplete={() => setIsIntroComplete(true)} />;
+        return <SensorIntro moduleName="recover" accentColor="text-nist-recover" onComplete={() => setIsIntroComplete(true)} />;
     }
 
     return (

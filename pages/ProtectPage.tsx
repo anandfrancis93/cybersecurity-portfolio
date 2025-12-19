@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import Nav from '../components/Nav';
 import FooterBar from '../components/FooterBar';
-import TerminalIntro from '../components/TerminalIntro';
+import SensorIntro from '../components/SensorIntro';
 import BentoGrid from '../components/BentoGrid';
 import ScrambleText from '../components/ScrambleText';
 import SteganographyRain from '../components/SteganographyRain';
@@ -14,7 +14,7 @@ const ProtectPage: React.FC = () => {
     const moduleProjects = PROJECTS.filter(p => p.module === 'protect');
 
     if (!isIntroComplete) {
-        return <TerminalIntro moduleName="protect" accentColor="text-nist-protect" onComplete={() => setIsIntroComplete(true)} />;
+        return <SensorIntro moduleName="protect" accentColor="text-nist-protect" onComplete={() => setIsIntroComplete(true)} />;
     }
 
     return (

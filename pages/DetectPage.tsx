@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import Nav from '../components/Nav';
 import FooterBar from '../components/FooterBar';
-import TerminalIntro from '../components/TerminalIntro';
+import SensorIntro from '../components/SensorIntro';
 import ExperienceCard from '../components/ExperienceCard';
 import ScrambleText from '../components/ScrambleText';
 import SteganographyRain from '../components/SteganographyRain';
@@ -14,7 +14,7 @@ const DetectPage: React.FC = () => {
     const moduleExperience = EXPERIENCES.filter(e => e.module === 'detect');
 
     if (!isIntroComplete) {
-        return <TerminalIntro moduleName="detect" accentColor="text-nist-detect" onComplete={() => setIsIntroComplete(true)} />;
+        return <SensorIntro moduleName="detect" accentColor="text-nist-detect" onComplete={() => setIsIntroComplete(true)} />;
     }
 
     return (

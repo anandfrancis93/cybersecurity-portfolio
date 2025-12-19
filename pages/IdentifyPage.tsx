@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import Nav from '../components/Nav';
 import FooterBar from '../components/FooterBar';
-import TerminalIntro from '../components/TerminalIntro';
+import SensorIntro from '../components/SensorIntro';
 import RadarAnimation from '../components/RadarAnimation';
 import ScrambleText from '../components/ScrambleText';
 import SteganographyRain from '../components/SteganographyRain';
@@ -17,7 +17,7 @@ const IdentifyPage: React.FC = () => {
     const visibleSkills = showAllSkills ? PROFILE.skills : PROFILE.skills.slice(0, 6);
 
     if (!isIntroComplete) {
-        return <TerminalIntro moduleName="identify" accentColor="text-nist-identify" onComplete={() => setIsIntroComplete(true)} />;
+        return <SensorIntro moduleName="identify" accentColor="text-nist-identify" onComplete={() => setIsIntroComplete(true)} />;
     }
 
     return (
