@@ -68,9 +68,9 @@ const SensorIntro: React.FC<SensorIntroProps> = ({
 
     // Animation sequence
     useEffect(() => {
-        const scanTimer = setTimeout(() => setPhase('complete'), 2200);
-        const fadeTimer = setTimeout(() => setPhase('fadeout'), 3500);
-        const completeTimer = setTimeout(() => onComplete(), 4000);
+        const scanTimer = setTimeout(() => setPhase('complete'), 3000);
+        const fadeTimer = setTimeout(() => setPhase('fadeout'), 4500);
+        const completeTimer = setTimeout(() => onComplete(), 5000);
 
         return () => {
             clearTimeout(scanTimer);
@@ -2016,6 +2016,8 @@ const DDoSAnimation: React.FC<{ phase: string; accentColor: string }> = ({ phase
     const [step, setStep] = useState(0);
     const [packets, setPackets] = useState<{ id: number; from: number; progress: number; isAttacker: boolean }[]>([]);
     const [ringRotation, setRingRotation] = useState(0);
+    const [serverDown, setServerDown] = useState(false);
+    const stopPacketsRef = React.useRef(false);
 
     // Nodes around the perimeter - mix of attackers (red) and legitimate (green)
     const nodes = [
@@ -2050,12 +2052,25 @@ const DDoSAnimation: React.FC<{ phase: string; accentColor: string }> = ({ phase
         // Increase load progress slowly over time - gradual fill
         const loadInterval = setInterval(() => {
             if (!isMounted) return;
-            setRingRotation(prev => Math.min(prev + 1.5, 100)); // Slow steady fill
+            setRingRotation(prev => {
+                const next = Math.min(prev + 1.5, 100);
+                // Trigger server down after reaching 100%
+                if (next >= 100 && prev < 100) {
+                    stopPacketsRef.current = true; // Stop spawning new packets
+                    setTimeout(() => {
+                        if (isMounted) {
+                            setServerDown(true);
+                            setPackets([]); // Clear remaining packets when server crashes
+                        }
+                    }, 500);
+                }
+                return next;
+            });
         }, 50);
 
         // Spawn packets from attacker nodes (red) and legitimate nodes (green)
         const spawnInterval = setInterval(() => {
-            if (!isMounted) return;
+            if (!isMounted || stopPacketsRef.current) return;
 
             setStep(currentStep => {
                 const newPackets: { id: number; from: number; progress: number; isAttacker: boolean }[] = [];
@@ -2092,7 +2107,7 @@ const DDoSAnimation: React.FC<{ phase: string; accentColor: string }> = ({ phase
             });
         }, 150);
 
-        // Move packets toward center
+        // Move packets toward center (always let existing packets finish)
         const moveInterval = setInterval(() => {
             if (!isMounted) return;
             setPackets(prev =>
@@ -2175,7 +2190,7 @@ const DDoSAnimation: React.FC<{ phase: string; accentColor: string }> = ({ phase
                         cy="48"
                         r="40"
                         fill="none"
-                        stroke={ringRotation >= 66 ? '#ef4444' : ringRotation >= 33 ? '#f97316' : '#eab308'}
+                        stroke={serverDown ? '#6b7280' : ringRotation >= 71 ? '#ef4444' : ringRotation >= 31 ? '#f97316' : '#eab308'}
                         strokeWidth="6"
                         strokeLinecap="round"
                         strokeDasharray={`${2 * Math.PI * 40}`}
@@ -2200,9 +2215,20 @@ const DDoSAnimation: React.FC<{ phase: string; accentColor: string }> = ({ phase
                 {/* Central server (large circle) with shake animation */}
                 <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
                     <div
-                        className={`w-14 h-14 rounded-full flex flex-col items-center justify-center ${step >= 3 ? 'server-shake bg-red-600 shadow-[0_0_30px_rgba(239,68,68,0.8)]' : ringRotation >= 50 ? 'bg-orange-500 shadow-[0_0_15px_rgba(249,115,22,0.5)]' : 'bg-blue-500 shadow-[0_0_15px_rgba(59,130,246,0.4)]'}`}
+                        className={`w-14 h-14 rounded-full flex flex-col items-center justify-center transition-colors duration-300 ${serverDown
+                            ? 'bg-gray-600 shadow-[0_0_10px_rgba(100,100,100,0.3)]'
+                            : ringRotation >= 71
+                                ? 'server-shake bg-red-600 shadow-[0_0_30px_rgba(239,68,68,0.8)]'
+                                : ringRotation >= 31
+                                    ? 'bg-orange-500 shadow-[0_0_15px_rgba(249,115,22,0.5)]'
+                                    : 'bg-yellow-500 shadow-[0_0_15px_rgba(234,179,8,0.4)]'
+                            }`}
                     >
-                        <span className="text-[10px] font-mono font-bold text-white">{Math.round(ringRotation)}%</span>
+                        {serverDown ? (
+                            <span className="text-[7px] font-mono font-bold text-white text-center leading-tight">SERVER<br />DOWN</span>
+                        ) : (
+                            <span className="text-[10px] font-mono font-bold text-white">{Math.round(ringRotation)}%</span>
+                        )}
                     </div>
                 </div>
                 {/* Attack packets flying toward center */}
