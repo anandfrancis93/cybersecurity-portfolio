@@ -6,11 +6,11 @@ interface SensorIntroProps {
     onComplete: () => void;
 }
 
-type SensorType = 'infrared' | 'pressure' | 'microwave' | 'ultrasonic' | 'circuit' | 'motion' | 'noise' | 'proximity' | 'surveillance' | 'siem' | 'ssh' | 'radius' | 'tacacs' | 'kerberos' | 'symmetric';
+type SensorType = 'infrared' | 'pressure' | 'microwave' | 'ultrasonic' | 'circuit' | 'motion' | 'noise' | 'proximity' | 'surveillance' | 'siem' | 'ssh' | 'radius' | 'tacacs' | 'kerberos' | 'symmetric' | 'ddos';
 
 const SENSOR_ORDER: SensorType[] = [
-    'infrared', 'pressure', 'microwave', 'ultrasonic', 'circuit', 'motion', 'noise', 'proximity', 'surveillance', 'siem', 'ssh',
-    // 'radius', 'tacacs', 'kerberos', 'symmetric'
+    'infrared', 'pressure', 'microwave', 'ultrasonic', 'circuit', 'noise', 'proximity', 'surveillance', 'siem', 'ssh', 'ddos',
+    // 'radius', 'tacacs', 'kerberos', 'symmetric', 'motion'
 ];
 
 const SENSOR_LABELS: Record<SensorType, { name: string; status: string }> = {
@@ -29,6 +29,7 @@ const SENSOR_LABELS: Record<SensorType, { name: string; status: string }> = {
     tacacs: { name: 'TACACS+ AUTH', status: 'COMMAND AUTHORIZED' },
     kerberos: { name: 'KERBEROS AUTH', status: 'TICKET GRANTED' },
     symmetric: { name: 'SYMMETRIC CRYPTO', status: 'MESSAGE DECRYPTED' },
+    ddos: { name: 'DDoS DETECTION', status: 'ATTACK MITIGATED' },
 };
 
 const SensorIntro: React.FC<SensorIntroProps> = ({
@@ -114,6 +115,7 @@ const SensorIntro: React.FC<SensorIntroProps> = ({
                 {sensorType === 'surveillance' && <SurveillanceAnimation phase={phase} accentColor={accentColor} />}
                 {sensorType === 'siem' && <SIEMAnimation phase={phase} accentColor={accentColor} />}
                 {sensorType === 'ssh' && <SSHAnimation phase={phase} accentColor={accentColor} />}
+                {sensorType === 'ddos' && <DDoSAnimation phase={phase} accentColor={accentColor} />}
                 {/* {sensorType === 'radius' && <RADIUSAnimation phase={phase} accentColor={accentColor} />} */}
                 {/* {sensorType === 'tacacs' && <TACACSAnimation phase={phase} accentColor={accentColor} />} */}
                 {/* {sensorType === 'kerberos' && <KerberosAnimation phase={phase} accentColor={accentColor} />} */}
@@ -456,10 +458,10 @@ const UltrasonicAnimation: React.FC<{ phase: string; accentColor: string }> = ({
     const [wavePhase, setWavePhase] = useState(0); // For wave animation
 
     useEffect(() => {
-        // Person enters room
+        // Person enters room - smooth movement
         const moveInterval = setInterval(() => {
             setPersonPos(prev => {
-                const newX = prev.x + 2;
+                const newX = prev.x + 0.8; // Smaller increments for smoother movement
                 if (newX > 30 && !occupied) {
                     setOccupied(true);
                     setTimeout(() => setLightsOn(true), 300);
@@ -467,7 +469,7 @@ const UltrasonicAnimation: React.FC<{ phase: string; accentColor: string }> = ({
                 return { x: newX > 60 ? 60 : newX, y: 50 };
             });
             setWalkFrame(prev => (prev + 1) % 2);
-        }, 150);
+        }, 50); // Faster interval for smoother animation
 
         // Wave animation
         const waveInterval = setInterval(() => {
@@ -540,7 +542,7 @@ const UltrasonicAnimation: React.FC<{ phase: string; accentColor: string }> = ({
 
             {/* Person entering */}
             <div
-                className="absolute transition-all duration-100"
+                className="absolute transition-all duration-75 ease-linear"
                 style={{
                     left: `${personPos.x}%`,
                     top: `${personPos.y}%`,
@@ -556,22 +558,13 @@ const UltrasonicAnimation: React.FC<{ phase: string; accentColor: string }> = ({
                 <div className="text-xs text-cyan-400/70 font-mono text-center mt-1">PERSON</div>
             </div>
 
-            {/* Occupancy status */}
-            {occupied && (
-                <div className="absolute bottom-16 left-1/2 -translate-x-1/2">
-                    <div className={`px-3 py-1 border rounded ${lightsOn ? 'border-yellow-400 bg-yellow-400/20' : 'border-cyan-400 bg-cyan-400/20'}`}>
-                        <span className={`text-xs font-mono font-bold ${lightsOn ? 'text-yellow-400' : 'text-cyan-400'}`}>
-                            {lightsOn ? '💡 LIGHTS ON' : 'OCCUPANT DETECTED'}
-                        </span>
-                    </div>
-                </div>
-            )}
-
-            {/* Status */}
-            <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex items-center gap-2">
-                <div className={`w-2 h-2 rounded-full ${lightsOn ? 'bg-yellow-400' : occupied ? 'bg-cyan-400' : 'bg-gray-500'} animate-pulse`} />
-                <span className="text-xs font-mono text-gray-500">
-                    {lightsOn ? 'ROOM OCCUPIED - LIGHTS ACTIVE' : occupied ? 'PRESENCE DETECTED' : 'MONITORING ROOM'}
+            {/* Status - outside the room box */}
+            <div className="absolute bottom-2 left-1/2 -translate-x-1/2 flex items-center gap-2">
+                {!lightsOn && (
+                    <div className={`w-2 h-2 rounded-full ${occupied ? 'bg-cyan-400' : 'bg-gray-500'} animate-pulse`} />
+                )}
+                <span className={`text-xs font-mono ${lightsOn ? 'text-yellow-400' : 'text-gray-500'}`}>
+                    {lightsOn ? '💡 ROOM OCCUPIED - LIGHTS ON' : occupied ? 'PRESENCE DETECTED' : 'MONITORING ROOM'}
                 </span>
             </div>
         </div>
@@ -633,7 +626,7 @@ const CircuitAnimation: React.FC<{ phase: string; accentColor: string }> = ({ ph
             )}
 
             {/* Status */}
-            <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex items-center gap-2">
+            <div className="absolute bottom-2 left-1/2 -translate-x-1/2 flex items-center gap-2">
                 <div className={`w-2 h-2 rounded-full ${circuitBroken ? 'bg-red-500' : 'bg-green-500'} animate-pulse`} />
                 <span className="text-xs font-mono text-gray-500">
                     {circuitBroken ? 'ALARM ACTIVATED' : 'MONITORING ENTRY POINTS'}
@@ -2011,6 +2004,236 @@ const SymmetricAnimation: React.FC<{ phase: string; accentColor: string }> = ({ 
                 <div className={`w-2 h-2 rounded-full ${decrypted ? 'bg-green-500' : 'bg-amber-500'} animate-pulse`} />
                 <span className="text-xs font-mono text-gray-500">
                     {decrypted ? 'SECURE EXCHANGE COMPLETE' : 'ENCRYPTING...'}
+                </span>
+            </div>
+        </div>
+    );
+};
+
+// ================== DDoS ANIMATION ==================
+// Distributed Denial of Service attack visualization
+const DDoSAnimation: React.FC<{ phase: string; accentColor: string }> = ({ phase }) => {
+    const [step, setStep] = useState(0);
+    const [packets, setPackets] = useState<{ id: number; from: number; progress: number; isAttacker: boolean }[]>([]);
+    const [ringRotation, setRingRotation] = useState(0);
+
+    // Nodes around the perimeter - mix of attackers (red) and legitimate (green)
+    const nodes = [
+        { id: 0, angle: 0, isAttacker: true },
+        { id: 1, angle: 30, isAttacker: false },
+        { id: 2, angle: 60, isAttacker: true },
+        { id: 3, angle: 90, isAttacker: true },
+        { id: 4, angle: 120, isAttacker: false },
+        { id: 5, angle: 150, isAttacker: true },
+        { id: 6, angle: 180, isAttacker: true },
+        { id: 7, angle: 210, isAttacker: false },
+        { id: 8, angle: 240, isAttacker: true },
+        { id: 9, angle: 270, isAttacker: true },
+        { id: 10, angle: 300, isAttacker: false },
+        { id: 11, angle: 330, isAttacker: true },
+    ];
+
+    const attackerNodes = nodes.filter(n => n.isAttacker);
+    const legitimateNodes = nodes.filter(n => !n.isAttacker);
+
+    useEffect(() => {
+        let isMounted = true;
+        let packetId = 0;
+
+        // Phase progression - very fast to show full attack
+        const phaseTimers = [
+            setTimeout(() => { if (isMounted) setStep(1); }, 200),
+            setTimeout(() => { if (isMounted) setStep(2); }, 1000),
+            setTimeout(() => { if (isMounted) setStep(3); }, 2000),
+        ];
+
+        // Increase load progress slowly over time - gradual fill
+        const loadInterval = setInterval(() => {
+            if (!isMounted) return;
+            setRingRotation(prev => Math.min(prev + 1.5, 100)); // Slow steady fill
+        }, 50);
+
+        // Spawn packets from attacker nodes (red) and legitimate nodes (green)
+        const spawnInterval = setInterval(() => {
+            if (!isMounted) return;
+
+            setStep(currentStep => {
+                const newPackets: { id: number; from: number; progress: number; isAttacker: boolean }[] = [];
+
+                // Always spawn some legitimate traffic (green)
+                if (Math.random() > 0.5) {
+                    const legitIndex = Math.floor(Math.random() * legitimateNodes.length);
+                    newPackets.push({
+                        id: packetId++,
+                        from: legitimateNodes[legitIndex].id,
+                        progress: 0,
+                        isAttacker: false,
+                    });
+                }
+
+                // Spawn attack traffic (red) - more when attack is active
+                if (currentStep >= 1) {
+                    const spawnCount = currentStep >= 2 ? 3 : 2;
+                    for (let i = 0; i < spawnCount; i++) {
+                        const attackerIndex = Math.floor(Math.random() * attackerNodes.length);
+                        newPackets.push({
+                            id: packetId++,
+                            from: attackerNodes[attackerIndex].id,
+                            progress: 0,
+                            isAttacker: true,
+                        });
+                    }
+                }
+
+                if (newPackets.length > 0) {
+                    setPackets(prev => [...prev.slice(-20), ...newPackets]);
+                }
+                return currentStep;
+            });
+        }, 150);
+
+        // Move packets toward center
+        const moveInterval = setInterval(() => {
+            if (!isMounted) return;
+            setPackets(prev =>
+                prev
+                    .map(p => ({ ...p, progress: p.progress + 4 }))
+                    .filter(p => p.progress < 100)
+            );
+        }, 30);
+
+        return () => {
+            isMounted = false;
+            phaseTimers.forEach(t => clearTimeout(t));
+            clearInterval(loadInterval);
+            clearInterval(spawnInterval);
+            clearInterval(moveInterval);
+        };
+    }, []);
+
+    // Get position from angle
+    const getPos = (angle: number, radius: number) => {
+        const rad = ((angle - 90) * Math.PI) / 180; // Start from top
+        return {
+            x: Math.cos(rad) * radius,
+            y: Math.sin(rad) * radius,
+        };
+    };
+
+    return (
+        <div className="relative w-full h-full flex flex-col items-center justify-center">
+            {/* Title */}
+            <div className="absolute top-2 text-xs text-gray-400 font-mono">
+                DDoS ATTACK SIMULATION
+            </div>
+
+            {/* Main visualization area */}
+            <div className="relative w-64 h-64">
+                {/* Outer ring of nodes (colored dots) */}
+                {nodes.map(node => {
+                    const pos = getPos(node.angle, 105);
+                    const isActive = step >= 1 && node.isAttacker;
+                    return (
+                        <div
+                            key={node.id}
+                            className="absolute"
+                            style={{
+                                left: `calc(50% + ${pos.x}px)`,
+                                top: `calc(50% + ${pos.y}px)`,
+                                transform: 'translate(-50%, -50%)',
+                            }}
+                        >
+                            <div
+                                className={`w-4 h-4 rounded-full transition-all duration-300 ${node.isAttacker
+                                    ? isActive
+                                        ? 'bg-red-500 shadow-[0_0_8px_rgba(239,68,68,0.6)]'
+                                        : 'bg-red-500/50'
+                                    : 'bg-green-500 shadow-[0_0_6px_rgba(34,197,94,0.4)]'
+                                    } ${isActive && step >= 2 ? 'animate-pulse' : ''}`}
+                            />
+                        </div>
+                    );
+                })}
+
+                {/* Progress ring - fills up as attack progresses */}
+                <svg
+                    className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-24 h-24"
+                    style={{ transform: 'translate(-50%, -50%) rotate(-90deg)' }}
+                >
+                    {/* Background circle */}
+                    <circle
+                        cx="48"
+                        cy="48"
+                        r="40"
+                        fill="none"
+                        stroke="#374151"
+                        strokeWidth="6"
+                    />
+                    {/* Progress circle */}
+                    <circle
+                        cx="48"
+                        cy="48"
+                        r="40"
+                        fill="none"
+                        stroke={ringRotation >= 66 ? '#ef4444' : ringRotation >= 33 ? '#f97316' : '#eab308'}
+                        strokeWidth="6"
+                        strokeLinecap="round"
+                        strokeDasharray={`${2 * Math.PI * 40}`}
+                        strokeDashoffset={`${2 * Math.PI * 40 * (1 - ringRotation / 100)}`}
+                        style={{ transition: 'stroke-dashoffset 0.1s ease-out, stroke 0.3s ease' }}
+                    />
+                </svg>
+
+                {/* Global shake animation styles */}
+                <style>{`
+                    @keyframes violentShake {
+                        0%, 100% { transform: translate(0, 0); }
+                        25% { transform: translate(-3px, 0); }
+                        50% { transform: translate(3px, 0); }
+                        75% { transform: translate(0, -3px); }
+                    }
+                    .server-shake {
+                        animation: violentShake 0.08s infinite linear !important;
+                    }
+                `}</style>
+
+                {/* Central server (large circle) with shake animation */}
+                <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
+                    <div
+                        className={`w-14 h-14 rounded-full flex flex-col items-center justify-center ${step >= 3 ? 'server-shake bg-red-600 shadow-[0_0_30px_rgba(239,68,68,0.8)]' : ringRotation >= 50 ? 'bg-orange-500 shadow-[0_0_15px_rgba(249,115,22,0.5)]' : 'bg-blue-500 shadow-[0_0_15px_rgba(59,130,246,0.4)]'}`}
+                    >
+                        <span className="text-[10px] font-mono font-bold text-white">{Math.round(ringRotation)}%</span>
+                    </div>
+                </div>
+                {/* Attack packets flying toward center */}
+                {packets.map(packet => {
+                    const node = nodes.find(n => n.id === packet.from);
+                    if (!node) return null;
+                    const startPos = getPos(node.angle, 95);
+                    const currentX = startPos.x * (1 - packet.progress / 100);
+                    const currentY = startPos.y * (1 - packet.progress / 100);
+
+                    return (
+                        <div
+                            key={packet.id}
+                            className={`absolute w-2 h-2 rounded-full ${packet.isAttacker ? 'bg-red-500' : 'bg-green-500'}`}
+                            style={{
+                                left: `calc(50% + ${currentX}px)`,
+                                top: `calc(50% + ${currentY}px)`,
+                                transform: 'translate(-50%, -50%)',
+                                opacity: 0.9,
+                                boxShadow: packet.isAttacker ? '0 0 6px rgba(239,68,68,0.8)' : '0 0 6px rgba(34,197,94,0.8)',
+                            }}
+                        />
+                    );
+                })}
+            </div>
+
+            {/* Status */}
+            <div className="mt-4 flex items-center gap-2">
+                <div className={`w-2 h-2 rounded-full ${step >= 3 ? 'bg-red-500' : step >= 1 ? 'bg-orange-500' : 'bg-green-500'} animate-pulse`} />
+                <span className="text-xs font-mono text-gray-400 whitespace-nowrap">
+                    {step === 0 ? 'MONITORING...' : step === 1 ? 'ATTACK STARTING...' : step === 2 ? 'UNDER ATTACK' : 'SERVER DOWN'}
                 </span>
             </div>
         </div>

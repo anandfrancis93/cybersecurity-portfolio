@@ -9,6 +9,7 @@ interface ScrambleTextProps {
     autoGlitch?: boolean;
     disableVisualGlitch?: boolean;
     triggerReveal?: boolean;
+    autoRepeatInterval?: number; // Auto-repeat scramble every X milliseconds
 }
 
 const ScrambleText: React.FC<ScrambleTextProps> = ({
@@ -20,6 +21,7 @@ const ScrambleText: React.FC<ScrambleTextProps> = ({
     autoGlitch = false,
     disableVisualGlitch = false,
     triggerReveal = false,
+    autoRepeatInterval,
 }) => {
     // Always start with the actual text - no scrambled initial state
     const [displayText, setDisplayText] = useState(text);
@@ -144,6 +146,33 @@ const ScrambleText: React.FC<ScrambleTextProps> = ({
             setDisplayText(text);
         }
     }, [text]);
+
+    // Auto-repeat scramble effect - uses global sync event for all components
+    useEffect(() => {
+        if (!autoRepeatInterval || autoRepeatInterval <= 0) return;
+
+        // Listen for the global scramble event
+        const handleGlobalScramble = () => {
+            runScramble();
+        };
+
+        window.addEventListener('globalScramble', handleGlobalScramble);
+
+        // Only one component should set up the global timer
+        const win = window as unknown as { scrambleTimerActive?: boolean; scrambleTimerId?: ReturnType<typeof setInterval> };
+        if (!win.scrambleTimerActive) {
+            win.scrambleTimerActive = true;
+
+            // Simple repeating timer
+            win.scrambleTimerId = setInterval(() => {
+                window.dispatchEvent(new Event('globalScramble'));
+            }, autoRepeatInterval);
+        }
+
+        return () => {
+            window.removeEventListener('globalScramble', handleGlobalScramble);
+        };
+    }, [autoRepeatInterval]);
 
     return (
         <span

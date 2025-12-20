@@ -64,7 +64,7 @@ const CertificateCard: React.FC<CertificateCardProps> = ({ certificate, accentCo
 
             <div className="space-y-3">
               <h3 className="text-xl md:text-2xl font-display font-bold text-white tracking-tight leading-tight">
-                <ScrambleText text={certificate.name} duration={500} disableVisualGlitch={true} />
+                <ScrambleText text={certificate.name} duration={600} disableVisualGlitch={true} triggerReveal={true} autoRepeatInterval={10000} />
               </h3>
               <p className="text-sm md:text-base text-gray-500 font-mono tracking-[0.4em] uppercase">
                 {certificate.issuer}
@@ -118,7 +118,7 @@ const CertificateCard: React.FC<CertificateCardProps> = ({ certificate, accentCo
                 </div>
                 <h4 className={`text-sm sm:text-base ${accentColor} font-mono uppercase tracking-[0.3em] mb-4 flex items-center gap-2`}>
                   <Lock size={12} />
-                  <ScrambleText text="CREDENTIAL_MANIFEST" duration={500} disableVisualGlitch={true} />
+                  <ScrambleText text="CREDENTIAL_MANIFEST" duration={600} disableVisualGlitch={true} triggerReveal={true} autoRepeatInterval={10000} />
                 </h4>
                 <div className="space-y-5">
                   <div className="flex flex-col gap-1.5">

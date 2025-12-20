@@ -48,7 +48,7 @@ const Nav: React.FC = () => {
                   ${isActive ? `${link.color} text-black font-bold` : 'hover:bg-white/5 hover:text-white'}
                 `}
               >
-                <ScrambleText text={link.name} duration={600} disableVisualGlitch={true} />
+                <ScrambleText text={link.name} duration={600} disableVisualGlitch={true} triggerReveal={true} autoRepeatInterval={10000} />
               </Link>
             );
           })}
@@ -87,7 +87,7 @@ const Nav: React.FC = () => {
                   ${isActive ? `${link.color} text-black font-bold pl-8` : 'text-gray-400 hover:text-white hover:bg-white/5 hover:pl-8'}
                 `}
               >
-                <ScrambleText text={link.name} duration={600} disableVisualGlitch={true} />
+                <ScrambleText text={link.name} duration={600} disableVisualGlitch={true} triggerReveal={true} autoRepeatInterval={10000} />
               </Link>
             );
           })}

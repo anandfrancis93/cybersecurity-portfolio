@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import Nav from '../components/Nav';
-import TerminalIntro from '../components/TerminalIntro';
+import SensorIntro from '../components/SensorIntro';
 import Footer from '../components/Footer';
 
 const RespondPage: React.FC = () => {
     const [isIntroComplete, setIsIntroComplete] = useState(false);
 
     if (!isIntroComplete) {
-        return <TerminalIntro moduleName="respond" accentColor="text-nist-respond" onComplete={() => setIsIntroComplete(true)} />;
+        return <SensorIntro moduleName="respond" accentColor="text-nist-respond" onComplete={() => setIsIntroComplete(true)} />;
     }
 
     return (
@@ -19,3 +19,4 @@ const RespondPage: React.FC = () => {
 };
 
 export default RespondPage;
+
