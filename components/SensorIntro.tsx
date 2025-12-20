@@ -6,9 +6,9 @@ interface SensorIntroProps {
     onComplete: () => void;
 }
 
-type SensorType = 'infrared' | 'pressure' | 'microwave' | 'ultrasonic' | 'circuit' | 'motion' | 'noise' | 'proximity' | 'surveillance';
+type SensorType = 'infrared' | 'pressure' | 'microwave' | 'ultrasonic' | 'circuit' | 'motion' | 'noise' | 'proximity' | 'surveillance' | 'siem' | 'ssh' | 'radius' | 'tacacs' | 'kerberos' | 'symmetric';
 
-const SENSOR_ORDER: SensorType[] = ['infrared', 'pressure', 'microwave', 'ultrasonic', 'circuit', 'motion', 'noise', 'proximity', 'surveillance'];
+const SENSOR_ORDER: SensorType[] = ['infrared', 'pressure', 'microwave', 'ultrasonic', 'circuit', 'motion', 'noise', 'proximity', 'surveillance', 'siem', 'ssh', 'radius', 'tacacs', 'kerberos', 'symmetric'];
 
 const SENSOR_LABELS: Record<SensorType, { name: string; status: string }> = {
     infrared: { name: 'INFRARED SENSOR', status: 'HEAT SIGNATURE: DETECTED' },
@@ -20,6 +20,12 @@ const SENSOR_LABELS: Record<SensorType, { name: string; status: string }> = {
     noise: { name: 'NOISE DETECTION', status: 'AI ANALYSIS: COMPLETE' },
     proximity: { name: 'PROXIMITY SENSOR', status: 'RFID TAGS: ACCOUNTED' },
     surveillance: { name: 'VIDEO SURVEILLANCE', status: 'ALL FEEDS: ONLINE' },
+    siem: { name: 'SIEM MONITORING', status: 'EVENTS CORRELATED' },
+    ssh: { name: 'SSH SESSION', status: 'CONNECTION SECURE' },
+    radius: { name: 'RADIUS AUTH', status: 'ACCESS GRANTED' },
+    tacacs: { name: 'TACACS+ AUTH', status: 'COMMAND AUTHORIZED' },
+    kerberos: { name: 'KERBEROS AUTH', status: 'TICKET GRANTED' },
+    symmetric: { name: 'SYMMETRIC CRYPTO', status: 'MESSAGE DECRYPTED' },
 };
 
 const SensorIntro: React.FC<SensorIntroProps> = ({
@@ -28,9 +34,17 @@ const SensorIntro: React.FC<SensorIntroProps> = ({
     onComplete,
 }) => {
     const [phase, setPhase] = useState<'scanning' | 'complete' | 'fadeout'>('scanning');
-    const [sensorType, setSensorType] = useState<SensorType>('infrared');
 
-    // Get current sensor and increment for next time
+    // Initialize sensor type synchronously from localStorage to prevent flash
+    const [sensorType, setSensorType] = useState<SensorType>(() => {
+        if (typeof window !== 'undefined') {
+            const storedIndex = localStorage.getItem('sensorAnimationIndex');
+            const currentIndex = storedIndex ? parseInt(storedIndex, 10) : 0;
+            return SENSOR_ORDER[currentIndex] || 'infrared';
+        }
+        return 'infrared';
+    });
+
     // Use ref to prevent double execution in React Strict Mode
     const hasInitialized = React.useRef(false);
 
@@ -44,7 +58,7 @@ const SensorIntro: React.FC<SensorIntroProps> = ({
 
         console.log(`🔐 Sensor Animation: ${SENSOR_ORDER[currentIndex]} (index ${currentIndex} of ${SENSOR_ORDER.length})`);
 
-        setSensorType(SENSOR_ORDER[currentIndex]);
+        // Update to next index for next time
         localStorage.setItem('sensorAnimationIndex', nextIndex.toString());
     }, []);
 
@@ -95,6 +109,12 @@ const SensorIntro: React.FC<SensorIntroProps> = ({
                 {sensorType === 'noise' && <NoiseAnimation phase={phase} accentColor={accentColor} />}
                 {sensorType === 'proximity' && <ProximityAnimation phase={phase} accentColor={accentColor} />}
                 {sensorType === 'surveillance' && <SurveillanceAnimation phase={phase} accentColor={accentColor} />}
+                {sensorType === 'siem' && <SIEMAnimation phase={phase} accentColor={accentColor} />}
+                {sensorType === 'ssh' && <SSHAnimation phase={phase} accentColor={accentColor} />}
+                {sensorType === 'radius' && <RADIUSAnimation phase={phase} accentColor={accentColor} />}
+                {sensorType === 'tacacs' && <TACACSAnimation phase={phase} accentColor={accentColor} />}
+                {sensorType === 'kerberos' && <KerberosAnimation phase={phase} accentColor={accentColor} />}
+                {sensorType === 'symmetric' && <SymmetricAnimation phase={phase} accentColor={accentColor} />}
             </div>
 
             {/* Status text */}
@@ -127,7 +147,7 @@ const InfraredAnimation: React.FC<{ phase: string; accentColor: string }> = ({ p
                 }
                 // Add to heat trail
                 setHeatTrail(trail => [...trail.slice(-8), { x: prev.x, y: prev.y }]);
-                return { x: newX > 90 ? 10 : newX, y: 50 + Math.sin(newX / 10) * 15 };
+                return { x: newX > 90 ? 10 : newX, y: 50 };
             });
         }, 80);
 
@@ -138,7 +158,7 @@ const InfraredAnimation: React.FC<{ phase: string; accentColor: string }> = ({ p
         <div className="relative w-full h-full flex items-center justify-center overflow-hidden">
             {/* Detection zone */}
             <div className="absolute w-48 h-32 border border-dashed border-red-500/30 rounded-lg" />
-            <div className="absolute top-2 left-1/2 -translate-x-1/2 text-xs text-red-400/50 font-mono whitespace-nowrap">
+            <div className="absolute top-2 left-1/2 -translate-x-1/2 text-xs text-red-400 font-mono whitespace-nowrap">
                 IR DETECTION ZONE
             </div>
 
@@ -233,7 +253,7 @@ const PressureAnimation: React.FC<{ phase: string; accentColor: string }> = ({ p
     return (
         <div className="relative w-full h-full flex flex-col items-center justify-center">
             {/* Restricted zone indicator */}
-            <div className="absolute top-4 left-1/2 -translate-x-1/2 text-xs text-purple-400/50 font-mono whitespace-nowrap">
+            <div className="absolute top-4 left-1/2 -translate-x-1/2 text-xs text-purple-400 font-mono whitespace-nowrap">
                 HIGH-SECURITY CORRIDOR
             </div>
 
@@ -337,7 +357,7 @@ const MicrowaveAnimation: React.FC<{ phase: string; accentColor: string }> = ({ 
     return (
         <div className="relative w-full h-full flex items-center justify-center overflow-hidden">
             {/* Outdoor area indicator */}
-            <div className="absolute top-4 left-1/2 -translate-x-1/2 text-xs text-amber-400/50 font-mono whitespace-nowrap">
+            <div className="absolute top-4 left-1/2 -translate-x-1/2 text-xs text-amber-400 font-mono whitespace-nowrap">
                 PARKING LOT PERIMETER
             </div>
 
@@ -460,7 +480,7 @@ const UltrasonicAnimation: React.FC<{ phase: string; accentColor: string }> = ({
     return (
         <div className="relative w-full h-full flex items-center justify-center overflow-hidden">
             {/* Room label - at very top */}
-            <div className="absolute top-2 left-1/2 -translate-x-1/2 text-xs text-cyan-400/50 font-mono whitespace-nowrap">
+            <div className="absolute top-2 left-1/2 -translate-x-1/2 text-xs text-cyan-400 font-mono whitespace-nowrap">
                 CONFERENCE ROOM
             </div>
 
@@ -728,7 +748,7 @@ const NoiseAnimation: React.FC<{ phase: string; accentColor: string }> = ({ phas
                     <div className="absolute inset-2 bg-gray-700 rounded-full" />
                     <div className={`absolute inset-3 rounded-full ${detectedSound ? 'bg-red-500 animate-pulse' : 'bg-gray-600'}`} />
                 </div>
-                <span className="text-xs text-gray-500 font-mono mt-1">MIC</span>
+                <span className="text-xs text-gray-400 font-mono mt-1">MIC</span>
             </div>
 
             {/* Waveform display */}
@@ -770,10 +790,10 @@ const NoiseAnimation: React.FC<{ phase: string; accentColor: string }> = ({ phas
 // RFID tracking for equipment theft detection
 const ProximityAnimation: React.FC<{ phase: string; accentColor: string }> = ({ phase }) => {
     const [tags, setTags] = useState([
-        { id: 1, x: 25, y: 35, label: 'LAPTOP', inRange: true },
-        { id: 2, x: 50, y: 55, label: 'SERVER', inRange: true },
-        { id: 3, x: 70, y: 40, label: 'PHONE', inRange: true },
-        { id: 4, x: 40, y: 72, label: 'TABLET', inRange: true },
+        { id: 1, x: 25, y: 38, label: 'LAPTOP', inRange: true },
+        { id: 2, x: 55, y: 55, label: 'SERVER', inRange: true },
+        { id: 3, x: 75, y: 35, label: 'PHONE', inRange: true },
+        { id: 4, x: 25, y: 65, label: 'TABLET', inRange: true },
     ]);
     const [alertTag, setAlertTag] = useState<number | null>(null);
     const [wavePhase, setWavePhase] = useState(0);
@@ -800,19 +820,20 @@ const ProximityAnimation: React.FC<{ phase: string; accentColor: string }> = ({ 
 
     return (
         <div className="relative w-full h-full flex items-center justify-center">
-            {/* Zone label - at very top */}
-            <div className="absolute top-0 left-1/2 -translate-x-1/2 text-[10px] text-blue-400/50 font-mono whitespace-nowrap">
-                RFID ZONE
+            {/* RFID Zone */}
+            <div className="absolute w-56 h-44 border-2 border-dashed border-blue-500/30 rounded-lg mt-4">
+                {/* Zone label - on the border */}
+                <div className="absolute -top-2.5 left-3 px-1 bg-black text-[10px] text-blue-400 font-mono">
+                    RFID ZONE
+                </div>
             </div>
 
-            {/* RFID Zone */}
-            <div className="absolute w-56 h-44 border-2 border-dashed border-blue-500/30 rounded-lg mt-4" />
-
             {/* RFID Reader */}
-            <div className="absolute top-6 right-6">
+            <div className="absolute top-6 right-6 flex flex-col items-center">
                 <div className="w-6 h-8 bg-gray-800 border border-blue-500/50 rounded flex items-center justify-center">
                     <div className="w-2 h-2 bg-blue-400 rounded-full animate-ping" style={{ animationDuration: '2s' }} />
                 </div>
+                <span className="text-[8px] text-blue-400 font-mono mt-0.5">READER</span>
             </div>
 
             {/* RF Waves - animated expanding circles centered on reader */}
@@ -886,19 +907,28 @@ const SurveillanceAnimation: React.FC<{ phase: string; accentColor: string }> = 
 
     useEffect(() => {
         const order = [0, 2, 6, 8, 4, 1, 3, 5, 7];
+        const timeoutIds: NodeJS.Timeout[] = [];
+
+        // Reset state
+        setActiveFeeds([]);
 
         // Add feeds one by one with delays
         order.forEach((feedIndex, i) => {
-            setTimeout(() => {
+            const timeoutId = setTimeout(() => {
                 setActiveFeeds(prev => [...prev, feedIndex]);
             }, i * 150);
+            timeoutIds.push(timeoutId);
         });
+
+        return () => {
+            timeoutIds.forEach(id => clearTimeout(id));
+        };
     }, []);
 
     return (
         <div className="relative w-full h-full flex flex-col items-center justify-center">
             {/* Title */}
-            <div className="absolute top-4 left-1/2 -translate-x-1/2 text-xs text-green-400/50 font-mono whitespace-nowrap">
+            <div className="absolute top-4 left-1/2 -translate-x-1/2 text-xs text-green-400 font-mono whitespace-nowrap">
                 CCTV MONITORING SYSTEM
             </div>
 
@@ -938,6 +968,1046 @@ const SurveillanceAnimation: React.FC<{ phase: string; accentColor: string }> = 
                 <div className={`w-2 h-2 rounded-full ${activeFeeds.length === 9 ? 'bg-green-500' : 'bg-amber-400'} animate-pulse`} />
                 <span className="text-xs font-mono text-gray-500">
                     {activeFeeds.length === 9 ? 'ALL FEEDS ONLINE' : `CONNECTING... ${activeFeeds.length}/9`}
+                </span>
+            </div>
+        </div>
+    );
+};
+
+// ================== SIEM ANIMATION ==================
+// Security Information and Event Management - Computer monitor displaying SIEM dashboard
+const SIEMAnimation: React.FC<{ phase: string; accentColor: string }> = ({ phase }) => {
+    const [logLines, setLogLines] = useState<{ id: number; source: string; level: string; msg: string }[]>([]);
+    const [stats, setStats] = useState({ events: 0, alerts: 0, sources: 4 });
+    const [threatDetected, setThreatDetected] = useState(false);
+
+    const logMessages = [
+        { source: 'FW', level: 'INFO', msg: 'Connection allowed 10.0.0.5' },
+        { source: 'SRV', level: 'INFO', msg: 'User login successful' },
+        { source: 'IDS', level: 'WARN', msg: 'Unusual traffic pattern' },
+        { source: 'EPT', level: 'INFO', msg: 'Scan completed clean' },
+        { source: 'FW', level: 'WARN', msg: 'Port scan detected' },
+        { source: 'SRV', level: 'INFO', msg: 'Backup completed' },
+        { source: 'IDS', level: 'CRIT', msg: 'MALWARE SIGNATURE MATCH' },
+        { source: 'NET', level: 'INFO', msg: 'Bandwidth normal' },
+        { source: 'EPT', level: 'CRIT', msg: 'UNAUTHORIZED ACCESS' },
+    ];
+
+    useEffect(() => {
+        let lineId = 0;
+
+        const interval = setInterval(() => {
+            const randomLog = logMessages[Math.floor(Math.random() * logMessages.length)];
+            const isCritical = randomLog.level === 'CRIT';
+
+            setLogLines(prev => [...prev.slice(-6), { id: lineId++, ...randomLog }]);
+            setStats(prev => ({
+                events: prev.events + 1,
+                alerts: prev.alerts + (isCritical ? 1 : 0),
+                sources: 4,
+            }));
+
+            if (isCritical && !threatDetected) {
+                setThreatDetected(true);
+            }
+        }, 500);
+
+        return () => clearInterval(interval);
+    }, [threatDetected]);
+
+    return (
+        <div className="relative w-full h-full flex items-center justify-center">
+            {/* MONITOR FRAME */}
+            <div className="relative">
+                {/* Monitor bezel */}
+                <div className="w-[340px] h-[220px] bg-gray-800 rounded-lg p-2 shadow-[0_4px_20px_rgba(0,0,0,0.5)]">
+                    {/* Screen */}
+                    <div className={`w-full h-full bg-gray-950 rounded overflow-hidden border ${threatDetected ? 'border-red-500/50' : 'border-gray-700'
+                        }`}>
+
+                        {/* Window Title Bar */}
+                        <div className="h-6 bg-gray-900 border-b border-gray-800 flex items-center justify-between px-2">
+                            <div className="flex items-center gap-1.5">
+                                <div className="flex gap-1">
+                                    <div className="w-2.5 h-2.5 rounded-full bg-red-500" />
+                                    <div className="w-2.5 h-2.5 rounded-full bg-yellow-500" />
+                                    <div className="w-2.5 h-2.5 rounded-full bg-green-500" />
+                                </div>
+                                <span className="text-[10px] font-mono text-gray-400 ml-2">SIEM Dashboard v2.4</span>
+                            </div>
+                            <div className={`w-2.5 h-2.5 rounded-full ${threatDetected ? 'bg-red-500 animate-pulse' : 'bg-green-500'}`} />
+                        </div>
+
+                        {/* Dashboard Content */}
+                        <div className="flex h-[calc(100%-24px)]">
+                            {/* Sidebar - Sources */}
+                            <div className="w-14 bg-gray-900/50 border-r border-gray-800 p-1.5 flex flex-col gap-1.5">
+                                <div className="text-[8px] text-gray-500 font-mono text-center mb-0.5">SOURCES</div>
+                                {['FW', 'SRV', 'IDS', 'EPT'].map((src, i) => (
+                                    <div key={i} className={`h-7 rounded bg-gray-800 flex items-center justify-center text-[9px] font-mono ${logLines.some(l => l.source === src) ? 'text-green-400 border border-green-500/30' : 'text-gray-500'
+                                        }`}>
+                                        {src}
+                                    </div>
+                                ))}
+                            </div>
+
+                            {/* Main Content */}
+                            <div className="flex-1 flex flex-col">
+                                {/* Stats Bar */}
+                                <div className="h-10 border-b border-gray-800 flex">
+                                    <div className="flex-1 flex flex-col items-center justify-center border-r border-gray-800">
+                                        <div className="text-sm font-mono text-indigo-400">{stats.events}</div>
+                                        <div className="text-[8px] text-gray-500 font-mono">EVENTS</div>
+                                    </div>
+                                    <div className="flex-1 flex flex-col items-center justify-center border-r border-gray-800">
+                                        <div className={`text-sm font-mono ${stats.alerts > 0 ? 'text-red-500' : 'text-gray-500'}`}>{stats.alerts}</div>
+                                        <div className="text-[8px] text-gray-500 font-mono">ALERTS</div>
+                                    </div>
+                                    <div className="flex-1 flex flex-col items-center justify-center">
+                                        <div className="text-sm font-mono text-green-400">{stats.sources}</div>
+                                        <div className="text-[8px] text-gray-500 font-mono">SOURCES</div>
+                                    </div>
+                                </div>
+
+                                {/* Log Feed */}
+                                <div className="flex-1 p-1.5 overflow-hidden">
+                                    <div className="text-[8px] text-gray-500 font-mono mb-1">LIVE LOG FEED</div>
+                                    <div className="space-y-0.5">
+                                        {logLines.map((line, i) => (
+                                            <div key={line.id} className={`flex items-center gap-1.5 text-[9px] font-mono py-0.5 px-1.5 rounded ${i === logLines.length - 1 ? 'bg-gray-800/50' : ''
+                                                }`}>
+                                                <span className={`w-7 ${line.source === 'FW' ? 'text-blue-400' :
+                                                    line.source === 'SRV' ? 'text-purple-400' :
+                                                        line.source === 'IDS' ? 'text-cyan-400' :
+                                                            'text-amber-400'
+                                                    }`}>{line.source}</span>
+                                                <span className={`w-9 ${line.level === 'CRIT' ? 'text-red-500 font-bold' :
+                                                    line.level === 'WARN' ? 'text-amber-400' :
+                                                        'text-green-400'
+                                                    }`}>{line.level}</span>
+                                                <span className={`truncate ${line.level === 'CRIT' ? 'text-red-400' : 'text-gray-400'}`}>
+                                                    {line.msg}
+                                                </span>
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                {/* Monitor Stand */}
+                <div className="mx-auto w-20 h-3 bg-gray-700 rounded-b-sm" />
+                <div className="mx-auto w-28 h-2 bg-gray-600 rounded-b" />
+            </div>
+
+            {/* Status */}
+            <div className="absolute bottom-2 left-1/2 -translate-x-1/2 flex items-center gap-2">
+                <div className={`w-2 h-2 rounded-full ${threatDetected ? 'bg-red-500' : 'bg-green-500'} animate-pulse`} />
+                <span className="text-xs font-mono text-gray-500 whitespace-nowrap">
+                    {threatDetected ? 'THREAT DETECTED' : 'MONITORING ACTIVE'}
+                </span>
+            </div>
+        </div>
+    );
+};
+
+// ================== SSH ANIMATION ==================
+// SSH session - terminal showing remote server connection
+const SSHAnimation: React.FC<{ phase: string; accentColor: string }> = ({ phase }) => {
+    const [lines, setLines] = useState<{ text: string; color: string }[]>([]);
+    const [currentLine, setCurrentLine] = useState(0);
+    const [typing, setTyping] = useState('');
+    const [connected, setConnected] = useState(false);
+
+    const sshSequence = [
+        { text: '$ ssh admin@192.168.1.100', color: 'text-cyan-400', delay: 0, typeEffect: true },
+        { text: 'Connecting to 192.168.1.100:22...', color: 'text-gray-400', delay: 800, typeEffect: false },
+        { text: 'Host key fingerprint:', color: 'text-gray-500', delay: 1200, typeEffect: false },
+        { text: 'SHA256:nThbg6kXUpJWGl7E1IGO...', color: 'text-amber-400', delay: 1400, typeEffect: false },
+        { text: 'Authenticating with public key...', color: 'text-gray-400', delay: 1800, typeEffect: false },
+        { text: '✓ Authentication successful', color: 'text-green-400', delay: 2400, typeEffect: false },
+        { text: '', color: '', delay: 2600, typeEffect: false },
+        { text: 'Welcome to Ubuntu 22.04.3 LTS', color: 'text-white', delay: 2800, typeEffect: false },
+        { text: 'Last login: Thu Dec 19 18:30:00 2024', color: 'text-gray-500', delay: 3000, typeEffect: false },
+        { text: 'admin@server:~$', color: 'text-green-400', delay: 3200, typeEffect: false },
+    ];
+
+    useEffect(() => {
+        let isMounted = true;
+        const timeoutIds: NodeJS.Timeout[] = [];
+
+        // Reset state
+        setLines([]);
+        setTyping('');
+        setConnected(false);
+
+        const command = sshSequence[0].text;
+        let charIndex = 0;
+
+        // Type out the first command character by character
+        const typeInterval = setInterval(() => {
+            if (!isMounted) return;
+            if (charIndex <= command.length) {
+                setTyping(command.substring(0, charIndex));
+                charIndex++;
+            } else {
+                clearInterval(typeInterval);
+            }
+        }, 40);
+
+        // Add subsequent lines with delays
+        sshSequence.forEach((line, index) => {
+            if (index === 0) return; // Skip first line (handled by typing)
+
+            const timeoutId = setTimeout(() => {
+                if (!isMounted) return;
+                setLines(prev => [...prev, { text: line.text, color: line.color }]);
+                setCurrentLine(index);
+
+                if (index === 5) setConnected(true); // Authentication successful
+            }, line.delay);
+            timeoutIds.push(timeoutId);
+        });
+
+        return () => {
+            isMounted = false;
+            clearInterval(typeInterval);
+            timeoutIds.forEach(id => clearTimeout(id));
+        };
+    }, []);
+
+    return (
+        <div className="relative w-full h-full flex items-center justify-center">
+            {/* Terminal Window */}
+            <div className="w-80 h-60 bg-gray-900 rounded-lg overflow-hidden shadow-[0_4px_30px_rgba(0,0,0,0.5)] border border-gray-700">
+                {/* Title Bar */}
+                <div className="h-7 bg-gray-800 flex items-center px-3 gap-1.5 border-b border-gray-700">
+                    <div className="w-3 h-3 rounded-full bg-red-500" />
+                    <div className="w-3 h-3 rounded-full bg-yellow-500" />
+                    <div className="w-3 h-3 rounded-full bg-green-500" />
+                    <span className="ml-2 text-[11px] font-mono text-gray-400">Terminal — ssh</span>
+                    <div className="ml-auto">
+                        <div className={`w-2.5 h-2.5 rounded-full ${connected ? 'bg-green-500' : 'bg-amber-500'} animate-pulse`} />
+                    </div>
+                </div>
+
+                {/* Terminal Content */}
+                <div className="p-3 h-[calc(100%-28px)] overflow-hidden font-mono text-[11px] leading-relaxed">
+                    {/* First line with typing effect */}
+                    <div className="text-cyan-400">
+                        {typing}
+                        {typing.length < sshSequence[0].text.length && (
+                            <span className="inline-block w-1.5 h-3.5 bg-cyan-400 ml-0.5 animate-pulse" />
+                        )}
+                    </div>
+
+                    {/* Subsequent lines */}
+                    {lines.map((line, i) => (
+                        <div key={i} className={`${line.color} ${i === lines.length - 1 && connected ? 'flex items-center' : ''}`}>
+                            {line.text}
+                            {/* Blinking cursor on last line after connected */}
+                            {i === lines.length - 1 && line.text.includes('admin@server') && (
+                                <span className="inline-block w-1.5 h-3.5 bg-green-400 ml-1 animate-pulse" />
+                            )}
+                        </div>
+                    ))}
+                </div>
+            </div>
+
+            {/* Connection indicator */}
+            <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex items-center gap-2">
+                <div className={`w-2 h-2 rounded-full ${connected ? 'bg-green-500' : 'bg-cyan-500'} animate-pulse`} />
+                <span className="text-xs font-mono text-gray-500 whitespace-nowrap">
+                    {connected ? 'SESSION ESTABLISHED' : 'CONNECTING...'}
+                </span>
+            </div>
+        </div>
+    );
+};
+
+// ================== RADIUS ANIMATION ==================
+// RADIUS authentication - Supplicant → NAS → AAA Server workflow
+const RADIUSAnimation: React.FC<{ phase: string; accentColor: string }> = ({ phase }) => {
+    const [step, setStep] = useState(0);
+    const [packets, setPackets] = useState<{ id: number; from: number; to: number; label: string; color: string }[]>([]);
+    const [authenticated, setAuthenticated] = useState(false);
+
+    const steps = [
+        { label: 'EAPOL-Start', from: 0, to: 1, desc: 'User begins session' },
+        { label: 'EAP-Request/Identity', from: 1, to: 0, desc: 'NAS asks for identity' },
+        { label: 'EAP-Response/Identity', from: 0, to: 1, desc: 'User sends identity' },
+        { label: 'Access-Request', from: 1, to: 2, desc: 'NAS forwards to AAA' },
+        { label: 'Access-Challenge', from: 2, to: 1, desc: 'AAA needs credentials' },
+        { label: 'Access-Request', from: 1, to: 2, desc: 'NAS forwards credentials' },
+        { label: 'Access-Accept', from: 2, to: 1, desc: 'Port opened ✓' },
+    ];
+
+    useEffect(() => {
+        let isMounted = true;
+        const timeoutIds: NodeJS.Timeout[] = [];
+
+        // Reset state
+        setStep(0);
+        setPackets([]);
+        setAuthenticated(false);
+
+        // Animate through steps
+        steps.forEach((s, i) => {
+            const timeoutId = setTimeout(() => {
+                if (!isMounted) return;
+                setStep(i);
+                setPackets(prev => [...prev.slice(-2), {
+                    id: i,
+                    from: s.from,
+                    to: s.to,
+                    label: s.label,
+                    color: s.label.includes('Accept') ? 'bg-green-500' :
+                        s.label.includes('Challenge') ? 'bg-cyan-500' :
+                            s.label.includes('EAPoL') ? 'bg-blue-500' : 'bg-amber-500'
+                }]);
+
+                if (i === steps.length - 1) {
+                    setTimeout(() => {
+                        if (isMounted) setAuthenticated(true);
+                    }, 300);
+                }
+            }, 400 * (i + 1));
+            timeoutIds.push(timeoutId);
+        });
+
+        return () => {
+            isMounted = false;
+            timeoutIds.forEach(id => clearTimeout(id));
+        };
+    }, []);
+
+    return (
+        <div className="relative w-full h-full flex flex-col items-center justify-center">
+            {/* Title */}
+            <div className="absolute top-2 text-xs text-gray-400 font-mono">
+                RADIUS AUTHENTICATION FLOW
+            </div>
+
+            {/* Three nodes */}
+            <div className="flex items-start justify-center gap-4 mt-4">
+                {/* Supplicant */}
+                <div className={`flex flex-col items-center transition-all duration-300 ${step >= 0 ? 'opacity-100' : 'opacity-50'}`}>
+                    <div className={`w-14 h-14 rounded-lg border-2 flex items-center justify-center transition-all ${authenticated ? 'border-green-500 bg-green-500/10' : 'border-blue-500 bg-blue-500/10'
+                        }`}>
+                        <svg className="w-7 h-7 text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                        </svg>
+                    </div>
+                    <span className="text-[10px] text-gray-400 font-mono mt-1">SUPPLICANT</span>
+                    <span className="text-[9px] text-gray-600 font-mono">(User)</span>
+                    {/* Invisible placeholder for alignment */}
+                    <div className="mt-1 px-1 py-0.5 opacity-0">
+                        <span className="text-[6px] font-mono">🔑 SECRET</span>
+                    </div>
+                </div>
+
+                {/* Connection line 1 - Supplicant <-> NAS */}
+                <div className="relative w-16 h-14 flex items-center">
+                    <div className="absolute top-6 left-0 right-0 border-t-2 border-dashed border-blue-500/30" />
+
+                    {/* Step 0: User connects (→) */}
+                    {step === 0 && (
+                        <div className="absolute top-4 left-0 flex items-center animate-[packetRight_0.35s_ease-out_forwards]">
+                            <div className="w-2 h-2 rounded-full bg-blue-500 shadow-[0_0_8px_#3b82f6]" />
+                        </div>
+                    )}
+                    {/* Step 1: EAP Request (←) */}
+                    {step === 1 && (
+                        <div className="absolute top-4 right-0 flex items-center animate-[packetLeft_0.35s_ease-out_forwards]">
+                            <div className="w-2 h-2 rounded-full bg-cyan-500 shadow-[0_0_8px_#22d3ee]" />
+                        </div>
+                    )}
+                    {/* Step 2: EAPoL Credentials (→) */}
+                    {step === 2 && (
+                        <div className="absolute top-4 left-0 flex items-center animate-[packetRight_0.35s_ease-out_forwards]">
+                            <div className="w-2 h-2 rounded-full bg-blue-500 shadow-[0_0_8px_#3b82f6]" />
+                        </div>
+                    )}
+
+                    <span className="absolute top-9 left-1/2 -translate-x-1/2 text-[8px] text-blue-400 font-mono whitespace-nowrap">EAPoL</span>
+
+                    <style>{`
+                        @keyframes packetRight { 
+                            0% { left: 0; opacity: 1; } 
+                            90% { opacity: 1; }
+                            100% { left: calc(100% - 8px); opacity: 0.3; } 
+                        }
+                        @keyframes packetLeft { 
+                            0% { right: 0; opacity: 1; } 
+                            90% { opacity: 1; }
+                            100% { right: calc(100% - 8px); opacity: 0.3; } 
+                        }
+                    `}</style>
+                </div>
+
+                {/* NAS */}
+                <div className={`flex flex-col items-center transition-all duration-300 ${step >= 1 ? 'opacity-100' : 'opacity-50'}`}>
+                    <div className={`w-14 h-14 rounded-lg border-2 flex items-center justify-center transition-all ${authenticated ? 'border-green-500 bg-green-500/10' : 'border-cyan-500 bg-cyan-500/10'
+                        }`}>
+                        <svg className="w-7 h-7 text-cyan-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M8.111 16.404a5.5 5.5 0 017.778 0M12 20h.01m-7.08-7.071c3.904-3.905 10.236-3.905 14.143 0M1.394 9.393c5.857-5.857 15.355-5.857 21.213 0" />
+                        </svg>
+                    </div>
+                    <span className="text-[10px] text-gray-400 font-mono mt-1">NAS</span>
+                    <span className="text-[9px] text-gray-600 font-mono">(Client)</span>
+                    {/* Shared secret indicator */}
+                    <div className="mt-1 px-1 py-0.5 bg-amber-500/20 rounded border border-amber-500/30">
+                        <span className="text-[8px] text-amber-400 font-mono">🔑 SECRET</span>
+                    </div>
+                </div>
+
+                {/* Connection line 2 - NAS <-> AAA Server */}
+                <div className="relative w-16 h-14 flex items-center">
+                    <div className="absolute top-6 left-0 right-0 border-t-2 border-dashed border-amber-500/30" />
+
+                    {/* Step 3: Access-Request (→) */}
+                    {step === 3 && (
+                        <div className="absolute top-4 left-0 flex items-center animate-[packetRight_0.35s_ease-out_forwards]">
+                            <div className="w-2 h-2 rounded-full bg-amber-500 shadow-[0_0_8px_#f59e0b]" />
+                        </div>
+                    )}
+                    {/* Step 4: Access-Challenge (←) */}
+                    {step === 4 && (
+                        <div className="absolute top-4 right-0 flex items-center animate-[packetLeft_0.35s_ease-out_forwards]">
+                            <div className="w-2 h-2 rounded-full bg-cyan-500 shadow-[0_0_8px_#22d3ee]" />
+                        </div>
+                    )}
+                    {/* Step 5: Access-Request (→) */}
+                    {step === 5 && (
+                        <div className="absolute top-4 left-0 flex items-center animate-[packetRight_0.35s_ease-out_forwards]">
+                            <div className="w-2 h-2 rounded-full bg-amber-500 shadow-[0_0_8px_#f59e0b]" />
+                        </div>
+                    )}
+                    {/* Step 6: Access-Accept (←) */}
+                    {step === 6 && (
+                        <div className="absolute top-4 right-0 flex items-center animate-[packetLeft_0.35s_ease-out_forwards]">
+                            <div className="w-2 h-2 rounded-full bg-green-500 shadow-[0_0_8px_#22c55e]" />
+                        </div>
+                    )}
+
+                    <span className="absolute top-2 left-1/2 -translate-x-1/2 text-[8px] text-amber-400 font-mono whitespace-nowrap">RADIUS</span>
+                    <span className="absolute top-9 left-1/2 -translate-x-1/2 text-[8px] text-gray-500 font-mono whitespace-nowrap">UDP 1812</span>
+                </div>
+
+                {/* AAA Server */}
+                <div className={`flex flex-col items-center transition-all duration-300 ${step >= 3 ? 'opacity-100' : 'opacity-50'}`}>
+                    <div className={`w-14 h-14 rounded-lg border-2 flex items-center justify-center transition-all ${authenticated ? 'border-green-500 bg-green-500/10 shadow-[0_0_15px_rgba(34,197,94,0.3)]' : 'border-amber-500 bg-amber-500/10'
+                        }`}>
+                        <svg className="w-7 h-7 text-amber-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M5 12h14M5 12a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v4a2 2 0 01-2 2M5 12a2 2 0 00-2 2v4a2 2 0 002 2h14a2 2 0 002-2v-4a2 2 0 00-2-2m-2-4h.01M17 16h.01" />
+                        </svg>
+                    </div>
+                    <span className="text-[10px] text-gray-400 font-mono mt-1">AAA SERVER</span>
+                    <span className="text-[9px] text-gray-600 font-mono">(RADIUS)</span>
+                    {/* Shared secret indicator */}
+                    <div className="mt-1 px-1 py-0.5 bg-amber-500/20 rounded border border-amber-500/30">
+                        <span className="text-[8px] text-amber-400 font-mono">🔑 SECRET</span>
+                    </div>
+                </div>
+            </div>
+
+            {/* Current step display */}
+            <div className="mt-4 h-20 flex flex-col items-center">
+                {/* Step label */}
+                <div className={`px-3 py-1 rounded-full border text-xs font-mono transition-all ${authenticated
+                    ? 'border-green-500 bg-green-500/10 text-green-400'
+                    : 'border-cyan-500/50 bg-gray-900 text-cyan-400'
+                    }`}>
+                    {authenticated ? '✓ ACCESS-ACCEPT' : steps[step]?.label || 'Initializing...'}
+                </div>
+                {/* Step description */}
+                <div className="mt-1 text-[10px] text-gray-500 font-mono">
+                    {authenticated ? 'Port opened - User authenticated' : steps[step]?.desc || ''}
+                </div>
+
+                {/* Packet animation indicator */}
+                <div className="mt-2 flex gap-1">
+                    {steps.map((_, i) => (
+                        <div
+                            key={i}
+                            className={`w-1.5 h-1.5 rounded-full transition-all ${i < step ? 'bg-green-500' :
+                                i === step ? 'bg-cyan-500 animate-pulse' : 'bg-gray-700'
+                                }`}
+                        />
+                    ))}
+                </div>
+            </div>
+
+            {/* Status */}
+            <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex items-center gap-2">
+                <div className={`w-2 h-2 rounded-full ${authenticated ? 'bg-green-500' : 'bg-amber-500'} animate-pulse`} />
+                <span className="text-xs font-mono text-gray-500 whitespace-nowrap">
+                    {authenticated ? 'USER AUTHENTICATED' : 'AUTHENTICATING...'}
+                </span>
+            </div>
+        </div>
+    );
+};
+
+// ================== TACACS+ ANIMATION ==================
+// TACACS+ authentication/authorization - User → NAS → AAA Daemon workflow
+const TACACSAnimation: React.FC<{ phase: string; accentColor: string }> = ({ phase }) => {
+    const [step, setStep] = useState(0);
+    const [authorized, setAuthorized] = useState(false);
+
+    const steps = [
+        { label: 'SSH Connection', from: 0, to: 1, desc: 'User connects to NAS' },
+        { label: 'TCP 49 Open', from: 1, to: 2, desc: 'NAS connects to AAA' },
+        { label: 'AUTH START', from: 1, to: 2, desc: 'Begin authentication' },
+        { label: 'GETUSER', from: 2, to: 1, desc: 'Prompt for username' },
+        { label: 'AUTH CONTINUE', from: 1, to: 2, desc: 'Username sent' },
+        { label: 'GETPASS', from: 2, to: 1, desc: 'Prompt for password' },
+        { label: 'AUTH CONTINUE', from: 1, to: 2, desc: 'Password sent' },
+        { label: 'AUTH PASS ✓', from: 2, to: 1, desc: 'Login successful' },
+        { label: 'AUTHZ REQUEST', from: 1, to: 2, desc: 'Command permission?' },
+        { label: 'AUTHZ PERMIT', from: 2, to: 1, desc: 'Command allowed ✓' },
+    ];
+
+    useEffect(() => {
+        let isMounted = true;
+        const timeoutIds: NodeJS.Timeout[] = [];
+
+        // Reset state
+        setStep(0);
+        setAuthorized(false);
+
+        // Animate through steps
+        steps.forEach((_, i) => {
+            const timeoutId = setTimeout(() => {
+                if (!isMounted) return;
+                setStep(i);
+
+                if (i === steps.length - 1) {
+                    setTimeout(() => {
+                        if (isMounted) setAuthorized(true);
+                    }, 200);
+                }
+            }, 270 * (i + 1));
+            timeoutIds.push(timeoutId);
+        });
+
+        return () => {
+            isMounted = false;
+            timeoutIds.forEach(id => clearTimeout(id));
+        };
+    }, []);
+
+    return (
+        <div className="relative w-full h-full flex flex-col items-center justify-center">
+            {/* Title */}
+            <div className="absolute top-2 text-xs text-gray-400 font-mono">
+                TACACS+ AUTHENTICATION FLOW
+            </div>
+
+            {/* Three nodes */}
+            <div className="flex items-start justify-center gap-3 mt-4">
+                {/* User (Admin) */}
+                <div className={`flex flex-col items-center transition-all duration-300 ${step >= 0 ? 'opacity-100' : 'opacity-50'}`}>
+                    <div className={`w-12 h-12 rounded-lg border-2 flex items-center justify-center transition-all ${authorized ? 'border-green-500 bg-green-500/10' : 'border-purple-500 bg-purple-500/10'
+                        }`}>
+                        <svg className="w-6 h-6 text-purple-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                        </svg>
+                    </div>
+                    <span className="text-[10px] text-gray-400 font-mono mt-1">USER</span>
+                    <span className="text-[9px] text-gray-600 font-mono">(Admin)</span>
+                </div>
+
+                {/* Connection line 1 - User <-> NAS */}
+                <div className="relative w-14 h-12 flex items-center">
+                    <div className="absolute top-5 left-0 right-0 border-t-2 border-dashed border-purple-500/30" />
+
+                    {/* Step 0: User connects */}
+                    {step === 0 && (
+                        <div className="absolute top-4 left-0 animate-[packetRight_0.3s_ease-out_forwards]">
+                            <div className="w-2 h-2 rounded-full bg-purple-500 shadow-[0_0_8px_#a855f7]" />
+                        </div>
+                    )}
+
+                    <span className="absolute top-8 left-1/2 -translate-x-1/2 text-[8px] text-purple-400 font-mono whitespace-nowrap">SSH/Telnet</span>
+
+                    <style>{`
+                        @keyframes packetRight { 
+                            0% { left: 0; opacity: 1; } 
+                            90% { opacity: 1; }
+                            100% { left: calc(100% - 8px); opacity: 0.3; } 
+                        }
+                        @keyframes packetLeft { 
+                            0% { right: 0; opacity: 1; } 
+                            90% { opacity: 1; }
+                            100% { right: calc(100% - 8px); opacity: 0.3; } 
+                        }
+                    `}</style>
+                </div>
+
+                {/* NAS (Client) */}
+                <div className={`flex flex-col items-center transition-all duration-300 ${step >= 1 ? 'opacity-100' : 'opacity-50'}`}>
+                    <div className={`w-12 h-12 rounded-lg border-2 flex items-center justify-center transition-all ${authorized ? 'border-green-500 bg-green-500/10' : 'border-cyan-500 bg-cyan-500/10'
+                        }`}>
+                        <svg className="w-6 h-6 text-cyan-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M5 12h14M5 12a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v4a2 2 0 01-2 2M5 12a2 2 0 00-2 2v4a2 2 0 002 2h14a2 2 0 002-2v-4a2 2 0 00-2-2" />
+                        </svg>
+                    </div>
+                    <span className="text-[10px] text-gray-400 font-mono mt-1">NAS</span>
+                    <span className="text-[9px] text-gray-600 font-mono">(Client)</span>
+                </div>
+
+                {/* Connection line 2 - NAS <-> AAA */}
+                <div className="relative w-14 h-12 flex items-center">
+                    <div className="absolute top-5 left-0 right-0 border-t-2 border-dashed border-amber-500/30" />
+
+                    {/* Packets to AAA */}
+                    {(step === 1 || step === 2 || step === 4 || step === 6 || step === 8) && (
+                        <div className="absolute top-4 left-0 animate-[packetRight_0.3s_ease-out_forwards]">
+                            <div className="w-2 h-2 rounded-full bg-amber-500 shadow-[0_0_8px_#f59e0b]" />
+                        </div>
+                    )}
+                    {/* Packets from AAA */}
+                    {(step === 3 || step === 5) && (
+                        <div className="absolute top-4 right-0 animate-[packetLeft_0.3s_ease-out_forwards]">
+                            <div className="w-2 h-2 rounded-full bg-cyan-500 shadow-[0_0_8px_#22d3ee]" />
+                        </div>
+                    )}
+                    {step === 7 && (
+                        <div className="absolute top-4 right-0 animate-[packetLeft_0.3s_ease-out_forwards]">
+                            <div className="w-2 h-2 rounded-full bg-green-500 shadow-[0_0_8px_#22c55e]" />
+                        </div>
+                    )}
+                    {step === 9 && (
+                        <div className="absolute top-4 right-0 animate-[packetLeft_0.3s_ease-out_forwards]">
+                            <div className="w-2 h-2 rounded-full bg-green-500 shadow-[0_0_8px_#22c55e]" />
+                        </div>
+                    )}
+
+                    <span className="absolute top-1 left-1/2 -translate-x-1/2 text-[8px] text-amber-400 font-mono whitespace-nowrap">TACACS+</span>
+                    <span className="absolute top-8 left-1/2 -translate-x-1/2 text-[8px] text-gray-500 font-mono whitespace-nowrap">TCP 49</span>
+                </div>
+
+                {/* AAA Server (Daemon) */}
+                <div className={`flex flex-col items-center transition-all duration-300 ${step >= 2 ? 'opacity-100' : 'opacity-50'}`}>
+                    <div className={`w-12 h-12 rounded-lg border-2 flex items-center justify-center transition-all ${authorized ? 'border-green-500 bg-green-500/10 shadow-[0_0_15px_rgba(34,197,94,0.3)]' : 'border-amber-500 bg-amber-500/10'
+                        }`}>
+                        <svg className="w-6 h-6 text-amber-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                        </svg>
+                    </div>
+                    <span className="text-[10px] text-gray-400 font-mono mt-1">AAA</span>
+                    <span className="text-[9px] text-gray-600 font-mono">(Daemon)</span>
+                </div>
+            </div>
+
+            {/* Current step display */}
+            <div className="mt-3 h-16 flex flex-col items-center">
+                {/* Step label */}
+                <div className={`px-3 py-1 rounded-full border text-xs font-mono transition-all ${authorized
+                    ? 'border-green-500 bg-green-500/10 text-green-400'
+                    : 'border-cyan-500/50 bg-gray-900 text-cyan-400'
+                    }`}>
+                    {authorized ? '✓ AUTHORIZED' : steps[step]?.label || 'Initializing...'}
+                </div>
+                {/* Step description */}
+                <div className="mt-1 text-[10px] text-gray-500 font-mono">
+                    {authorized ? 'User authenticated & command permitted' : steps[step]?.desc || ''}
+                </div>
+
+                {/* Progress dots */}
+                <div className="mt-2 flex gap-1">
+                    {steps.map((_, i) => (
+                        <div
+                            key={i}
+                            className={`w-1.5 h-1.5 rounded-full transition-all ${i < step ? 'bg-green-500' :
+                                i === step ? 'bg-cyan-500 animate-pulse' : 'bg-gray-700'
+                                }`}
+                        />
+                    ))}
+                </div>
+            </div>
+
+            {/* Status */}
+            <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex items-center gap-2">
+                <div className={`w-2 h-2 rounded-full ${authorized ? 'bg-green-500' : 'bg-amber-500'} animate-pulse`} />
+                <span className="text-xs font-mono text-gray-500 whitespace-nowrap">
+                    {authorized ? 'SESSION AUTHORIZED' : step < 7 ? 'AUTHENTICATING...' : 'AUTHORIZING...'}
+                </span>
+            </div>
+        </div>
+    );
+};
+
+// ================== KERBEROS ANIMATION ==================
+// Kerberos authentication - Client → KDC (AS/TGS) → App Server workflow
+const KerberosAnimation: React.FC<{ phase: string; accentColor: string }> = ({ phase }) => {
+    const [step, setStep] = useState(0);
+    const [currentPhase, setCurrentPhase] = useState<'AS' | 'TGS' | 'AP'>('AS');
+    const [authenticated, setAuthenticated] = useState(false);
+
+    const steps = [
+        { label: 'AS-REQ', from: 0, to: 1, desc: 'Request TGT', phase: 'AS' },
+        { label: 'AS-REP', from: 1, to: 0, desc: 'TGT + Session Key', phase: 'AS' },
+        { label: 'TGS-REQ', from: 0, to: 1, desc: 'Request Service Ticket', phase: 'TGS' },
+        { label: 'TGS-REP', from: 1, to: 0, desc: 'Service Ticket', phase: 'TGS' },
+        { label: 'AP-REQ', from: 0, to: 2, desc: 'Present Ticket', phase: 'AP' },
+        { label: 'AP-REP', from: 2, to: 0, desc: 'Access Granted ✓', phase: 'AP' },
+    ];
+
+    useEffect(() => {
+        let isMounted = true;
+        const timeoutIds: NodeJS.Timeout[] = [];
+
+        // Reset state
+        setStep(0);
+        setCurrentPhase('AS');
+        setAuthenticated(false);
+
+        // Animate through steps
+        steps.forEach((s, i) => {
+            const timeoutId = setTimeout(() => {
+                if (!isMounted) return;
+                setStep(i);
+                setCurrentPhase(s.phase as 'AS' | 'TGS' | 'AP');
+
+                if (i === steps.length - 1) {
+                    setTimeout(() => {
+                        if (isMounted) setAuthenticated(true);
+                    }, 250);
+                }
+            }, 400 * (i + 1));
+            timeoutIds.push(timeoutId);
+        });
+
+        return () => {
+            isMounted = false;
+            timeoutIds.forEach(id => clearTimeout(id));
+        };
+    }, []);
+
+    return (
+        <div className="relative w-full h-full flex flex-col items-center justify-center">
+            {/* Title */}
+            <div className="absolute top-1 text-xs text-gray-400 font-mono">
+                KERBEROS AUTHENTICATION
+            </div>
+
+            {/* Phase indicator */}
+            <div className="absolute top-6 flex gap-2">
+                {['AS', 'TGS', 'AP'].map((p) => (
+                    <div key={p} className={`px-2 py-0.5 rounded text-[8px] font-mono border transition-all ${currentPhase === p
+                        ? 'border-amber-500 bg-amber-500/20 text-amber-400'
+                        : p === 'AS' && step > 1 || p === 'TGS' && step > 3
+                            ? 'border-green-500/50 bg-green-500/10 text-green-500'
+                            : 'border-gray-700 text-gray-600'
+                        }`}>
+                        {p === 'AS' ? 'PHASE 1: AS' : p === 'TGS' ? 'PHASE 2: TGS' : 'PHASE 3: AP'}
+                    </div>
+                ))}
+            </div>
+
+            {/* Three nodes */}
+            <div className="flex items-start justify-center gap-2 mt-12">
+                {/* Client (User) */}
+                <div className={`flex flex-col items-center transition-all duration-300`}>
+                    <div className={`w-11 h-11 rounded-lg border-2 flex items-center justify-center transition-all ${authenticated ? 'border-green-500 bg-green-500/10' : 'border-purple-500 bg-purple-500/10'
+                        }`}>
+                        <svg className="w-5 h-5 text-purple-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                        </svg>
+                    </div>
+                    <span className="text-[9px] text-gray-400 font-mono mt-1">CLIENT</span>
+                </div>
+
+                {/* Connection line 1 - Client <-> KDC */}
+                <div className="relative w-12 h-11 flex items-center">
+                    <div className="absolute top-5 left-0 right-0 border-t-2 border-dashed border-amber-500/30" />
+
+                    {/* Packets to KDC (AS-REQ, TGS-REQ) */}
+                    {(step === 0 || step === 2) && (
+                        <div className="absolute top-4 left-0 animate-[packetRight_0.35s_ease-out_forwards]">
+                            <div className="w-2 h-2 rounded-full bg-amber-500 shadow-[0_0_8px_#f59e0b]" />
+                        </div>
+                    )}
+                    {/* Packets from KDC (AS-REP, TGS-REP) */}
+                    {(step === 1 || step === 3) && (
+                        <div className="absolute top-4 right-0 animate-[packetLeft_0.35s_ease-out_forwards]">
+                            <div className={`w-2 h-2 rounded-full ${step === 1 ? 'bg-cyan-500 shadow-[0_0_8px_#22d3ee]' : 'bg-green-500 shadow-[0_0_8px_#22c55e]'}`} />
+                        </div>
+                    )}
+
+                    <span className="absolute top-7 left-1/2 -translate-x-1/2 text-[8px] text-amber-400 font-mono whitespace-nowrap">TCP 88</span>
+
+                    <style>{`
+                        @keyframes packetRight { 
+                            0% { left: 0; opacity: 1; } 
+                            90% { opacity: 1; }
+                            100% { left: calc(100% - 8px); opacity: 0.3; } 
+                        }
+                        @keyframes packetLeft { 
+                            0% { right: 0; opacity: 1; } 
+                            90% { opacity: 1; }
+                            100% { right: calc(100% - 8px); opacity: 0.3; } 
+                        }
+                    `}</style>
+                </div>
+
+                {/* KDC (AS + TGS) */}
+                <div className={`flex flex-col items-center transition-all duration-300`}>
+                    <div className={`w-11 h-11 rounded-lg border-2 flex items-center justify-center transition-all ${step > 3 ? 'border-green-500/50 bg-green-500/5' : 'border-amber-500 bg-amber-500/10'
+                        }`}>
+                        <svg className="w-5 h-5 text-amber-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z" />
+                        </svg>
+                    </div>
+                    <span className="text-[9px] text-gray-400 font-mono mt-1">KDC</span>
+                    <span className="text-[8px] text-gray-600 font-mono">(AS/TGS)</span>
+                </div>
+
+                {/* Connection line 2 - Client <-> App Server (via dotted line through) */}
+                <div className="relative w-12 h-11 flex items-center">
+                    <div className={`absolute top-5 left-0 right-0 border-t-2 border-dashed transition-all ${step >= 4 ? 'border-cyan-500/50' : 'border-gray-700/30'}`} />
+
+                    {/* AP-REQ */}
+                    {step === 4 && (
+                        <div className="absolute top-4 left-0 animate-[packetRight_0.35s_ease-out_forwards]">
+                            <div className="w-2 h-2 rounded-full bg-cyan-500 shadow-[0_0_8px_#22d3ee]" />
+                        </div>
+                    )}
+                    {/* AP-REP */}
+                    {step === 5 && (
+                        <div className="absolute top-4 right-0 animate-[packetLeft_0.35s_ease-out_forwards]">
+                            <div className="w-2 h-2 rounded-full bg-green-500 shadow-[0_0_8px_#22c55e]" />
+                        </div>
+                    )}
+
+                    <span className="absolute top-7 left-1/2 -translate-x-1/2 text-[8px] text-cyan-400 font-mono whitespace-nowrap">Service</span>
+                </div>
+
+                {/* App Server */}
+                <div className={`flex flex-col items-center transition-all duration-300 ${step >= 4 ? 'opacity-100' : 'opacity-40'}`}>
+                    <div className={`w-11 h-11 rounded-lg border-2 flex items-center justify-center transition-all ${authenticated ? 'border-green-500 bg-green-500/10 shadow-[0_0_15px_rgba(34,197,94,0.3)]' : 'border-cyan-500 bg-cyan-500/10'
+                        }`}>
+                        <svg className="w-5 h-5 text-cyan-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M5 12h14M5 12a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v4a2 2 0 01-2 2M5 12a2 2 0 00-2 2v4a2 2 0 002 2h14a2 2 0 002-2v-4a2 2 0 00-2-2" />
+                        </svg>
+                    </div>
+                    <span className="text-[9px] text-gray-400 font-mono mt-1">APP</span>
+                    <span className="text-[8px] text-gray-600 font-mono">(Server)</span>
+                </div>
+            </div>
+
+            {/* Current step display */}
+            <div className="mt-2 h-14 flex flex-col items-center">
+                {/* Step label */}
+                <div className={`px-3 py-1 rounded-full border text-xs font-mono transition-all ${authenticated
+                    ? 'border-green-500 bg-green-500/10 text-green-400'
+                    : 'border-cyan-500/50 bg-gray-900 text-cyan-400'
+                    }`}>
+                    {authenticated ? '✓ ACCESS GRANTED' : steps[step]?.label || 'Initializing...'}
+                </div>
+                {/* Step description */}
+                <div className="mt-1 text-[10px] text-gray-500 font-mono">
+                    {authenticated ? 'Service Ticket validated' : steps[step]?.desc || ''}
+                </div>
+
+                {/* Progress dots */}
+                <div className="mt-1.5 flex gap-1">
+                    {steps.map((_, i) => (
+                        <div
+                            key={i}
+                            className={`w-1.5 h-1.5 rounded-full transition-all ${i < step ? 'bg-green-500' :
+                                i === step ? 'bg-cyan-500 animate-pulse' : 'bg-gray-700'
+                                }`}
+                        />
+                    ))}
+                </div>
+            </div>
+
+            {/* Status */}
+            <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex items-center gap-2">
+                <div className={`w-2 h-2 rounded-full ${authenticated ? 'bg-green-500' : 'bg-amber-500'} animate-pulse`} />
+                <span className="text-xs font-mono text-gray-500 whitespace-nowrap">
+                    {authenticated ? 'AUTHENTICATED' : currentPhase === 'AS' ? 'GETTING TGT...' : currentPhase === 'TGS' ? 'GETTING SERVICE TICKET...' : 'ACCESSING SERVICE...'}
+                </span>
+            </div>
+        </div>
+    );
+};
+
+// ================== SYMMETRIC CRYPTOGRAPHY ANIMATION ==================
+// Symmetric encryption - Alice & Bob with shared secret key
+const SymmetricAnimation: React.FC<{ phase: string; accentColor: string }> = ({ phase }) => {
+    const [step, setStep] = useState(0);
+    const [decrypted, setDecrypted] = useState(false);
+
+    const steps = [
+        { label: 'Key Agreement', desc: 'Shared secret established' },
+        { label: 'Plaintext Ready', desc: 'Alice prepares message' },
+        { label: 'Encrypting...', desc: 'AES encryption with key' },
+        { label: 'Transmitting', desc: 'Ciphertext over network' },
+        { label: 'Decrypting...', desc: 'Bob uses same key' },
+        { label: 'Decrypted ✓', desc: 'Message received' },
+    ];
+
+    useEffect(() => {
+        let isMounted = true;
+        const timeoutIds: NodeJS.Timeout[] = [];
+
+        setStep(0);
+        setDecrypted(false);
+
+        steps.forEach((_, i) => {
+            const timeoutId = setTimeout(() => {
+                if (!isMounted) return;
+                setStep(i);
+                if (i === steps.length - 1) {
+                    setTimeout(() => { if (isMounted) setDecrypted(true); }, 200);
+                }
+            }, 400 * (i + 1));
+            timeoutIds.push(timeoutId);
+        });
+
+        return () => { isMounted = false; timeoutIds.forEach(id => clearTimeout(id)); };
+    }, []);
+
+    return (
+        <div className="relative w-full h-full flex flex-col items-center justify-center">
+            {/* Title */}
+            <div className="absolute top-2 text-xs text-gray-400 font-mono">
+                SYMMETRIC ENCRYPTION (AES)
+            </div>
+
+            {/* Shared Key indicator */}
+            <div className={`absolute top-7 px-2 py-0.5 rounded border text-[9px] font-mono transition-all ${step >= 1 ? 'border-amber-500 bg-amber-500/20 text-amber-400' : 'border-gray-700 text-gray-600'
+                }`}>
+                🔑 SHARED KEY: s3cr3t_p@ss
+            </div>
+
+            {/* Main diagram */}
+            <div className="flex items-center justify-center gap-3 mt-10">
+                {/* Alice */}
+                <div className="flex flex-col items-center">
+                    <div className={`w-12 h-12 rounded-lg border-2 flex items-center justify-center transition-all ${step >= 2 && step <= 3 ? 'border-cyan-500 bg-cyan-500/10' : 'border-purple-500 bg-purple-500/10'
+                        }`}>
+                        <svg className="w-6 h-6 text-purple-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                        </svg>
+                    </div>
+                    <span className="text-[10px] text-gray-400 font-mono mt-1">ALICE</span>
+                    {/* Key indicator */}
+                    <div className={`mt-1 text-[9px] font-mono transition-all ${step >= 1 ? 'text-amber-400' : 'text-gray-700'}`}>
+                        🔑
+                    </div>
+                    {/* Message state */}
+                    <div className={`mt-1 px-1 py-0.5 rounded text-[8px] font-mono border transition-all ${step === 1 ? 'border-green-500 bg-green-500/20 text-green-400' :
+                        step >= 2 ? 'border-gray-600 text-gray-600' : 'border-gray-800 text-gray-700'
+                        }`}>
+                        {step >= 2 ? '📄 Encrypted' : '📄 Plaintext'}
+                    </div>
+                </div>
+
+                {/* Encryption Process & Network */}
+                <div className="relative w-24 h-32 flex items-start justify-center">
+                    {/* Network line */}
+                    <div className="absolute top-4 left-0 right-0 border-t-2 border-dashed border-cyan-500/30" />
+
+                    {/* Lock icon for encryption */}
+                    {step === 2 && (
+                        <div className="absolute top-0 left-3 animate-pulse">
+                            <div className="text-[12px]">🔒</div>
+                        </div>
+                    )}
+
+                    {/* Traveling ciphertext */}
+                    {step === 3 && (
+                        <div className="absolute top-2 left-0 animate-[packetRight_0.35s_ease-out_forwards]">
+                            <div className="w-3 h-3 rounded bg-cyan-500 shadow-[0_0_8px_#22d3ee] flex items-center justify-center text-[6px]">
+                                🔒
+                            </div>
+                        </div>
+                    )}
+
+                    {/* Unlock icon for decryption */}
+                    {step === 4 && (
+                        <div className="absolute top-0 right-3 animate-pulse">
+                            <div className="text-[12px]">🔓</div>
+                        </div>
+                    )}
+
+                    <span className="absolute top-7 left-1/2 -translate-x-1/2 text-[7px] text-gray-500 font-mono whitespace-nowrap">
+                        UNSECURE NETWORK
+                    </span>
+
+                    {/* Mallory - Eavesdropper */}
+                    <div className={`absolute top-11 left-1/2 -translate-x-1/2 flex flex-col items-center transition-all ${step === 3 ? 'opacity-100' : 'opacity-60'}`}>
+                        <div className={`w-10 h-10 rounded-lg border-2 flex items-center justify-center transition-all ${step === 3 ? 'border-red-500 bg-red-500/20 animate-pulse' : 'border-red-500/50 bg-red-500/10'}`}>
+                            <svg className="w-5 h-5 text-red-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                            </svg>
+                        </div>
+                        <span className="text-[9px] text-red-400 font-mono mt-0.5">MALLORY</span>
+                        <span className={`text-[8px] font-mono ${step === 3 ? 'text-red-500 animate-pulse' : 'text-red-400'}`}>
+                            {step === 3 ? 'EAVESDROPPING!' : '(Attacker)'}
+                        </span>
+                    </div>
+
+                    <style>{`
+                        @keyframes packetRight { 
+                            0% { left: 0; opacity: 1; } 
+                            100% { left: calc(100% - 12px); opacity: 0.5; } 
+                        }
+                    `}</style>
+                </div>
+
+                {/* Bob */}
+                <div className="flex flex-col items-center">
+                    <div className={`w-12 h-12 rounded-lg border-2 flex items-center justify-center transition-all ${decrypted ? 'border-green-500 bg-green-500/10 shadow-[0_0_15px_rgba(34,197,94,0.3)]' :
+                        step >= 4 ? 'border-cyan-500 bg-cyan-500/10' : 'border-blue-500 bg-blue-500/10'
+                        }`}>
+                        <svg className="w-6 h-6 text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                        </svg>
+                    </div>
+                    <span className="text-[10px] text-gray-400 font-mono mt-1">BOB</span>
+                    {/* Key indicator */}
+                    <div className={`mt-1 text-[9px] font-mono transition-all ${step >= 1 ? 'text-amber-400' : 'text-gray-700'}`}>
+                        🔑
+                    </div>
+                    {/* Message state */}
+                    <div className={`mt-1 px-1 py-0.5 rounded text-[8px] font-mono border transition-all ${decrypted ? 'border-green-500 bg-green-500/20 text-green-400' :
+                        step >= 3 ? 'border-cyan-500 bg-cyan-500/10 text-cyan-400' : 'border-gray-800 text-gray-700'
+                        }`}>
+                        {decrypted ? '📄 Plaintext ✓' : step >= 3 ? '🔒 Ciphertext' : '⏳ Waiting'}
+                    </div>
+                </div>
+            </div>
+
+            {/* Step display */}
+            <div className="mt-3 flex flex-col items-center">
+                <div className={`px-3 py-1 rounded-full border text-xs font-mono transition-all ${decrypted ? 'border-green-500 bg-green-500/10 text-green-400' : 'border-cyan-500/50 bg-gray-900 text-cyan-400'
+                    }`}>
+                    {steps[step]?.label || 'Initializing...'}
+                </div>
+                <div className="mt-1 text-[10px] text-gray-500 font-mono">
+                    {steps[step]?.desc || ''}
+                </div>
+                <div className="mt-2 flex gap-1">
+                    {steps.map((_, i) => (
+                        <div key={i} className={`w-1.5 h-1.5 rounded-full transition-all ${i < step ? 'bg-green-500' : i === step ? 'bg-cyan-500 animate-pulse' : 'bg-gray-700'
+                            }`} />
+                    ))}
+                </div>
+            </div>
+
+            {/* Status */}
+            <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex items-center gap-2">
+                <div className={`w-2 h-2 rounded-full ${decrypted ? 'bg-green-500' : 'bg-amber-500'} animate-pulse`} />
+                <span className="text-xs font-mono text-gray-500">
+                    {decrypted ? 'SECURE EXCHANGE COMPLETE' : 'ENCRYPTING...'}
                 </span>
             </div>
         </div>
