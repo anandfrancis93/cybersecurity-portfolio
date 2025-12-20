@@ -8,7 +8,10 @@ interface SensorIntroProps {
 
 type SensorType = 'infrared' | 'pressure' | 'microwave' | 'ultrasonic' | 'circuit' | 'motion' | 'noise' | 'proximity' | 'surveillance' | 'siem' | 'ssh' | 'radius' | 'tacacs' | 'kerberos' | 'symmetric';
 
-const SENSOR_ORDER: SensorType[] = ['infrared', 'pressure', 'microwave', 'ultrasonic', 'circuit', 'motion', 'noise', 'proximity', 'surveillance', 'siem', 'ssh', 'radius', 'tacacs', 'kerberos', 'symmetric'];
+const SENSOR_ORDER: SensorType[] = [
+    'infrared', 'pressure', 'microwave', 'ultrasonic', 'circuit', 'motion', 'noise', 'proximity', 'surveillance', 'siem', 'ssh',
+    // 'radius', 'tacacs', 'kerberos', 'symmetric'
+];
 
 const SENSOR_LABELS: Record<SensorType, { name: string; status: string }> = {
     infrared: { name: 'INFRARED SENSOR', status: 'HEAT SIGNATURE: DETECTED' },
@@ -111,10 +114,10 @@ const SensorIntro: React.FC<SensorIntroProps> = ({
                 {sensorType === 'surveillance' && <SurveillanceAnimation phase={phase} accentColor={accentColor} />}
                 {sensorType === 'siem' && <SIEMAnimation phase={phase} accentColor={accentColor} />}
                 {sensorType === 'ssh' && <SSHAnimation phase={phase} accentColor={accentColor} />}
-                {sensorType === 'radius' && <RADIUSAnimation phase={phase} accentColor={accentColor} />}
-                {sensorType === 'tacacs' && <TACACSAnimation phase={phase} accentColor={accentColor} />}
-                {sensorType === 'kerberos' && <KerberosAnimation phase={phase} accentColor={accentColor} />}
-                {sensorType === 'symmetric' && <SymmetricAnimation phase={phase} accentColor={accentColor} />}
+                {/* {sensorType === 'radius' && <RADIUSAnimation phase={phase} accentColor={accentColor} />} */}
+                {/* {sensorType === 'tacacs' && <TACACSAnimation phase={phase} accentColor={accentColor} />} */}
+                {/* {sensorType === 'kerberos' && <KerberosAnimation phase={phase} accentColor={accentColor} />} */}
+                {/* {sensorType === 'symmetric' && <SymmetricAnimation phase={phase} accentColor={accentColor} />} */}
             </div>
 
             {/* Status text */}
