@@ -59,7 +59,7 @@ const IdentifyPage: React.FC = () => {
                                 </div>
                                 <div className="min-w-0">
                                     <h3 className="font-display font-bold text-lg sm:text-xl text-white truncate"><ScrambleText text="Anand Francis" duration={600} disableVisualGlitch={true} triggerReveal={true} autoRepeatInterval={10000} /></h3>
-                                    <p className="text-sm sm:text-base text-gray-500 font-mono">Based in Rexburg, ID</p>
+                                    <p className="text-sm sm:text-base text-gray-500 font-mono">Based in ID, US</p>
                                 </div>
                             </div>
                             <div className="grid grid-cols-2 gap-2 sm:gap-3">
