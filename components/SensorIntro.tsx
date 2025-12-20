@@ -66,18 +66,25 @@ const SensorIntro: React.FC<SensorIntroProps> = ({
         localStorage.setItem('sensorAnimationIndex', nextIndex.toString());
     }, []);
 
-    // Animation sequence
+    // Animation sequence - timing varies by sensor type
     useEffect(() => {
-        const scanTimer = setTimeout(() => setPhase('complete'), 3000);
-        const fadeTimer = setTimeout(() => setPhase('fadeout'), 4500);
-        const completeTimer = setTimeout(() => onComplete(), 5000);
+        // DDoS needs more time to show server down, infrared is faster
+        const timing = sensorType === 'ddos'
+            ? { scan: 3000, fade: 4200, complete: 4500 }
+            : sensorType === 'infrared'
+                ? { scan: 1800, fade: 2600, complete: 3000 }
+                : { scan: 2200, fade: 3200, complete: 3500 };
+
+        const scanTimer = setTimeout(() => setPhase('complete'), timing.scan);
+        const fadeTimer = setTimeout(() => setPhase('fadeout'), timing.fade);
+        const completeTimer = setTimeout(() => onComplete(), timing.complete);
 
         return () => {
             clearTimeout(scanTimer);
             clearTimeout(fadeTimer);
             clearTimeout(completeTimer);
         };
-    }, [onComplete]);
+    }, [onComplete, sensorType]);
 
     const borderColor = accentColor.replace('text-', 'border-');
     const bgColor = accentColor.replace('text-', 'bg-');
@@ -143,16 +150,20 @@ const InfraredAnimation: React.FC<{ phase: string; accentColor: string }> = ({ p
     const [alarmTriggered, setAlarmTriggered] = useState(false);
 
     useEffect(() => {
-        // Move intruder across detection zone
+        // Move intruder across detection zone and off screen
         const moveInterval = setInterval(() => {
             setIntruderPos(prev => {
+                // Already off screen, stop updating
+                if (prev.x >= 105) {
+                    return prev;
+                }
                 const newX = prev.x + 2;
                 if (newX > 50 && !alarmTriggered) {
                     setAlarmTriggered(true);
                 }
                 // Add to heat trail
                 setHeatTrail(trail => [...trail.slice(-8), { x: prev.x, y: prev.y }]);
-                return { x: newX > 90 ? 10 : newX, y: 50 };
+                return { x: newX, y: 50 };
             });
         }, 80);
 
@@ -559,13 +570,20 @@ const UltrasonicAnimation: React.FC<{ phase: string; accentColor: string }> = ({
             </div>
 
             {/* Status - outside the room box */}
-            <div className="absolute bottom-2 left-1/2 -translate-x-1/2 flex items-center gap-2">
+            <div className="absolute bottom-2 left-1/2 -translate-x-1/2 flex flex-col items-center gap-0.5">
                 {!lightsOn && (
                     <div className={`w-2 h-2 rounded-full ${occupied ? 'bg-cyan-400' : 'bg-gray-500'} animate-pulse`} />
                 )}
-                <span className={`text-xs font-mono ${lightsOn ? 'text-yellow-400' : 'text-gray-500'}`}>
-                    {lightsOn ? '💡 ROOM OCCUPIED - LIGHTS ON' : occupied ? 'PRESENCE DETECTED' : 'MONITORING ROOM'}
-                </span>
+                {lightsOn ? (
+                    <>
+                        <span className="text-xs font-mono text-yellow-400">💡 ROOM OCCUPIED</span>
+                        <span className="text-xs font-mono text-yellow-400">LIGHTS ON</span>
+                    </>
+                ) : (
+                    <span className={`text-xs font-mono ${occupied ? 'text-cyan-400' : 'text-gray-500'}`}>
+                        {occupied ? 'PRESENCE DETECTED' : 'MONITORING ROOM'}
+                    </span>
+                )}
             </div>
         </div>
     );
@@ -786,10 +804,10 @@ const NoiseAnimation: React.FC<{ phase: string; accentColor: string }> = ({ phas
 // RFID tracking for equipment theft detection
 const ProximityAnimation: React.FC<{ phase: string; accentColor: string }> = ({ phase }) => {
     const [tags, setTags] = useState([
-        { id: 1, x: 25, y: 38, label: 'LAPTOP', inRange: true },
-        { id: 2, x: 55, y: 55, label: 'SERVER', inRange: true },
-        { id: 3, x: 75, y: 35, label: 'PHONE', inRange: true },
-        { id: 4, x: 25, y: 65, label: 'TABLET', inRange: true },
+        { id: 1, x: 25, y: 35, label: 'LAPTOP', inRange: true },
+        { id: 2, x: 55, y: 50, label: 'SERVER', inRange: true },
+        { id: 3, x: 75, y: 32, label: 'PHONE', inRange: true },
+        { id: 4, x: 25, y: 55, label: 'TABLET', inRange: true },
     ]);
     const [alertTag, setAlertTag] = useState<number | null>(null);
     const [wavePhase, setWavePhase] = useState(0);
@@ -878,7 +896,7 @@ const ProximityAnimation: React.FC<{ phase: string; accentColor: string }> = ({ 
 
             {/* Theft alert - positioned at bottom of zone */}
             {alertTag && (
-                <div className="absolute bottom-16 left-1/2 -translate-x-1/2 z-10">
+                <div className="absolute bottom-12 left-1/2 -translate-x-1/2 z-10">
                     <div className="px-2 py-1 border border-red-500 bg-red-500/20 rounded animate-pulse">
                         <span className="text-[10px] text-red-500 font-mono whitespace-nowrap font-bold">⚠ THEFT ALERT</span>
                     </div>
