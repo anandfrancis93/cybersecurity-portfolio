@@ -29,7 +29,7 @@ const IdentifyPage: React.FC = () => {
                     <div className="absolute inset-0 bg-cyber-grid opacity-30 pointer-events-none"></div>
                     <div className="absolute top-0 right-0 w-1/2 h-full bg-gradient-to-l from-nist-identify/5 to-transparent pointer-events-none"></div>
 
-                    <div className="flex flex-col lg:flex-row items-center justify-between mb-12 sm:mb-16 md:mb-24 relative z-10 gap-8 lg:gap-12">
+                    <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between mb-12 sm:mb-16 md:mb-24 relative z-10 gap-8 lg:gap-12">
                         {/* Left side - Name and details */}
                         <div className="max-w-4xl flex-1">
                             <h1 className="text-4xl sm:text-5xl md:text-7xl lg:text-9xl font-display font-bold tracking-tighter text-white leading-[0.9] sm:leading-[0.85] mb-6 sm:mb-8 md:mb-12">
