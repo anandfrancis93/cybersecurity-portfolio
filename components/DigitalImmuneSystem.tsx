@@ -154,13 +154,6 @@ const DigitalImmuneSystem: React.FC = () => {
                 if (node.state === 'infected') {
                     node.infectionTime--;
                     if (node.infectionTime <= 0) {
-                        node.state = 'recovering';
-                        node.currentColor = COLOR_RECOVERING;
-                        node.recoveryTime = 20;
-                    }
-                } else if (node.state === 'recovering') {
-                    node.recoveryTime--;
-                    if (node.recoveryTime <= 0) {
                         node.state = 'secure';
                         node.currentColor = COLOR_SECURE;
                     }
@@ -204,12 +197,9 @@ const DigitalImmuneSystem: React.FC = () => {
 
                         // Chaotic Glitch for infected connections
                         if (nodes[i].state === 'infected' || nodes[j].state === 'infected') {
-                            strokeColor = Math.random() > 0.2 ? COLOR_INFECTED : '#FFFFFF'; // Mostly Red, occasional White flash
+                            strokeColor = COLOR_INFECTED; // Strictly Red
                             lineWidth = Math.random() * 3 + 0.5; // Random width jitter
                             // Removed expensive shadowBlur for performance
-                        } else if (nodes[i].state === 'recovering' || nodes[j].state === 'recovering') {
-                            strokeColor = COLOR_RECOVERING;
-                            lineWidth = 1.5;
                         }
 
                         ctx.lineWidth = lineWidth;
