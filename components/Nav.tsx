@@ -20,7 +20,7 @@ const Nav: React.FC = () => {
   }, [location]);
 
   // Get current section from URL path
-  const currentSection = location.pathname.replace('/', '') || 'identify';
+  const currentSection = location.pathname.replace('/', '') || 'about-me';
 
   return (
     <nav className="fixed top-0 left-0 w-full z-50 bg-[#050505] border-b border-edition-border text-sm md:text-base font-mono uppercase tracking-wider text-gray-400 selection:bg-nist-identify selection:text-black">
@@ -28,7 +28,7 @@ const Nav: React.FC = () => {
 
         {/* LOGO */}
         <div className="flex items-center gap-6 z-10 relative">
-          <Link to="/identify" className="flex items-center gap-2 text-white hover:text-nist-identify transition-colors group">
+          <Link to="/about-me" className="flex items-center gap-2 text-white hover:text-nist-identify transition-colors group">
             <ShieldCheck className="w-4 h-4 text-nist-identify animate-pulse" />
             <span className="font-bold group-hover:underline decoration-nist-identify underline-offset-4">ANAND.SYS</span>
           </Link>

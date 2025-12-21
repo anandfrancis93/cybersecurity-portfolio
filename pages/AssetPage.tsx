@@ -12,7 +12,7 @@ const IdentifyPage: React.FC = () => {
     const [isIntroComplete, setIsIntroComplete] = useState(false);
     const [showAllSkills, setShowAllSkills] = useState(false);
 
-    const module = NIST_MODULES.find(m => m.id === 'identify')!;
+    const module = NIST_MODULES.find(m => m.id === 'about-me')!;
     const accentColor = module.colorClass;
     const visibleSkills = showAllSkills ? PROFILE.skills : PROFILE.skills.slice(0, 6);
 

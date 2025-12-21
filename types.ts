@@ -10,6 +10,7 @@ export interface Project {
   cols?: number; // For Bento grid sizing (1-12)
   rows?: number; // For Bento grid sizing
   module: string; // NIST Framework Module ID
+  team: 'blue' | 'red'; // Blue Team (defensive) or Red Team (offensive)
 }
 
 export interface Experience {

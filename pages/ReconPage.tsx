@@ -10,8 +10,8 @@ import { EXPERIENCES, NIST_MODULES } from '../constants';
 const DetectPage: React.FC = () => {
     const [isIntroComplete, setIsIntroComplete] = useState(false);
 
-    const module = NIST_MODULES.find(m => m.id === 'detect')!;
-    const moduleExperience = EXPERIENCES.filter(e => e.module === 'detect');
+    const module = NIST_MODULES.find(m => m.id === 'work-experience')!;
+    const moduleExperience = EXPERIENCES.filter(e => e.module === 'work-experience');
 
     if (!isIntroComplete) {
         return <SensorIntro moduleName="detect" accentColor="text-nist-detect" onComplete={() => setIsIntroComplete(true)} />;

@@ -10,8 +10,10 @@ import { PROJECTS, NIST_MODULES } from '../constants';
 const ProtectPage: React.FC = () => {
     const [isIntroComplete, setIsIntroComplete] = useState(false);
 
-    const module = NIST_MODULES.find(m => m.id === 'protect')!;
-    const moduleProjects = PROJECTS.filter(p => p.module === 'protect');
+    const module = NIST_MODULES.find(m => m.id === 'projects')!;
+    const moduleProjects = PROJECTS.filter(p => p.module === 'projects');
+    const blueTeamProjects = moduleProjects.filter(p => p.team === 'blue');
+    const redTeamProjects = moduleProjects.filter(p => p.team === 'red');
 
     if (!isIntroComplete) {
         return <SensorIntro moduleName="protect" accentColor="text-nist-protect" onComplete={() => setIsIntroComplete(true)} />;
@@ -37,12 +39,43 @@ const ProtectPage: React.FC = () => {
                             </p>
                         </div>
                         <div className="flex flex-wrap gap-2 sm:gap-4 font-mono text-sm sm:text-base uppercase text-gray-600">
-                            <span className="text-nist-protect">[{moduleProjects.length}] Projects</span>
+                            <span className="text-blue-400">[{blueTeamProjects.length}] Blue Team</span>
+                            <span className="text-red-400">[{redTeamProjects.length}] Red Team</span>
                         </div>
                     </div>
 
-                    {moduleProjects.length > 0 && (
-                        <BentoGrid projects={moduleProjects} accentColor={module.colorClass} />
+                    {/* Blue Team Section */}
+                    {blueTeamProjects.length > 0 && (
+                        <div className="mb-12 md:mb-16">
+                            <div className="flex items-center gap-3 mb-6">
+                                <div className="w-3 h-3 bg-blue-500 rounded-full animate-pulse"></div>
+                                <h3 className="text-xl sm:text-2xl font-display font-bold text-blue-400 uppercase tracking-wider">
+                                    Blue Team
+                                </h3>
+                                <span className="text-xs font-mono text-gray-500 border border-blue-500/30 px-2 py-0.5 rounded">DEFENSIVE</span>
+                            </div>
+                            <p className="text-gray-500 font-mono text-sm mb-6 border-l-2 border-blue-500/30 pl-4">
+                                Detection, monitoring, and incident response systems designed to protect infrastructure.
+                            </p>
+                            <BentoGrid projects={blueTeamProjects} moduleColor="text-blue-400" />
+                        </div>
+                    )}
+
+                    {/* Red Team Section */}
+                    {redTeamProjects.length > 0 && (
+                        <div>
+                            <div className="flex items-center gap-3 mb-6">
+                                <div className="w-3 h-3 bg-red-500 rounded-full animate-pulse"></div>
+                                <h3 className="text-xl sm:text-2xl font-display font-bold text-red-400 uppercase tracking-wider">
+                                    Red Team
+                                </h3>
+                                <span className="text-xs font-mono text-gray-500 border border-red-500/30 px-2 py-0.5 rounded">OFFENSIVE</span>
+                            </div>
+                            <p className="text-gray-500 font-mono text-sm mb-6 border-l-2 border-red-500/30 pl-4">
+                                Penetration testing, vulnerability assessment, and adversary simulation tools.
+                            </p>
+                            <BentoGrid projects={redTeamProjects} moduleColor="text-red-400" />
+                        </div>
                     )}
 
                     {moduleProjects.length === 0 && (

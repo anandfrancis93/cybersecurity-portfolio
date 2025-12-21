@@ -2,17 +2,17 @@ import { Project, Experience, Certificate } from './types';
 import { Shield, Brain, Network, Terminal, Server, Smartphone, Code, Database, UserCheck, Users, Search, Activity, AlertCircle, RefreshCw, FileSearch, MessageSquare } from 'lucide-react';
 
 export const NAV_LINKS = [
-  { name: 'IDENTIFY', href: '#identify', color: 'bg-nist-identify' },
-  { name: 'PROTECT', href: '#protect', color: 'bg-nist-protect' },
-  { name: 'DETECT', href: '#detect', color: 'bg-nist-detect' },
-  { name: 'RECOVER', href: '#recover', color: 'bg-nist-recover' },
-  { name: 'RESPOND', href: '#respond', color: 'bg-nist-respond' },
+  { name: 'ASSET', href: '/about-me', color: 'bg-nist-identify' },
+  { name: 'LAB', href: '/projects', color: 'bg-nist-protect' },
+  { name: 'RECON', href: '/work-experience', color: 'bg-nist-detect' },
+  { name: 'CLEARANCE', href: '/certifications', color: 'bg-nist-recover' },
+  { name: 'HANDSHAKE', href: '/contact-us', color: 'bg-nist-respond' },
 ];
 
 export const NIST_MODULES = [
   {
-    id: 'identify',
-    title: 'IDENTIFY',
+    id: 'about-me',
+    title: 'ASSET',
     icon: Search,
     description: 'Defining core competencies and professional profile.',
     colorClass: 'text-nist-identify',
@@ -20,8 +20,8 @@ export const NIST_MODULES = [
     bgClass: 'bg-nist-identify'
   },
   {
-    id: 'protect',
-    title: 'PROTECT',
+    id: 'projects',
+    title: 'LAB',
     icon: Shield,
     description: 'Defense architectures and secure development projects.',
     colorClass: 'text-nist-protect',
@@ -29,8 +29,8 @@ export const NIST_MODULES = [
     bgClass: 'bg-nist-protect'
   },
   {
-    id: 'detect',
-    title: 'DETECT',
+    id: 'work-experience',
+    title: 'RECON',
     icon: Activity,
     description: `Analyzed AI governance frameworks
 Evaluated latest AI products
@@ -40,8 +40,8 @@ Delivered enterprise and consumer technical support`,
     bgClass: 'bg-nist-detect'
   },
   {
-    id: 'recover',
-    title: 'RECOVER',
+    id: 'certifications',
+    title: 'CLEARANCE',
     icon: RefreshCw,
     description: 'Resilience through industry-standard certifications.',
     colorClass: 'text-nist-recover',
@@ -90,7 +90,8 @@ export const PROJECTS: Project[] = [
     icon: Brain,
     cols: 8,
     rows: 2,
-    module: 'protect'
+    module: 'projects',
+    team: 'blue'
   },
   {
     id: '2',
@@ -100,7 +101,8 @@ export const PROJECTS: Project[] = [
     icon: UserCheck,
     cols: 4,
     rows: 2,
-    module: 'protect'
+    module: 'projects',
+    team: 'red'
   },
   {
     id: '3',
@@ -110,7 +112,8 @@ export const PROJECTS: Project[] = [
     icon: Database,
     cols: 4,
     rows: 1,
-    module: 'protect'
+    module: 'projects',
+    team: 'blue'
   },
   {
     id: '4',
@@ -120,7 +123,8 @@ export const PROJECTS: Project[] = [
     icon: Network,
     cols: 8,
     rows: 1,
-    module: 'protect'
+    module: 'projects',
+    team: 'red'
   },
 ];
 
@@ -136,7 +140,7 @@ export const EXPERIENCES: Experience[] = [
       'Advised faculty and leadership on the strategic adoption of AI to enhance learning and workflow efficiency.',
       'Monitored AI industry trends to ensure institutional alignment with the latest technological shifts.'
     ],
-    module: 'detect'
+    module: 'work-experience'
   },
   {
     id: 'e2',
@@ -149,7 +153,7 @@ export const EXPERIENCES: Experience[] = [
       'Deployed Windows (PXE boot) and Apple (ASM, ADE, Jamf Pro MDM) systems at scale.',
       'Implemented RBAC and dynamic VLANs with HPE Aruba ClearPass and 802.1X, enhancing network security.'
     ],
-    module: 'detect'
+    module: 'work-experience'
   },
   {
     id: 'e3',
@@ -161,7 +165,7 @@ export const EXPERIENCES: Experience[] = [
       'Delivered expert support in device configuration, system performance, diagnostics, and Windows OS troubleshooting.',
       'Supported North America market in a high-volume technical support environment, driving continuous improvements in knowledge management.'
     ],
-    module: 'detect'
+    module: 'work-experience'
   },
   {
     id: 'e4',
@@ -173,7 +177,7 @@ export const EXPERIENCES: Experience[] = [
       'Provided B2C client support, optimized ad strategies, and led real-time coaching for a 12+ member team.',
       'Supported a fast-paced digital advertising environment delivering results for a diverse U.S. client base.'
     ],
-    module: 'detect'
+    module: 'work-experience'
   },
   {
     id: 'e5',
@@ -185,7 +189,7 @@ export const EXPERIENCES: Experience[] = [
       'Provided expert support on Cvent\'s suite of products, troubleshooting problems and answering questions.',
       'Assisted in implementing and configuring Cvent solutions, including setup and customization.'
     ],
-    module: 'detect'
+    module: 'work-experience'
   },
   {
     id: 'e6',
@@ -197,7 +201,7 @@ export const EXPERIENCES: Experience[] = [
       'Combined technical expertise with efficient escalation handling to ensure high customer satisfaction (85-90% resolution rate).',
       'Collaborated with subject matter experts to resolve complex technical escalations.'
     ],
-    module: 'detect'
+    module: 'work-experience'
   },
   {
     id: 'e7',
@@ -209,7 +213,7 @@ export const EXPERIENCES: Experience[] = [
       'Resolved 15+ calls daily with ~85% resolution rate, addressing connectivity and hardware issues.',
       'Collaborated with cross-functional teams to resolve complex problem escalations.'
     ],
-    module: 'detect'
+    module: 'work-experience'
   }
 ];
 
@@ -222,7 +226,7 @@ export const CERTIFICATES: Certificate[] = [
     expirationDate: 'December 11, 2028',
     status: 'Active',
     verificationId: '03ef6fe31e294d489d782cea585c6852',
-    module: 'recover',
+    module: 'certifications',
     link: 'https://www.credly.com/badges/a72ad6a7-ccc8-45a7-8eac-e164d0bd807f/public_url'
   },
   {
@@ -232,7 +236,7 @@ export const CERTIFICATES: Certificate[] = [
     date: 'July 17, 2025',
     status: 'Active',
     verificationId: 'ZD0R8VDS8EE1SMXJ',
-    module: 'recover',
+    module: 'certifications',
     link: 'https://www.credly.com/badges/0f79a744-91ff-401d-8459-92f0d9a2e5da/public_url'
   },
   {
@@ -243,7 +247,7 @@ export const CERTIFICATES: Certificate[] = [
     expirationDate: 'October 18, 2028',
     status: 'Active',
     verificationId: 'GOOG-GEM-7728',
-    module: 'recover',
+    module: 'certifications',
     link: 'https://edu.google.accredible.com/46250148-521d-4362-9d82-1e82955f7e28#acc.hXmfQD9R'
   }
 ];

@@ -1,22 +1,22 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-import IdentifyPage from './pages/IdentifyPage';
-import ProtectPage from './pages/ProtectPage';
-import DetectPage from './pages/DetectPage';
-import RecoverPage from './pages/RecoverPage';
-import RespondPage from './pages/RespondPage';
+import AssetPage from './pages/AssetPage';
+import LabPage from './pages/LabPage';
+import ReconPage from './pages/ReconPage';
+import ClearancePage from './pages/ClearancePage';
+import HandshakePage from './pages/HandshakePage';
 import ChatWidget from './components/ChatWidget';
 
 const App: React.FC = () => {
    return (
       <Router>
          <Routes>
-            <Route path="/" element={<Navigate to="/identify" replace />} />
-            <Route path="/identify" element={<IdentifyPage />} />
-            <Route path="/protect" element={<ProtectPage />} />
-            <Route path="/detect" element={<DetectPage />} />
-            <Route path="/recover" element={<RecoverPage />} />
-            <Route path="/respond" element={<RespondPage />} />
+            <Route path="/" element={<Navigate to="/about-me" replace />} />
+            <Route path="/about-me" element={<AssetPage />} />
+            <Route path="/projects" element={<LabPage />} />
+            <Route path="/work-experience" element={<ReconPage />} />
+            <Route path="/certifications" element={<ClearancePage />} />
+            <Route path="/contact-us" element={<HandshakePage />} />
          </Routes>
          <ChatWidget />
       </Router>

@@ -10,8 +10,8 @@ import { CERTIFICATES, NIST_MODULES } from '../constants';
 const RecoverPage: React.FC = () => {
     const [isIntroComplete, setIsIntroComplete] = useState(false);
 
-    const module = NIST_MODULES.find(m => m.id === 'recover')!;
-    const moduleCertificates = CERTIFICATES.filter(c => c.module === 'recover');
+    const module = NIST_MODULES.find(m => m.id === 'certifications')!;
+    const moduleCertificates = CERTIFICATES.filter(c => c.module === 'certifications');
 
     if (!isIntroComplete) {
         return <SensorIntro moduleName="recover" accentColor="text-nist-recover" onComplete={() => setIsIntroComplete(true)} />;
