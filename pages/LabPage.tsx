@@ -5,6 +5,7 @@ import SensorIntro from '../components/SensorIntro';
 import BentoGrid from '../components/BentoGrid';
 import ScrambleText from '../components/ScrambleText';
 import SteganographyRain from '../components/SteganographyRain';
+import DigitalImmuneSystem from '../components/DigitalImmuneSystem';
 import { PROJECTS, NIST_MODULES } from '../constants';
 import { ChevronDown, ChevronUp } from 'lucide-react';
 import { useIntro } from '../contexts/IntroContext';
@@ -51,6 +52,10 @@ const LabPage: React.FC = () => {
                             <p className="text-gray-400 max-w-2xl font-mono text-sm sm:text-base border-l-2 border-edition-border pl-3 sm:pl-4">
                                 {module.description}
                             </p>
+                        </div>
+                        {/* Right side - Digital Immune System Animation */}
+                        <div className="hidden md:flex flex-shrink-0 w-64 lg:w-[300px] h-64 lg:h-[300px] items-center justify-center">
+                            <DigitalImmuneSystem />
                         </div>
                     </div>
 
