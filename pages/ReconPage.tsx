@@ -33,7 +33,7 @@ const ReconPage: React.FC = () => {
         <div className="min-h-screen bg-[#020202] text-white font-sans pt-24 md:pt-12 animate-fade-in selection:bg-recon selection:text-black flex flex-col">
             <SteganographyRain color="#F59E0B" revealRadius={180} />
             <Nav />
-            <main className="max-w-[1600px] mx-auto px-3 sm:px-6 lg:px-8 pb-20 md:pb-32 flex-1">
+            <main className="max-w-[1600px] mx-auto px-3 sm:px-6 lg:px-8 pb-20 md:pb-32 flex-1 w-full">
                 <section className="py-12 sm:py-16 md:py-20 relative">
                     <div className="absolute top-0 right-0 text-[4rem] sm:text-[6rem] md:text-[10rem] font-bold text-white/[0.02] font-display pointer-events-none select-none -translate-y-4 md:-translate-y-8 overflow-hidden whitespace-nowrap">
                         {module.title}
