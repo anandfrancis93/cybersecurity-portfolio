@@ -152,7 +152,7 @@ const HandshakePage: React.FC = () => {
 
     return (
         <div className="min-h-screen bg-[#020202] text-white font-sans pt-24 md:pt-12 animate-fade-in selection:bg-handshake selection:text-black flex flex-col">
-            <SteganographyRain color="#14B8A6" revealRadius={180} />
+            <SteganographyRain color="#E11D48" revealRadius={180} />
             <Nav />
 
             <main className="max-w-[1600px] mx-auto px-3 sm:px-6 lg:px-8 pb-20 md:pb-32 flex-1 w-full">

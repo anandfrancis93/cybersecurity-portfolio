@@ -14,8 +14,16 @@ const LogsPage: React.FC = () => {
 
     const module = NIST_MODULES.find(m => m.id === 'logs')!;
 
-    // Placeholder logs data - in a real app this would come from a CMS or markdown files
-    const logs: any[] = [];
+    const logs = [
+        {
+            id: 'log_001',
+            title: 'Deconstructing Zero Trust Architecture',
+            date: '2025-10-15',
+            summary: 'An in-depth analysis of "Never Trust, Always Verify." This entry explores the shift from perimeter-based security to identity-centric models, focusing on micro-segmentation and continuous authentication protocols.',
+            tags: ['#ZeroTrust', '#IdentityAlert', '#Architecture'],
+            readTime: '04 MIN READ'
+        }
+    ];
 
     const handleIntroComplete = () => {
         setIsLocalIntroComplete(true);
@@ -32,7 +40,7 @@ const LogsPage: React.FC = () => {
 
     return (
         <div className="min-h-screen bg-[#020202] text-white font-sans pt-24 md:pt-12 animate-fade-in selection:bg-logs selection:text-black flex flex-col">
-            <SteganographyRain color="#F43F5E" revealRadius={180} />
+            <SteganographyRain color="#3B82F6" revealRadius={180} />
             <Nav />
             <main className="max-w-[1600px] mx-auto px-3 sm:px-6 lg:px-8 pb-20 md:pb-32 flex-1 w-full">
                 <section className="py-12 sm:py-16 md:py-20 relative">
@@ -57,23 +65,44 @@ const LogsPage: React.FC = () => {
                         </div>
                     </div>
 
-                    {logs.length === 0 && (
-                        <div className="border border-dashed border-edition-border p-8 sm:p-12 md:p-16 flex flex-col items-center justify-center text-center space-y-4 rounded-sm bg-white/[0.01]">
-                            <div className="w-16 h-16 bg-logs/10 rounded-full flex items-center justify-center text-logs mb-2">
-                                <FileText size={32} />
-                            </div>
-                            <h3 className="text-xl font-bold font-display text-white">System Logs Empty</h3>
-                            <p className="text-gray-500 font-mono max-w-md">
-                                No entries have been committed to the archive yet. Check back later for system updates and technical analysis.
-                            </p>
-                            <div className="pt-4">
-                                <div className="inline-flex items-center gap-2 text-xs font-mono text-gray-600 uppercase tracking-widest px-3 py-1 border border-edition-border">
-                                    <span className="w-2 h-2 bg-logs rounded-full animate-pulse"></span>
-                                    Awaiting Input
+                    <div className="grid gap-6">
+                        {logs.map((log) => (
+                            <article key={log.id} className="group relative border border-edition-border bg-black/50 hover:bg-logs/5 transition-colors duration-300 p-6 sm:p-8">
+                                <div className="absolute top-0 right-0 p-4 opacity-50 text-xs font-mono text-gray-500">
+                                    ID: {log.id}
                                 </div>
-                            </div>
-                        </div>
-                    )}
+
+                                <div className="flex flex-col gap-4">
+                                    <div className="flex items-center gap-3 text-xs sm:text-sm font-mono text-logs/80 uppercase tracking-widest">
+                                        <span>{log.date}</span>
+                                        <span className="w-px h-3 bg-edition-border"></span>
+                                        <span>{log.readTime}</span>
+                                    </div>
+
+                                    <h3 className="text-xl sm:text-2xl font-bold font-display group-hover:text-logs transition-colors">
+                                        {log.title}
+                                    </h3>
+
+                                    <p className="text-gray-400 font-mono text-sm leading-relaxed max-w-3xl">
+                                        {log.summary}
+                                    </p>
+
+                                    <div className="flex gap-3 pt-2">
+                                        {log.tags.map(tag => (
+                                            <span key={tag} className="text-xs font-mono text-gray-500 bg-edition-border/20 px-2 py-1">
+                                                {tag}
+                                            </span>
+                                        ))}
+                                    </div>
+
+                                    <div className="pt-4 mt-2 border-t border-edition-border/30 flex items-center gap-2 text-logs text-sm font-bold opacity-0 group-hover:opacity-100 transition-all transform translate-y-2 group-hover:translate-y-0 duration-300">
+                                        <span>ACCESS_FILE</span>
+                                        <span className="text-lg">›</span>
+                                    </div>
+                                </div>
+                            </article>
+                        ))}
+                    </div>
                 </section>
             </main>
             <FooterBar />

@@ -28,9 +28,27 @@ const Nav: React.FC = () => {
 
         {/* LOGO */}
         <div className="flex items-center gap-6 z-10 relative">
-          <Link to="/about-me" className="flex items-center gap-2 text-white hover:text-asset transition-colors group">
-            <ShieldCheck className="w-4 h-4 text-asset animate-pulse" />
-            <span className="font-bold group-hover:underline decoration-asset underline-offset-4">ANAND.SYS</span>
+          <Link to="/about-me" className={`flex items-center gap-2 text-white transition-colors group ${currentSection === 'about-me' ? 'hover:text-asset' :
+              currentSection === 'projects' ? 'hover:text-lab' :
+                currentSection === 'work-experience' ? 'hover:text-recon' :
+                  currentSection === 'certifications' ? 'hover:text-clearance' :
+                    currentSection === 'logs' ? 'hover:text-logs' :
+                      'hover:text-handshake'
+            }`}>
+            <ShieldCheck className={`w-4 h-4 animate-pulse ${currentSection === 'about-me' ? 'text-asset' :
+                currentSection === 'projects' ? 'text-lab' :
+                  currentSection === 'work-experience' ? 'text-recon' :
+                    currentSection === 'certifications' ? 'text-clearance' :
+                      currentSection === 'logs' ? 'text-logs' :
+                        'text-handshake'
+              }`} />
+            <span className={`font-bold group-hover:underline underline-offset-4 ${currentSection === 'about-me' ? 'decoration-asset' :
+                currentSection === 'projects' ? 'decoration-lab' :
+                  currentSection === 'work-experience' ? 'decoration-recon' :
+                    currentSection === 'certifications' ? 'decoration-clearance' :
+                      currentSection === 'logs' ? 'decoration-logs' :
+                        'decoration-handshake'
+              }`}>ANAND.SYS</span>
           </Link>
         </div>
 
@@ -45,7 +63,15 @@ const Nav: React.FC = () => {
                 to={`/${sectionId}`}
                 className={`
                   relative h-full flex items-center px-6 transition-all duration-200
-                  ${isActive ? `${link.color} text-black font-bold` : 'hover:bg-white/5 hover:text-white'}
+                  ${isActive
+                    ? `${link.color} text-black font-bold`
+                    : `hover:text-black ${link.name === 'ASSET' ? 'hover:bg-asset' :
+                      link.name === 'LAB' ? 'hover:bg-lab' :
+                        link.name === 'RECON' ? 'hover:bg-recon' :
+                          link.name === 'CLEARANCE' ? 'hover:bg-clearance' :
+                            link.name === 'LOGS' ? 'hover:bg-logs' :
+                              'hover:bg-handshake'}`
+                  }
                 `}
               >
                 <ScrambleText text={link.name} duration={600} disableVisualGlitch={true} triggerReveal={true} autoRepeatInterval={10000} />
@@ -84,7 +110,15 @@ const Nav: React.FC = () => {
                 to={`/${sectionId}`}
                 className={`
                   py-4 px-6 border-t border-edition-border/20 text-left transition-all duration-200 flex items-center gap-4
-                  ${isActive ? `${link.color} text-black font-bold pl-8` : 'text-gray-400 hover:text-white hover:bg-white/5 hover:pl-8'}
+                  ${isActive
+                    ? `${link.color} text-black font-bold pl-8`
+                    : `text-gray-400 hover:text-black hover:pl-8 ${link.name === 'ASSET' ? 'hover:bg-asset' :
+                      link.name === 'LAB' ? 'hover:bg-lab' :
+                        link.name === 'RECON' ? 'hover:bg-recon' :
+                          link.name === 'CLEARANCE' ? 'hover:bg-clearance' :
+                            link.name === 'LOGS' ? 'hover:bg-logs' :
+                              'hover:bg-handshake'}`
+                  }
                 `}
               >
                 <ScrambleText text={link.name} duration={600} disableVisualGlitch={true} triggerReveal={true} autoRepeatInterval={10000} />

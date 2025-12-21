@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { ChevronRight, Terminal, Building, ArrowUpRight } from 'lucide-react';
 import Nav from '../components/Nav';
 import FooterBar from '../components/FooterBar';
 import SensorIntro from '../components/SensorIntro';
@@ -38,18 +39,20 @@ const ReconPage: React.FC = () => {
                         {module.title}
                     </div>
 
-                    <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 relative z-10 gap-8">
-                        <div className="max-w-3xl">
-                            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-display font-bold mb-4 sm:mb-6 uppercase text-recon">
+                    <div className="flex flex-col md:flex-row md:items-end justify-between mb-8 sm:mb-10 md:mb-12 gap-4 sm:gap-6 relative z-10 w-full">
+                        <div>
+                            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-display font-bold mb-2 sm:mb-3 md:mb-4 uppercase text-recon">
                                 <ScrambleText text={module.title} duration={600} disableVisualGlitch={true} triggerReveal={isLocalIntroComplete} autoRepeatInterval={10000} />
                             </h2>
-                            <p className="text-gray-400 font-mono text-sm sm:text-base border-l-2 border-edition-border pl-4 whitespace-pre-line leading-relaxed">
+                            <p className="text-gray-400 max-w-2xl font-mono text-sm sm:text-base border-l-2 border-edition-border pl-3 sm:pl-4">
                                 {module.description}
                             </p>
                         </div>
-
-                        <div className="flex flex-wrap gap-4 font-mono text-sm uppercase text-gray-600 self-start md:self-end">
-                            <span className="text-recon border border-recon/30 bg-recon/5 px-3 py-1">[{moduleExperience.length}] System Entries</span>
+                        <div className="flex flex-wrap gap-2 sm:gap-4 font-mono text-sm sm:text-base uppercase text-gray-600">
+                            <span className="text-recon flex items-center gap-2 border border-recon/30 bg-recon/5 px-3 py-1">
+                                <Terminal size={12} />
+                                [{moduleExperience.length}] System Entries
+                            </span>
                         </div>
                     </div>
 
