@@ -78,8 +78,37 @@ const TypewriterIntro: React.FC<TypewriterIntroProps> = ({
             { title: 'BLUE HAT', subject: 'External Tester', body: 'Outside security experts hired to find bugs before software is released.' },
             { title: 'GREEN HAT', subject: 'Newbie', body: 'Beginner hackers who are learning but may not understand the risks involved.' },
             { title: 'PURPLE HAT', subject: 'Self-Taught', body: 'Hackers who practice and improve their skills by testing their own systems.' },
-            { title: 'PINK HAT', subject: 'Evaluator', body: 'Specialists who evaluate security systems with a focus on unique defensive methods.' }
+            { title: 'PINK HAT', subject: 'Evaluator', body: 'Specialists who evaluate security systems with a focus on unique defensive methods.' },
+            { title: 'DEFENSE-IN-DEPTH', subject: 'Strategy', body: 'Layered security. Using multiple defensive lines so if one fails, another stops the attack.' },
+            { title: 'APT', subject: 'Threats', body: 'Advanced Persistent Threat. Sophisticated attackers who hide in a network for a long time.' },
+            { title: 'SHADOW IT', subject: 'Risk', body: 'Tech used without IT approval. Employees using unauthorized apps or devices.' },
+            { title: 'PAM', subject: 'Access Control', body: 'Privileged Access Management. Securing accounts with "god mode" access.' },
+            { title: 'XDR', subject: 'Operations', body: 'Extended Detection and Response. A tool that collects data everywhere to spot attacks.' },
+            { title: 'NIST CSF 2.0', subject: 'Framework', body: 'The standard framework for managing cyber risk: Govern, Identify, Protect, Detect, Respond, Recover.' },
+            { title: 'WHITE BOX', subject: 'Testing', body: 'Security testing where the hacker has full knowledge of the system, including source code and diagrams.' },
+            { title: 'BLACK BOX', subject: 'Testing', body: 'Security testing where the hacker has zero prior knowledge, simulating a real outside attack.' },
+            { title: 'GREY BOX', subject: 'Testing', body: 'A blended testing approach where the hacker has some limited knowledge, like low-level credentials.' }
         ];
+
+        // Shred particle interface
+        interface Shred {
+            x: number;
+            y: number;
+            vx: number;
+            vy: number;
+            width: number;
+            height: number;
+            angle: number;
+            rotSpeed: number;
+        }
+
+        let shreds: Shred[] = [];
+        let phase: 'typing' | 'reading' | 'shredding' = 'typing';
+        let lastShredTime = 0;
+
+        // Configuration
+        const READING_TIME = 2000; // Shorter reading time for loading screen
+        const SHREDDING_DURATION = 1500;
 
         // Pick a random article for this load
         const article = articles[Math.floor(Math.random() * articles.length)];
@@ -87,10 +116,19 @@ const TypewriterIntro: React.FC<TypewriterIntroProps> = ({
         let frameCount = 0;
 
         const draw = () => {
+            const dpr = window.devicePixelRatio || 1;
+            // Ensure canvas size matches
+            if (canvas.width !== width * dpr) {
+                canvas.width = width * dpr;
+                canvas.height = height * dpr;
+                ctx.scale(dpr, dpr);
+            }
+
             ctx.clearRect(0, 0, width, height);
             frameCount++;
 
-            const elapsed = performance.now() - startTime;
+            const now = performance.now();
+            const elapsed = now - startTime;
 
             const centerX = width / 2;
 
@@ -105,104 +143,178 @@ const TypewriterIntro: React.FC<TypewriterIntroProps> = ({
             const paperMaxHeight = twTop - 40;
             const paperLeft = (width - paperWidth) / 2;
 
-            // Paper animation
-            const paperProgress = Math.min(1, elapsed / 1500);
-            const paperHeight = paperMaxHeight * paperProgress;
-            const paperTop = twTop - paperHeight;
+            // --- CALCULATE PHASES ---
+            // 1. Typing Duration
+            const typingDuration = 300 + article.title.length * 40 + 200 + (article.subject.length + 4) * 30 + 300 + article.body.length * 25;
 
-            // === DRAW PAPER ===
-            if (paperHeight > 10) {
+            let paperYOffset = 0;
+
+            if (elapsed < typingDuration) {
+                phase = 'typing';
+            } else if (elapsed < typingDuration + READING_TIME) {
+                phase = 'reading';
+            } else if (elapsed < typingDuration + READING_TIME + SHREDDING_DURATION) {
+                phase = 'shredding';
+            } else {
+                // Done!
+                if (!isComplete) setIsComplete(true);
+                return; // Stop animation
+            }
+
+            // Paper Animation Logic
+            // Emergance (start)
+            let paperVisibleHeight = paperMaxHeight;
+            if (phase === 'typing' && elapsed < 1000) {
+                paperVisibleHeight = paperMaxHeight * (elapsed / 1000);
+            }
+
+            // Shredding (end)
+            if (phase === 'shredding') {
+                const shredProgress = (elapsed - (typingDuration + READING_TIME)) / SHREDDING_DURATION;
+                paperYOffset = paperMaxHeight * shredProgress; // Move paper down
+
+                // Spawn shreds
+                if (now - lastShredTime > 40 && paperYOffset < paperMaxHeight * 0.9) {
+                    lastShredTime = now;
+                    // Spawn a batch of shreds
+                    for (let k = 0; k < 3; k++) {
+                        shreds.push({
+                            x: paperLeft + Math.random() * paperWidth,
+                            y: twTop + twHeight - 10,
+                            vx: (Math.random() - 0.5) * 2,
+                            vy: Math.random() * 2 + 2,
+                            width: Math.random() * 4 + 2,
+                            height: Math.random() * 8 + 4,
+                            angle: Math.random() * Math.PI * 2,
+                            rotSpeed: (Math.random() - 0.5) * 0.2
+                        });
+                    }
+                }
+            }
+
+            const paperTop = twTop - paperVisibleHeight + paperYOffset;
+
+            // === DRAW PAPER (behind typewriter) ===
+            ctx.save();
+            ctx.beginPath();
+            ctx.rect(0, 0, width, twTop + 10); // Clip everything below the slot line roughly
+            ctx.clip();
+
+            if (paperVisibleHeight - paperYOffset > 0) {
                 ctx.fillStyle = COLOR_PAPER_SHADOW;
-                ctx.fillRect(paperLeft + 4, paperTop + 4, paperWidth, paperHeight);
+                ctx.fillRect(paperLeft + 4, paperTop + 4, paperWidth, paperVisibleHeight);
 
                 ctx.fillStyle = COLOR_PAPER;
-                ctx.fillRect(paperLeft, paperTop, paperWidth, paperHeight);
+                ctx.fillRect(paperLeft, paperTop, paperWidth, paperVisibleHeight);
 
                 ctx.strokeStyle = 'rgba(59, 130, 246, 0.3)';
                 ctx.lineWidth = 1;
-                ctx.strokeRect(paperLeft, paperTop, paperWidth, paperHeight);
+                ctx.strokeRect(paperLeft, paperTop, paperWidth, paperVisibleHeight);
 
                 ctx.strokeStyle = 'rgba(59, 130, 246, 0.2)';
                 ctx.beginPath();
                 ctx.moveTo(paperLeft + 15, paperTop);
-                ctx.lineTo(paperLeft + 15, paperTop + paperHeight);
+                ctx.lineTo(paperLeft + 15, paperTop + paperVisibleHeight);
                 ctx.stroke();
 
                 const contentPadding = 25;
                 let textY = paperTop + 30;
 
-                if (paperHeight > 40) {
-                    ctx.font = 'bold 16px monospace';
-                    ctx.fillStyle = '#FFFFFF';
-                    const titleChars = Math.floor((elapsed - 300) / 40);
-                    const titleToShow = article.title.substring(0, Math.max(0, titleChars));
-                    ctx.fillText(titleToShow, paperLeft + contentPadding, textY);
+                ctx.textAlign = 'left';
 
-                    if (titleChars > 0 && titleChars <= article.title.length) {
-                        const titleWidth = ctx.measureText(titleToShow).width;
-                        if (Math.floor(frameCount / 10) % 2 === 0) {
-                            ctx.fillStyle = COLOR_ACCENT;
-                            ctx.fillRect(paperLeft + contentPadding + titleWidth + 1, textY - 12, 2, 15);
-                        }
+                // 1. Title
+                if (textY < twTop) {
+                    ctx.font = 'bold 16px "JetBrains Mono", monospace';
+                    const titleToShow = phase === 'typing' ? article.title.substring(0, Math.floor((elapsed - 300) / 40)) : article.title;
+                    if (titleToShow.length > 0) {
+                        ctx.fillStyle = '#FFFFFF';
+                        ctx.fillText(titleToShow, paperLeft + contentPadding, textY);
                     }
                 }
 
-                if (paperHeight > 70) {
-                    textY += 28;
-                    ctx.font = '11px monospace';
+                // 2. Subject Line
+                textY += 28;
+                if (textY < twTop) {
+                    ctx.font = '11px "JetBrains Mono", monospace';
                     ctx.fillStyle = 'rgba(255, 255, 255, 0.5)';
-                    const subjectDelay = 300 + article.title.length * 40 + 200;
-                    const subjectChars = Math.floor((elapsed - subjectDelay) / 30);
-                    const subjectText = `RE: ${article.subject}`;
-                    const subjectToShow = subjectText.substring(0, Math.max(0, subjectChars));
-                    ctx.fillText(subjectToShow, paperLeft + contentPadding, textY);
-
-                    if (subjectChars >= subjectText.length) {
-                        textY += 15;
-                        ctx.strokeStyle = 'rgba(150, 150, 150, 0.3)';
-                        ctx.beginPath();
-                        ctx.moveTo(paperLeft + contentPadding, textY);
-                        ctx.lineTo(paperLeft + paperWidth - 15, textY);
-                        ctx.stroke();
+                    const subjectStart = 300 + article.title.length * 40 + 200;
+                    if (elapsed > subjectStart) {
+                        const subjectToShow = phase === 'typing' ? `RE: ${article.subject}`.substring(0, Math.floor((elapsed - subjectStart) / 40)) : `RE: ${article.subject}`;
+                        ctx.fillText(subjectToShow, paperLeft + contentPadding, textY);
                     }
                 }
 
-                if (paperHeight > 120) {
-                    textY += 25;
-                    ctx.font = '12px monospace';
+                // Divider
+                textY += 15;
+                if (textY < twTop && elapsed > 1500) {
+                    ctx.strokeStyle = 'rgba(150, 150, 150, 0.3)';
+                    ctx.beginPath();
+                    ctx.moveTo(paperLeft + contentPadding, textY);
+                    ctx.lineTo(paperLeft + paperWidth - 15, textY);
+                    ctx.stroke();
+                }
+
+                // 3. Body
+                textY += 25;
+                if (textY < twTop) {
+                    ctx.font = '12px "JetBrains Mono", monospace';
                     ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
-                    const bodyDelay = 300 + article.title.length * 40 + 200 + (article.subject.length + 4) * 30 + 300;
-                    const bodyChars = Math.floor((elapsed - bodyDelay) / 25);
+                    const bodyStart = 300 + article.title.length * 40 + 200 + (article.subject.length + 4) * 30 + 300;
 
-                    const words = article.body.split(' ');
-                    let line = '';
-                    const maxWidth = paperWidth - contentPadding - 20;
-                    let charCount = 0;
+                    if (elapsed > bodyStart) {
+                        const bodyChars = phase === 'typing' ? Math.floor((elapsed - bodyStart) / 25) : article.body.length;
+                        const words = article.body.split(' ');
+                        let line = '';
+                        let currentBodyChars = 0;
 
-                    for (const word of words) {
-                        const testLine = line + (line ? ' ' : '') + word;
-                        if (ctx.measureText(testLine).width > maxWidth && line) {
-                            const lineToShow = line.substring(0, Math.max(0, bodyChars - charCount + line.length));
-                            if (lineToShow) ctx.fillText(lineToShow, paperLeft + contentPadding, textY);
-                            charCount += line.length + 1;
-                            textY += 18;
-                            line = word;
-                        } else {
-                            line = testLine;
+                        for (let i = 0; i < words.length; i++) {
+                            if (currentBodyChars >= bodyChars) break;
+
+                            const testLine = line + (line ? ' ' : '') + words[i];
+                            const maxWidth = paperWidth - contentPadding - 20;
+
+                            if (ctx.measureText(testLine).width > maxWidth && line) {
+                                if (textY < twTop) ctx.fillText(line, paperLeft + contentPadding, textY);
+                                textY += 18;
+                                line = words[i];
+                            } else {
+                                line = testLine;
+                            }
+                            currentBodyChars += words[i].length + 1;
+                        }
+                        if (line && textY < twTop) {
+                            ctx.fillText(line, paperLeft + contentPadding, textY);
+                        }
+
+                        // Cursor
+                        if (phase === 'typing' && Math.floor(frameCount / 10) % 2 === 0) {
+                            const lineWidth = ctx.measureText(line).width;
+                            ctx.fillStyle = COLOR_ACCENT;
+                            if (textY < twTop) ctx.fillRect(paperLeft + contentPadding + lineWidth + 1, textY - 10, 2, 13);
                         }
                     }
-                    if (line) {
-                        const lineToShow = line.substring(0, Math.max(0, bodyChars - charCount + line.length));
-                        if (lineToShow) {
-                            ctx.fillText(lineToShow, paperLeft + contentPadding, textY);
-                            if (bodyChars > 0 && bodyChars <= article.body.length) {
-                                const lineWidth = ctx.measureText(lineToShow).width;
-                                if (Math.floor(frameCount / 10) % 2 === 0) {
-                                    ctx.fillStyle = COLOR_ACCENT;
-                                    ctx.fillRect(paperLeft + contentPadding + lineWidth + 1, textY - 10, 2, 13);
-                                }
-                            }
-                        }
+                }
+            }
+            ctx.restore(); // End clipping
+
+            // === DRAW SHREDS (FALLING PARTICLES) ===
+            if (shreds.length > 0) {
+                for (let i = shreds.length - 1; i >= 0; i--) {
+                    const s = shreds[i];
+                    s.y += s.vy;
+                    s.x += s.vx; // Slight drift
+                    s.angle += s.rotSpeed;
+
+                    ctx.save();
+                    ctx.translate(s.x, s.y);
+                    ctx.rotate(s.angle);
+                    ctx.fillStyle = 'rgba(230, 230, 230, 0.9)'; // Paper color
+                    ctx.fillRect(-s.width / 2, -s.height / 2, s.width, s.height);
+                    ctx.restore();
+
+                    // Remove if off screen
+                    if (s.y > height + 20) {
+                        shreds.splice(i, 1);
                     }
                 }
             }
@@ -225,8 +337,7 @@ const TypewriterIntro: React.FC<TypewriterIntroProps> = ({
             // Keys
             const keyCount = 10;
             const keyWidth = (twWidth - 50) / keyCount;
-            const typingEndTime = 300 + article.title.length * 40 + 200 + (article.subject.length + 4) * 30 + 300 + article.body.length * 25;
-            const isTyping = elapsed < typingEndTime;
+            const isTyping = phase === 'typing';
             const pressedKey = isTyping ? Math.floor((Math.sin(frameCount * 0.03) * 5 + Math.cos(frameCount * 0.05) * 3 + 8) % keyCount) : -1;
 
             for (let i = 0; i < keyCount; i++) {
@@ -253,11 +364,6 @@ const TypewriterIntro: React.FC<TypewriterIntroProps> = ({
             ctx.fillText('INTEL BRIEFING', centerX, twTop + 22);
             ctx.textAlign = 'left';
 
-            // Check if complete (typing done + 1 second pause)
-            if (elapsed > typingEndTime + 1000 && !isComplete) {
-                setIsComplete(true);
-            }
-
             animationFrameId = requestAnimationFrame(draw);
         };
 
@@ -274,7 +380,7 @@ const TypewriterIntro: React.FC<TypewriterIntroProps> = ({
         return () => {
             cancelAnimationFrame(animationFrameId);
         };
-    }, [moduleName, isComplete]);
+    }, [moduleName]); // Removed isComplete dependency to avoid re-running effect
 
     // Call onComplete when animation finishes
     useEffect(() => {
