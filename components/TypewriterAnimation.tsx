@@ -85,8 +85,8 @@ const TypewriterAnimation: React.FC = () => {
 
             // Typewriter dimensions
             const twWidth = width * 0.85;
-            const twHeight = 50;
-            const twTop = height - 70;
+            const twHeight = 65;
+            const twTop = height - 80;
             const twLeft = (width - twWidth) / 2;
 
             // Paper dimensions - emerges from typewriter
@@ -241,7 +241,7 @@ const TypewriterAnimation: React.FC = () => {
 
             // Keys area
             ctx.fillStyle = 'rgba(30, 30, 35, 1)';
-            ctx.fillRect(twLeft + 15, twTop + 20, twWidth - 30, 20);
+            ctx.fillRect(twLeft + 15, twTop + 35, twWidth - 30, 20);
 
             // Individual keys - random pressing (slower, more realistic)
             const keyCount = 10;
@@ -256,24 +256,24 @@ const TypewriterAnimation: React.FC = () => {
                 const isPressed = i === pressedKey && Math.floor(frameCount / 15) % 2 === 0;
                 ctx.fillStyle = isPressed ? 'rgba(80, 80, 90, 1)' : 'rgba(50, 50, 60, 1)';
                 ctx.beginPath();
-                ctx.roundRect(keyX, twTop + 22 + (isPressed ? 2 : 0), keyWidth - 4, 14, 2);
+                ctx.roundRect(keyX, twTop + 37 + (isPressed ? 2 : 0), keyWidth - 4, 14, 2);
                 ctx.fill();
             }
 
             // Decorative elements on typewriter
             ctx.fillStyle = COLOR_BLUE;
             ctx.beginPath();
-            ctx.arc(twLeft + 25, twTop + 12, 4, 0, Math.PI * 2);
+            ctx.arc(twLeft + 25, twTop + 18, 4, 0, Math.PI * 2);
             ctx.fill();
             ctx.beginPath();
-            ctx.arc(twLeft + twWidth - 25, twTop + 12, 4, 0, Math.PI * 2);
+            ctx.arc(twLeft + twWidth - 25, twTop + 18, 4, 0, Math.PI * 2);
             ctx.fill();
 
             // Label
-            ctx.font = 'bold 8px monospace';
+            ctx.font = 'bold 12px monospace';
             ctx.fillStyle = COLOR_BLUE;
             ctx.textAlign = 'center';
-            ctx.fillText('AXIUM WRITER', centerX, twTop + 14);
+            ctx.fillText('INTEL BRIEFING', centerX, twTop + 22);
             ctx.textAlign = 'left';
 
             animationFrameId = requestAnimationFrame(draw);

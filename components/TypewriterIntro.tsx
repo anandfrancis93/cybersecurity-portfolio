@@ -24,8 +24,16 @@ const TypewriterIntro: React.FC<TypewriterIntroProps> = ({
         let width = 320;
         let height = 400;
 
-        // Colors
-        const COLOR_BLUE = '#3B82F6';
+        // Colors - dynamic based on module
+        const moduleColors: Record<string, string> = {
+            'asset': '#22D3EE',      // Cyan
+            'lab': '#A855F7',         // Purple
+            'recon': '#F59E0B',       // Amber/orange
+            'clearance': '#22C55E',   // Green
+            'logs': '#3B82F6',        // Blue
+            'handshake': '#E11D48',   // Rose
+        };
+        const COLOR_ACCENT = moduleColors[moduleName] || '#3B82F6';
         const COLOR_PAPER = 'rgba(20, 20, 25, 0.95)';
         const COLOR_PAPER_SHADOW = 'rgba(0, 0, 0, 0.5)';
         const COLOR_TYPEWRITER = 'rgba(60, 60, 70, 1)';
@@ -88,8 +96,8 @@ const TypewriterIntro: React.FC<TypewriterIntroProps> = ({
 
             // Typewriter dimensions
             const twWidth = width * 0.85;
-            const twHeight = 50;
-            const twTop = height - 80;
+            const twHeight = 65;
+            const twTop = height - 90;
             const twLeft = (width - twWidth) / 2;
 
             // Paper dimensions
@@ -133,7 +141,7 @@ const TypewriterIntro: React.FC<TypewriterIntroProps> = ({
                     if (titleChars > 0 && titleChars <= article.title.length) {
                         const titleWidth = ctx.measureText(titleToShow).width;
                         if (Math.floor(frameCount / 10) % 2 === 0) {
-                            ctx.fillStyle = COLOR_BLUE;
+                            ctx.fillStyle = COLOR_ACCENT;
                             ctx.fillRect(paperLeft + contentPadding + titleWidth + 1, textY - 12, 2, 15);
                         }
                     }
@@ -190,7 +198,7 @@ const TypewriterIntro: React.FC<TypewriterIntroProps> = ({
                             if (bodyChars > 0 && bodyChars <= article.body.length) {
                                 const lineWidth = ctx.measureText(lineToShow).width;
                                 if (Math.floor(frameCount / 10) % 2 === 0) {
-                                    ctx.fillStyle = COLOR_BLUE;
+                                    ctx.fillStyle = COLOR_ACCENT;
                                     ctx.fillRect(paperLeft + contentPadding + lineWidth + 1, textY - 10, 2, 13);
                                 }
                             }
@@ -212,7 +220,7 @@ const TypewriterIntro: React.FC<TypewriterIntroProps> = ({
             ctx.fillRect(twLeft + twWidth * 0.2, twTop - 3, twWidth * 0.6, 6);
 
             ctx.fillStyle = 'rgba(30, 30, 35, 1)';
-            ctx.fillRect(twLeft + 15, twTop + 20, twWidth - 30, 20);
+            ctx.fillRect(twLeft + 15, twTop + 35, twWidth - 30, 20);
 
             // Keys
             const keyCount = 10;
@@ -226,23 +234,23 @@ const TypewriterIntro: React.FC<TypewriterIntroProps> = ({
                 const isPressed = i === pressedKey && Math.floor(frameCount / 15) % 2 === 0;
                 ctx.fillStyle = isPressed ? 'rgba(80, 80, 90, 1)' : 'rgba(50, 50, 60, 1)';
                 ctx.beginPath();
-                ctx.roundRect(keyX, twTop + 22 + (isPressed ? 2 : 0), keyWidth - 4, 14, 2);
+                ctx.roundRect(keyX, twTop + 37 + (isPressed ? 2 : 0), keyWidth - 4, 14, 2);
                 ctx.fill();
             }
 
             // Decorations
-            ctx.fillStyle = COLOR_BLUE;
+            ctx.fillStyle = COLOR_ACCENT;
             ctx.beginPath();
-            ctx.arc(twLeft + 25, twTop + 12, 4, 0, Math.PI * 2);
+            ctx.arc(twLeft + 25, twTop + 18, 4, 0, Math.PI * 2);
             ctx.fill();
             ctx.beginPath();
-            ctx.arc(twLeft + twWidth - 25, twTop + 12, 4, 0, Math.PI * 2);
+            ctx.arc(twLeft + twWidth - 25, twTop + 18, 4, 0, Math.PI * 2);
             ctx.fill();
 
-            ctx.font = 'bold 8px monospace';
-            ctx.fillStyle = COLOR_BLUE;
+            ctx.font = 'bold 12px monospace';
+            ctx.fillStyle = COLOR_ACCENT;
             ctx.textAlign = 'center';
-            ctx.fillText('AXIUM WRITER', centerX, twTop + 14);
+            ctx.fillText('INTEL BRIEFING', centerX, twTop + 22);
             ctx.textAlign = 'left';
 
             // Check if complete (typing done + 1 second pause)
