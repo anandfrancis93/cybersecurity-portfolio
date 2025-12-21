@@ -5,6 +5,7 @@ import SensorIntro from '../components/SensorIntro';
 import CertificateCard from '../components/CertificateCard';
 import ScrambleText from '../components/ScrambleText';
 import SteganographyRain from '../components/SteganographyRain';
+import ClearanceVerifier from '../components/ClearanceVerifier';
 import { CERTIFICATES, NIST_MODULES } from '../constants';
 import { useIntro } from '../contexts/IntroContext';
 
@@ -37,16 +38,21 @@ const ClearancePage: React.FC = () => {
 
 
                     <div className="flex flex-col md:flex-row md:items-center justify-between mb-8 sm:mb-10 md:mb-12 gap-4 sm:gap-6 relative z-10 w-full">
-                        <div>
+                        <div className="flex-1">
                             <h2 className="text-4xl sm:text-5xl md:text-7xl lg:text-9xl font-display font-bold tracking-tighter text-white leading-[0.9] sm:leading-[0.85] mb-6 sm:mb-8 md:mb-12 uppercase">
                                 <ScrambleText text={module.title} duration={600} disableVisualGlitch={true} triggerReveal={isLocalIntroComplete} autoRepeatInterval={10000} />
                             </h2>
                             <p className="text-base sm:text-lg md:text-xl lg:text-2xl max-w-2xl font-mono leading-tight border-l-2 sm:border-l-4 border-edition-border pl-4 sm:pl-6 md:pl-8 text-white">
                                 {module.description}
                             </p>
+                            <div className="flex flex-wrap gap-2 sm:gap-4 font-mono text-sm sm:text-base uppercase text-gray-600 mt-4 pl-4 sm:pl-6 md:pl-8">
+                                <span className="text-clearance">[{moduleCertificates.length}] Credentials</span>
+                            </div>
                         </div>
-                        <div className="flex flex-wrap gap-2 sm:gap-4 font-mono text-sm sm:text-base uppercase text-gray-600">
-                            <span className="text-clearance">[{moduleCertificates.length}] Credentials</span>
+
+                        {/* Right side - Clearance Verifier Animation */}
+                        <div className="hidden md:flex flex-shrink-0 w-64 lg:w-80 h-72 lg:h-80 items-center justify-center">
+                            <ClearanceVerifier />
                         </div>
                     </div>
 
