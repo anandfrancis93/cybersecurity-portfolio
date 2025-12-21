@@ -47,11 +47,17 @@ const SteganographyRain: React.FC<SteganographyRainProps> = ({
         const ctx = canvas.getContext('2d');
         if (!ctx) return;
 
-        // Set canvas size
+        // Set canvas size with high DPI support
         const resizeCanvas = () => {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-            initGrid(canvas.width, canvas.height);
+            const dpr = window.devicePixelRatio || 1;
+            const width = window.innerWidth;
+            const height = window.innerHeight;
+            canvas.width = width * dpr;
+            canvas.height = height * dpr;
+            canvas.style.width = `${width}px`;
+            canvas.style.height = `${height}px`;
+            ctx.scale(dpr, dpr);
+            initGrid(width, height);
         };
 
         resizeCanvas();

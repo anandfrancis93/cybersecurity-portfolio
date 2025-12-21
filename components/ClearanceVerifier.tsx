@@ -257,13 +257,18 @@ const ClearanceVerifier: React.FC = () => {
             animationFrameId = requestAnimationFrame(draw);
         };
 
+        const dpr = window.devicePixelRatio || 1;
+
         const observer = new ResizeObserver(entries => {
             const entry = entries[0];
             if (entry) {
                 width = entry.contentRect.width;
                 height = entry.contentRect.height;
-                canvas.width = width;
-                canvas.height = height;
+                canvas.width = width * dpr;
+                canvas.height = height * dpr;
+                canvas.style.width = `${width}px`;
+                canvas.style.height = `${height}px`;
+                ctx.scale(dpr, dpr);
             }
         });
 
@@ -273,8 +278,11 @@ const ClearanceVerifier: React.FC = () => {
             const rect = canvas.parentElement.getBoundingClientRect();
             width = rect.width || 280;
             height = rect.height || 320;
-            canvas.width = width;
-            canvas.height = height;
+            canvas.width = width * dpr;
+            canvas.height = height * dpr;
+            canvas.style.width = `${width}px`;
+            canvas.style.height = `${height}px`;
+            ctx.scale(dpr, dpr);
         }
 
         animationFrameId = requestAnimationFrame(draw);

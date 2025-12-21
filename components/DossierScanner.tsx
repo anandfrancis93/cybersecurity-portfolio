@@ -201,13 +201,18 @@ const DossierScanner: React.FC = () => {
             animationFrameId = requestAnimationFrame(draw);
         };
 
+        const dpr = window.devicePixelRatio || 1;
+
         const observer = new ResizeObserver(entries => {
             const entry = entries[0];
             if (entry) {
                 width = entry.contentRect.width;
                 height = entry.contentRect.height;
-                canvas.width = width;
-                canvas.height = height;
+                canvas.width = width * dpr;
+                canvas.height = height * dpr;
+                canvas.style.width = `${width}px`;
+                canvas.style.height = `${height}px`;
+                ctx.scale(dpr, dpr);
                 initDocument();
             }
         });

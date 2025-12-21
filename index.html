@@ -143,6 +143,10 @@
       color: #ffffff;
       /* Set a reasonable base font size that scales */
       font-size: clamp(14px, 0.875rem + 0.1vw, 16px);
+      /* High resolution text rendering */
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      text-rendering: optimizeLegibility;
     }
 
     /* Scanline Effect */

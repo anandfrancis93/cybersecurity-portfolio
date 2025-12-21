@@ -37,8 +37,14 @@ const DigitalImmuneSystem: React.FC = () => {
         const COLOR_RECOVERING = '#FFFFFF'; // White (flash)
 
         const resize = () => {
-            canvas.width = canvas.parentElement?.clientWidth || 300;
-            canvas.height = canvas.parentElement?.clientHeight || 300;
+            const dpr = window.devicePixelRatio || 1;
+            const width = canvas.parentElement?.clientWidth || 300;
+            const height = canvas.parentElement?.clientHeight || 300;
+            canvas.width = width * dpr;
+            canvas.height = height * dpr;
+            canvas.style.width = `${width}px`;
+            canvas.style.height = `${height}px`;
+            ctx.scale(dpr, dpr);
         };
 
         const initNodes = () => {
