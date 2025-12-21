@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Nav from '../components/Nav';
 import FooterBar from '../components/FooterBar';
-import SensorIntro from '../components/SensorIntro';
+import TypewriterIntro from '../components/TypewriterIntro';
 import RadarAnimation from '../components/RadarAnimation';
 import ScrambleText from '../components/ScrambleText';
 import SteganographyRain from '../components/SteganographyRain';
@@ -29,7 +29,7 @@ const IdentifyPage: React.FC = () => {
     }, []);
 
     if (!isLocalIntroComplete) {
-        return <SensorIntro moduleName="asset" accentColor="text-asset" onComplete={handleIntroComplete} />;
+        return <TypewriterIntro moduleName="asset" accentColor="text-asset" onComplete={handleIntroComplete} />;
     }
 
     return (

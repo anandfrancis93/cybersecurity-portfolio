@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Nav from '../components/Nav';
 import FooterBar from '../components/FooterBar';
-import SensorIntro from '../components/SensorIntro';
+import TypewriterIntro from '../components/TypewriterIntro';
 import CertificateCard from '../components/CertificateCard';
 import ScrambleText from '../components/ScrambleText';
 import SteganographyRain from '../components/SteganographyRain';
@@ -26,7 +26,7 @@ const ClearancePage: React.FC = () => {
     }, []);
 
     if (!isLocalIntroComplete) {
-        return <SensorIntro moduleName="clearance" accentColor="text-clearance" onComplete={handleIntroComplete} />;
+        return <TypewriterIntro moduleName="clearance" accentColor="text-clearance" onComplete={handleIntroComplete} />;
     }
 
     return (

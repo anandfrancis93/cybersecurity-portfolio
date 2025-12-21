@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Nav from '../components/Nav';
 import FooterBar from '../components/FooterBar';
-import SensorIntro from '../components/SensorIntro';
+import TypewriterIntro from '../components/TypewriterIntro';
 import BentoGrid from '../components/BentoGrid';
 import ScrambleText from '../components/ScrambleText';
 import SteganographyRain from '../components/SteganographyRain';
@@ -31,7 +31,7 @@ const LabPage: React.FC = () => {
     }, []);
 
     if (!isLocalIntroComplete) {
-        return <SensorIntro moduleName="lab" accentColor="text-white" onComplete={handleIntroComplete} />;
+        return <TypewriterIntro moduleName="lab" accentColor="text-white" onComplete={handleIntroComplete} />;
     }
 
     return (

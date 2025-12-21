@@ -1,7 +1,18 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
-const TypewriterAnimation: React.FC = () => {
+interface TypewriterIntroProps {
+    moduleName: string;
+    accentColor?: string;
+    onComplete: () => void;
+}
+
+const TypewriterIntro: React.FC<TypewriterIntroProps> = ({
+    moduleName,
+    accentColor = 'text-logs',
+    onComplete,
+}) => {
     const canvasRef = useRef<HTMLCanvasElement>(null);
+    const [isComplete, setIsComplete] = useState(false);
 
     useEffect(() => {
         const canvas = canvasRef.current;
@@ -10,18 +21,17 @@ const TypewriterAnimation: React.FC = () => {
         if (!ctx) return;
 
         let animationFrameId: number;
-        let width = 280;
-        let height = 320;
+        let width = 320;
+        let height = 400;
 
         // Colors
         const COLOR_BLUE = '#3B82F6';
-        const COLOR_DIM = 'rgba(255, 255, 255, 0.2)';
         const COLOR_PAPER = 'rgba(20, 20, 25, 0.95)';
         const COLOR_PAPER_SHADOW = 'rgba(0, 0, 0, 0.5)';
         const COLOR_TYPEWRITER = 'rgba(60, 60, 70, 1)';
         const COLOR_DARK = 'rgba(40, 40, 50, 1)';
 
-        // Article content - 38 cybersecurity topics
+        // 38 cybersecurity topics - same as TypewriterAnimation
         const articles = [
             { title: 'CONFIDENTIALITY', subject: 'CIA Triad', body: 'Keeping sensitive information private and only accessible to those who should see it.' },
             { title: 'INTEGRITY', subject: 'CIA Triad', body: 'Making sure data stays accurate and unchanged unless modified by authorized users.' },
@@ -63,114 +73,85 @@ const TypewriterAnimation: React.FC = () => {
             { title: 'PINK HAT', subject: 'Evaluator', body: 'Specialists who evaluate security systems with a focus on unique defensive methods.' }
         ];
 
-        let currentArticleIndex = 0;
-        let articleStartTime = performance.now();
+        // Pick a random article for this load
+        const article = articles[Math.floor(Math.random() * articles.length)];
+        const startTime = performance.now();
         let frameCount = 0;
-
-        const handleGlobalScramble = () => {
-            currentArticleIndex = (currentArticleIndex + 1) % articles.length;
-            articleStartTime = performance.now();
-        };
-
-        window.addEventListener('globalScramble', handleGlobalScramble);
 
         const draw = () => {
             ctx.clearRect(0, 0, width, height);
             frameCount++;
 
-            const article = articles[currentArticleIndex];
-            const elapsed = performance.now() - articleStartTime;
+            const elapsed = performance.now() - startTime;
 
             const centerX = width / 2;
 
             // Typewriter dimensions
             const twWidth = width * 0.85;
             const twHeight = 50;
-            const twTop = height - 70;
+            const twTop = height - 80;
             const twLeft = (width - twWidth) / 2;
 
-            // Paper dimensions - emerges from typewriter
+            // Paper dimensions
             const paperWidth = twWidth * 0.75;
-            const paperMaxHeight = twTop - 30;
+            const paperMaxHeight = twTop - 40;
             const paperLeft = (width - paperWidth) / 2;
 
-            // Paper animation - slides up over 2 seconds
-            const paperProgress = Math.min(1, elapsed / 2000);
+            // Paper animation
+            const paperProgress = Math.min(1, elapsed / 1500);
             const paperHeight = paperMaxHeight * paperProgress;
             const paperTop = twTop - paperHeight;
 
-            // === DRAW PAPER (behind typewriter) ===
+            // === DRAW PAPER ===
             if (paperHeight > 10) {
-                // Paper shadow
                 ctx.fillStyle = COLOR_PAPER_SHADOW;
                 ctx.fillRect(paperLeft + 4, paperTop + 4, paperWidth, paperHeight);
 
-                // Paper (dark)
                 ctx.fillStyle = COLOR_PAPER;
                 ctx.fillRect(paperLeft, paperTop, paperWidth, paperHeight);
 
-                // Paper border
                 ctx.strokeStyle = 'rgba(59, 130, 246, 0.3)';
                 ctx.lineWidth = 1;
                 ctx.strokeRect(paperLeft, paperTop, paperWidth, paperHeight);
 
-                // Left margin line
                 ctx.strokeStyle = 'rgba(59, 130, 246, 0.2)';
-                ctx.lineWidth = 1;
-                ctx.setLineDash([]);
-
                 ctx.beginPath();
                 ctx.moveTo(paperLeft + 15, paperTop);
                 ctx.lineTo(paperLeft + 15, paperTop + paperHeight);
                 ctx.stroke();
 
-                // Content on paper (white text)
                 const contentPadding = 25;
-                let textY = paperTop + 25;
+                let textY = paperTop + 30;
 
-                // Only show content as paper emerges
                 if (paperHeight > 40) {
-                    // Title
-                    ctx.font = 'bold 14px monospace';
+                    ctx.font = 'bold 16px monospace';
                     ctx.fillStyle = '#FFFFFF';
-                    const titleChars = Math.floor((elapsed - 500) / 50);
+                    const titleChars = Math.floor((elapsed - 300) / 40);
                     const titleToShow = article.title.substring(0, Math.max(0, titleChars));
                     ctx.fillText(titleToShow, paperLeft + contentPadding, textY);
 
-                    // Cursor after title
                     if (titleChars > 0 && titleChars <= article.title.length) {
                         const titleWidth = ctx.measureText(titleToShow).width;
                         if (Math.floor(frameCount / 10) % 2 === 0) {
                             ctx.fillStyle = COLOR_BLUE;
-                            ctx.fillRect(paperLeft + contentPadding + titleWidth + 1, textY - 11, 2, 13);
+                            ctx.fillRect(paperLeft + contentPadding + titleWidth + 1, textY - 12, 2, 15);
                         }
                     }
                 }
 
                 if (paperHeight > 70) {
-                    textY += 25;
-                    // Subject line
-                    ctx.font = '10px monospace';
+                    textY += 28;
+                    ctx.font = '11px monospace';
                     ctx.fillStyle = 'rgba(255, 255, 255, 0.5)';
-                    const subjectDelay = 500 + article.title.length * 50 + 300;
-                    const subjectChars = Math.floor((elapsed - subjectDelay) / 40);
+                    const subjectDelay = 300 + article.title.length * 40 + 200;
+                    const subjectChars = Math.floor((elapsed - subjectDelay) / 30);
                     const subjectText = `RE: ${article.subject}`;
                     const subjectToShow = subjectText.substring(0, Math.max(0, subjectChars));
                     ctx.fillText(subjectToShow, paperLeft + contentPadding, textY);
 
-                    // Cursor after subject
-                    if (subjectChars > 0 && subjectChars <= subjectText.length) {
-                        const subjectWidth = ctx.measureText(subjectToShow).width;
-                        if (Math.floor(frameCount / 10) % 2 === 0) {
-                            ctx.fillStyle = COLOR_BLUE;
-                            ctx.fillRect(paperLeft + contentPadding + subjectWidth + 1, textY - 8, 2, 10);
-                        }
-                    }
-
-                    // Divider line
                     if (subjectChars >= subjectText.length) {
-                        textY += 12;
-                        ctx.strokeStyle = 'rgba(150, 150, 150, 0.4)';
+                        textY += 15;
+                        ctx.strokeStyle = 'rgba(150, 150, 150, 0.3)';
                         ctx.beginPath();
                         ctx.moveTo(paperLeft + contentPadding, textY);
                         ctx.lineTo(paperLeft + paperWidth - 15, textY);
@@ -178,15 +159,13 @@ const TypewriterAnimation: React.FC = () => {
                     }
                 }
 
-                if (paperHeight > 110) {
-                    textY += 20;
-                    // Body text
-                    ctx.font = '11px monospace';
+                if (paperHeight > 120) {
+                    textY += 25;
+                    ctx.font = '12px monospace';
                     ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
-                    const bodyDelay = 500 + article.title.length * 50 + 300 + (article.subject.length + 4) * 40 + 500;
-                    const bodyChars = Math.floor((elapsed - bodyDelay) / 35);
+                    const bodyDelay = 300 + article.title.length * 40 + 200 + (article.subject.length + 4) * 30 + 300;
+                    const bodyChars = Math.floor((elapsed - bodyDelay) / 25);
 
-                    // Word wrap body text
                     const words = article.body.split(' ');
                     let line = '';
                     const maxWidth = paperWidth - contentPadding - 20;
@@ -196,27 +175,23 @@ const TypewriterAnimation: React.FC = () => {
                         const testLine = line + (line ? ' ' : '') + word;
                         if (ctx.measureText(testLine).width > maxWidth && line) {
                             const lineToShow = line.substring(0, Math.max(0, bodyChars - charCount + line.length));
-                            if (lineToShow) {
-                                ctx.fillText(lineToShow, paperLeft + contentPadding, textY);
-                            }
+                            if (lineToShow) ctx.fillText(lineToShow, paperLeft + contentPadding, textY);
                             charCount += line.length + 1;
-                            textY += 16;
+                            textY += 18;
                             line = word;
                         } else {
                             line = testLine;
                         }
                     }
-                    // Last line
                     if (line) {
                         const lineToShow = line.substring(0, Math.max(0, bodyChars - charCount + line.length));
                         if (lineToShow) {
                             ctx.fillText(lineToShow, paperLeft + contentPadding, textY);
-                            // Cursor
                             if (bodyChars > 0 && bodyChars <= article.body.length) {
                                 const lineWidth = ctx.measureText(lineToShow).width;
                                 if (Math.floor(frameCount / 10) % 2 === 0) {
                                     ctx.fillStyle = COLOR_BLUE;
-                                    ctx.fillRect(paperLeft + contentPadding + lineWidth + 1, textY - 9, 2, 11);
+                                    ctx.fillRect(paperLeft + contentPadding + lineWidth + 1, textY - 10, 2, 13);
                                 }
                             }
                         }
@@ -225,32 +200,27 @@ const TypewriterAnimation: React.FC = () => {
             }
 
             // === DRAW TYPEWRITER ===
-            // Main body
             ctx.fillStyle = COLOR_TYPEWRITER;
             ctx.beginPath();
             ctx.roundRect(twLeft, twTop, twWidth, twHeight, 8);
             ctx.fill();
 
-            // Top roller/bar
             ctx.fillStyle = COLOR_DARK;
             ctx.fillRect(twLeft + 10, twTop - 8, twWidth - 20, 12);
 
-            // Paper slot
             ctx.fillStyle = 'rgba(20, 20, 25, 1)';
             ctx.fillRect(twLeft + twWidth * 0.2, twTop - 3, twWidth * 0.6, 6);
 
-            // Keys area
             ctx.fillStyle = 'rgba(30, 30, 35, 1)';
             ctx.fillRect(twLeft + 15, twTop + 20, twWidth - 30, 20);
 
-            // Individual keys - random pressing (slower, more realistic)
+            // Keys
             const keyCount = 10;
             const keyWidth = (twWidth - 50) / keyCount;
-            // Calculate when all typing is finished
-            const typingEndTime = 500 + article.title.length * 50 + 300 + (article.subject.length + 4) * 40 + 500 + article.body.length * 35;
-            // Generate pseudo-random key press pattern - only while typing
+            const typingEndTime = 300 + article.title.length * 40 + 200 + (article.subject.length + 4) * 30 + 300 + article.body.length * 25;
             const isTyping = elapsed < typingEndTime;
             const pressedKey = isTyping ? Math.floor((Math.sin(frameCount * 0.03) * 5 + Math.cos(frameCount * 0.05) * 3 + 8) % keyCount) : -1;
+
             for (let i = 0; i < keyCount; i++) {
                 const keyX = twLeft + 20 + i * keyWidth;
                 const isPressed = i === pressedKey && Math.floor(frameCount / 15) % 2 === 0;
@@ -260,7 +230,7 @@ const TypewriterAnimation: React.FC = () => {
                 ctx.fill();
             }
 
-            // Decorative elements on typewriter
+            // Decorations
             ctx.fillStyle = COLOR_BLUE;
             ctx.beginPath();
             ctx.arc(twLeft + 25, twTop + 12, 4, 0, Math.PI * 2);
@@ -269,45 +239,48 @@ const TypewriterAnimation: React.FC = () => {
             ctx.arc(twLeft + twWidth - 25, twTop + 12, 4, 0, Math.PI * 2);
             ctx.fill();
 
-            // Label
             ctx.font = 'bold 8px monospace';
             ctx.fillStyle = COLOR_BLUE;
             ctx.textAlign = 'center';
             ctx.fillText('AXIUM WRITER', centerX, twTop + 14);
             ctx.textAlign = 'left';
 
+            // Check if complete (typing done + 1 second pause)
+            if (elapsed > typingEndTime + 1000 && !isComplete) {
+                setIsComplete(true);
+            }
+
             animationFrameId = requestAnimationFrame(draw);
         };
 
-        const observer = new ResizeObserver(entries => {
-            const entry = entries[0];
-            if (entry) {
-                width = entry.contentRect.width;
-                height = entry.contentRect.height;
-                canvas.width = width;
-                canvas.height = height;
-            }
-        });
-
-        if (canvas.parentElement) {
-            observer.observe(canvas.parentElement);
-            const rect = canvas.parentElement.getBoundingClientRect();
-            width = rect.width || 280;
-            height = rect.height || 320;
-            canvas.width = width;
-            canvas.height = height;
-        }
+        // Set canvas size
+        canvas.width = width;
+        canvas.height = height;
 
         animationFrameId = requestAnimationFrame(draw);
 
         return () => {
-            observer.disconnect();
             cancelAnimationFrame(animationFrameId);
-            window.removeEventListener('globalScramble', handleGlobalScramble);
         };
-    }, []);
+    }, [moduleName, isComplete]);
 
-    return <canvas ref={canvasRef} className="w-full h-full" />;
+    // Call onComplete when animation finishes
+    useEffect(() => {
+        if (isComplete) {
+            onComplete();
+        }
+    }, [isComplete, onComplete]);
+
+    return (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-[#020202]">
+            <div className="flex flex-col items-center gap-6">
+                <canvas ref={canvasRef} className="w-80 h-100" />
+                <p className="text-gray-500 text-sm font-mono animate-pulse">
+                    LOADING {moduleName.toUpperCase()}...
+                </p>
+            </div>
+        </div>
+    );
 };
 
-export default TypewriterAnimation;
+export default TypewriterIntro;

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Nav from '../components/Nav';
 import FooterBar from '../components/FooterBar';
-import SensorIntro from '../components/SensorIntro';
+import TypewriterIntro from '../components/TypewriterIntro';
 import SteganographyRain from '../components/SteganographyRain';
 import ScrambleText from '../components/ScrambleText';
 import { useIntro } from '../contexts/IntroContext';
@@ -147,7 +147,7 @@ const HandshakePage: React.FC = () => {
     }, []);
 
     if (!isLocalIntroComplete) {
-        return <SensorIntro moduleName="handshake" accentColor="text-handshake" onComplete={handleIntroComplete} />;
+        return <TypewriterIntro moduleName="handshake" accentColor="text-handshake" onComplete={handleIntroComplete} />;
     }
 
     return (

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { ChevronRight, Terminal, Building, ArrowUpRight } from 'lucide-react';
 import Nav from '../components/Nav';
 import FooterBar from '../components/FooterBar';
-import SensorIntro from '../components/SensorIntro';
+import TypewriterIntro from '../components/TypewriterIntro';
 import ExperienceCard from '../components/ExperienceCard';
 import ScrambleText from '../components/ScrambleText';
 import SteganographyRain from '../components/SteganographyRain';
@@ -27,7 +27,7 @@ const ReconPage: React.FC = () => {
     }, []);
 
     if (!isLocalIntroComplete) {
-        return <SensorIntro moduleName="recon" accentColor="text-recon" onComplete={handleIntroComplete} />;
+        return <TypewriterIntro moduleName="recon" accentColor="text-recon" onComplete={handleIntroComplete} />;
     }
 
     return (

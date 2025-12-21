@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Nav from '../components/Nav';
 import FooterBar from '../components/FooterBar';
-import SensorIntro from '../components/SensorIntro';
+import TypewriterIntro from '../components/TypewriterIntro';
 import ScrambleText from '../components/ScrambleText';
 import SteganographyRain from '../components/SteganographyRain';
 import TypewriterAnimation from '../components/TypewriterAnimation';
@@ -36,7 +36,7 @@ const LogsPage: React.FC = () => {
     }, []);
 
     if (!isLocalIntroComplete) {
-        return <SensorIntro moduleName="logs" accentColor="text-logs" onComplete={handleIntroComplete} />;
+        return <TypewriterIntro moduleName="logs" accentColor="text-logs" onComplete={handleIntroComplete} />;
     }
 
     return (
