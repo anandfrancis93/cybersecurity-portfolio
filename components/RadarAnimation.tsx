@@ -54,7 +54,7 @@ const RadarAnimation: React.FC = () => {
     const [attackIndex, setAttackIndex] = useState(0);
 
     useEffect(() => {
-        const interval = setInterval(() => {
+        const handleGlobalScramble = () => {
             // Generate random position for the threat with new key to force remount
             setThreat(prev => ({
                 angle: Math.random() * 360,
@@ -63,9 +63,11 @@ const RadarAnimation: React.FC = () => {
             }));
             // Change attack type at the same time
             setAttackIndex(prev => (prev + 1) % ATTACK_TYPES.length);
-        }, 7000); // 7 seconds
+        };
 
-        return () => clearInterval(interval);
+        window.addEventListener('globalScramble', handleGlobalScramble);
+
+        return () => window.removeEventListener('globalScramble', handleGlobalScramble);
     }, []);
 
     // Calculate threat position
