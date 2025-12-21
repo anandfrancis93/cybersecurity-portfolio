@@ -51,7 +51,6 @@ const DossierScanner: React.FC = () => {
             'SKILLS: [REDACTED]',
             'THREAT LVL: LOW',
             'TRUST SCORE: 100%',
-            '.....................',
         ];
 
         const initDocument = () => {
@@ -61,19 +60,20 @@ const DossierScanner: React.FC = () => {
             docBottom = height - docPadding;
 
             textLines = [];
-            const lineHeight = 18;
+            const lineHeight = 22;
             const startY = docTop + 38;
 
-            for (let i = 0; i < 10; i++) {
+            for (let i = 0; i < dataFragments.length; i++) {
                 const y = startY + i * lineHeight;
                 if (y > docBottom - 20) break;
 
+                const text = dataFragments[i];
                 textLines.push({
                     y,
                     width: 0.4 + Math.random() * 0.5, // 40-90% of doc width
-                    isRedacted: Math.random() < 0.15,
+                    isRedacted: false,
                     revealed: 0,
-                    text: dataFragments[i % dataFragments.length]
+                    text: text
                 });
             }
 
