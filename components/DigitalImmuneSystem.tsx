@@ -137,7 +137,9 @@ const DigitalImmuneSystem: React.FC = () => {
             rotationX += 0.002;
 
             // Trigger Random Infection
-            if (Math.random() < 0.02) { // Occasional bursts
+            const currentInfectedCount = nodes.filter(n => n.state === 'infected').length;
+            // Limit to ~3 simultaneous clusters (approx 4 nodes per cluster = 12 nodes max)
+            if (Math.random() < 0.02 && currentInfectedCount < 12) {
                 triggerInfection();
             }
 
@@ -188,20 +190,25 @@ const DigitalImmuneSystem: React.FC = () => {
 
                     if (distSq < connectionDistance * connectionDistance) {
                         // Valid connection
+                        // Valid connection
                         const alpha = Math.min(1, Math.max(0.1, (p1.scale - 0.5))) * 0.4;
 
                         let strokeColor = COLOR_SECURE;
+                        let lineWidth = 0.5;
+
+                        // Chaotic Glitch for infected connections
                         if (nodes[i].state === 'infected' || nodes[j].state === 'infected') {
-                            strokeColor = COLOR_INFECTED;
-                            ctx.lineWidth = 1.5;
+                            strokeColor = Math.random() > 0.2 ? COLOR_INFECTED : '#FFFFFF'; // Mostly Red, occasional White flash
+                            lineWidth = Math.random() * 3 + 0.5; // Random width jitter
+                            // Removed expensive shadowBlur for performance
                         } else if (nodes[i].state === 'recovering' || nodes[j].state === 'recovering') {
                             strokeColor = COLOR_RECOVERING;
-                        } else {
-                            ctx.lineWidth = 0.5;
+                            lineWidth = 1.5;
                         }
 
+                        ctx.lineWidth = lineWidth;
                         ctx.beginPath();
-                        ctx.moveTo(p1.x, p1.y);
+                        ctx.moveTo(p1.x + (Math.random() - 0.5) * (lineWidth > 1 ? 2 : 0), p1.y + (Math.random() - 0.5) * (lineWidth > 1 ? 2 : 0)); // Micro-jitter
                         ctx.lineTo(p2.x, p2.y);
                         ctx.strokeStyle = strokeColor;
                         ctx.globalAlpha = alpha;
@@ -213,16 +220,28 @@ const DigitalImmuneSystem: React.FC = () => {
             // Draw Nodes (Dots)
             projectedNodes.forEach(p => {
                 const alpha = Math.min(1, Math.max(0.2, (p.scale - 0.5)));
-                const size = 1.5 * p.scale;
+                let size = 1.5 * p.scale;
 
                 ctx.globalAlpha = alpha;
                 ctx.fillStyle = p.node.currentColor;
 
-                // Add glow for active states
+                // Add glow and glitch for active states
                 if (p.node.state !== 'secure') {
                     ctx.shadowBlur = 10;
                     ctx.shadowColor = p.node.currentColor;
-                    ctx.fillStyle = '#FFFFFF'; // Bright white core for active
+
+                    if (p.node.state === 'infected') {
+                        // Severe Glitch Strobe (Refined for more RED)
+                        ctx.fillStyle = Math.random() > 0.2 ? COLOR_INFECTED : '#FFFFFF';
+                        size = size * (0.8 + Math.random() * 0.8); // Size instability
+
+                        // Jitter position
+                        p.x += (Math.random() - 0.5) * 3;
+                        p.y += (Math.random() - 0.5) * 3;
+                    } else {
+                        // Recovering - clean white flash
+                        ctx.fillStyle = '#FFFFFF';
+                    }
                 } else {
                     ctx.shadowBlur = 0;
                 }
