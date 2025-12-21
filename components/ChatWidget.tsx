@@ -86,7 +86,7 @@ const ChatWidget: React.FC = () => {
   }
 
   return (
-    <div className="fixed bottom-4 sm:bottom-6 right-3 sm:right-6 z-50 flex flex-col items-end font-mono">
+    <div className="fixed bottom-6 sm:bottom-8 right-3 sm:right-6 z-50 flex flex-col items-end font-mono">
       {/* Chat Window */}
       {isOpen && (
         <div
