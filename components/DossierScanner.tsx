@@ -83,13 +83,11 @@ const DossierScanner: React.FC = () => {
         const draw = () => {
             ctx.clearRect(0, 0, width, height);
 
-            // Update scan position
-            scanY += SCAN_SPEED;
-            if (scanY > docBottom + 30) {
-                scanY = docTop - 30;
-                // Reset reveals
-                textLines.forEach(line => line.revealed = 0);
+            // Update scan position (only if still within document bounds)
+            if (scanY <= docBottom + 30) {
+                scanY += SCAN_SPEED;
             }
+            // Scan waits at bottom until globalScramble resets it
 
             // Update text line reveals
             textLines.forEach(line => {
@@ -97,7 +95,8 @@ const DossierScanner: React.FC = () => {
                 if (dist < 15) {
                     line.revealed = Math.min(1, line.revealed + 0.2);
                 } else if (scanY > line.y) {
-                    line.revealed = Math.max(0.3, line.revealed - 0.01); // Fade but stay partially visible
+                    // Keep text fully visible after scan passes
+                    line.revealed = 1;
                 }
             });
 
@@ -224,9 +223,22 @@ const DossierScanner: React.FC = () => {
         initDocument();
         animationFrameId = requestAnimationFrame(draw);
 
+        const handleGlobalScramble = () => {
+            // Reset scan to top
+            scanY = docTop - 20;
+            // Randomly toggle redactions to simulate changing intel
+            textLines.forEach(line => {
+                line.isRedacted = Math.random() > 0.8;
+                line.revealed = 0; // Reset reveal state
+            });
+        };
+
+        window.addEventListener('globalScramble', handleGlobalScramble);
+
         return () => {
             observer.disconnect();
             cancelAnimationFrame(animationFrameId);
+            window.removeEventListener('globalScramble', handleGlobalScramble);
         };
     }, []);
 
