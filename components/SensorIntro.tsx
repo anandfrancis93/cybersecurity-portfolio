@@ -34,7 +34,7 @@ const SENSOR_LABELS: Record<SensorType, { name: string; status: string }> = {
 
 const SensorIntro: React.FC<SensorIntroProps> = ({
     moduleName,
-    accentColor = 'text-nist-identify',
+    accentColor = 'text-asset',
     onComplete,
 }) => {
     const [phase, setPhase] = useState<'scanning' | 'complete' | 'fadeout'>('scanning');

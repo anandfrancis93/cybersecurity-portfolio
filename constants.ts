@@ -2,11 +2,11 @@ import { Project, Experience, Certificate } from './types';
 import { Shield, Brain, Network, Terminal, Server, Smartphone, Code, Database, UserCheck, Users, Search, Activity, AlertCircle, RefreshCw, FileSearch, MessageSquare } from 'lucide-react';
 
 export const NAV_LINKS = [
-  { name: 'ASSET', href: '/about-me', color: 'bg-nist-identify' },
-  { name: 'LAB', href: '/projects', color: 'bg-nist-protect' },
-  { name: 'RECON', href: '/work-experience', color: 'bg-nist-detect' },
-  { name: 'CLEARANCE', href: '/certifications', color: 'bg-nist-recover' },
-  { name: 'HANDSHAKE', href: '/contact-us', color: 'bg-nist-respond' },
+  { name: 'ASSET', href: '/about-me', color: 'bg-asset' },
+  { name: 'LAB', href: '/projects', color: 'bg-lab' },
+  { name: 'RECON', href: '/work-experience', color: 'bg-recon' },
+  { name: 'CLEARANCE', href: '/certifications', color: 'bg-clearance' },
+  { name: 'HANDSHAKE', href: '/contact-us', color: 'bg-handshake' },
 ];
 
 export const NIST_MODULES = [
@@ -15,18 +15,18 @@ export const NIST_MODULES = [
     title: 'ASSET',
     icon: Search,
     description: 'Defining core competencies and professional profile.',
-    colorClass: 'text-nist-identify',
-    borderClass: 'border-nist-identify',
-    bgClass: 'bg-nist-identify'
+    colorClass: 'text-asset',
+    borderClass: 'border-asset',
+    bgClass: 'bg-asset'
   },
   {
     id: 'projects',
     title: 'LAB',
     icon: Shield,
     description: 'Defense architectures and secure development projects.',
-    colorClass: 'text-nist-protect',
-    borderClass: 'border-nist-protect',
-    bgClass: 'bg-nist-protect'
+    colorClass: 'text-gray-300',
+    borderClass: 'border-gray-500',
+    bgClass: 'bg-gray-500'
   },
   {
     id: 'work-experience',
@@ -35,18 +35,18 @@ export const NIST_MODULES = [
     description: `Analyzed AI governance frameworks
 Evaluated latest AI products
 Delivered enterprise and consumer technical support`,
-    colorClass: 'text-nist-detect',
-    borderClass: 'border-nist-detect',
-    bgClass: 'bg-nist-detect'
+    colorClass: 'text-recon',
+    borderClass: 'border-recon',
+    bgClass: 'bg-recon'
   },
   {
     id: 'certifications',
     title: 'CLEARANCE',
     icon: RefreshCw,
     description: 'Resilience through industry-standard certifications.',
-    colorClass: 'text-nist-recover',
-    borderClass: 'border-nist-recover',
-    bgClass: 'bg-nist-recover'
+    colorClass: 'text-clearance',
+    borderClass: 'border-clearance',
+    bgClass: 'bg-clearance'
   },
 ];
 

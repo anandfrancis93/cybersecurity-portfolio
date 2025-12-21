@@ -23,14 +23,14 @@ const Nav: React.FC = () => {
   const currentSection = location.pathname.replace('/', '') || 'about-me';
 
   return (
-    <nav className="fixed top-0 left-0 w-full z-50 bg-[#050505] border-b border-edition-border text-sm md:text-base font-mono uppercase tracking-wider text-gray-400 selection:bg-nist-identify selection:text-black">
+    <nav className="fixed top-0 left-0 w-full z-50 bg-[#050505] border-b border-edition-border text-sm md:text-base font-mono uppercase tracking-wider text-gray-400 selection:bg-asset selection:text-black">
       <div className="relative max-w-[1600px] mx-auto h-12 px-3 sm:px-6 lg:px-8 flex items-center justify-between">
 
         {/* LOGO */}
         <div className="flex items-center gap-6 z-10 relative">
-          <Link to="/about-me" className="flex items-center gap-2 text-white hover:text-nist-identify transition-colors group">
-            <ShieldCheck className="w-4 h-4 text-nist-identify animate-pulse" />
-            <span className="font-bold group-hover:underline decoration-nist-identify underline-offset-4">ANAND.SYS</span>
+          <Link to="/about-me" className="flex items-center gap-2 text-white hover:text-asset transition-colors group">
+            <ShieldCheck className="w-4 h-4 text-asset animate-pulse" />
+            <span className="font-bold group-hover:underline decoration-asset underline-offset-4">ANAND.SYS</span>
           </Link>
         </div>
 
@@ -62,7 +62,7 @@ const Nav: React.FC = () => {
           </div>
 
           <button
-            className="lg:hidden flex items-center justify-center w-8 h-8 text-white hover:text-nist-identify transition-colors"
+            className="lg:hidden flex items-center justify-center w-8 h-8 text-white hover:text-asset transition-colors"
             onClick={() => setIsMenuOpen(!isMenuOpen)}
             aria-label="Toggle menu"
             aria-expanded={isMenuOpen}

@@ -6,18 +6,24 @@ import ScrambleText from './ScrambleText';
 interface BentoGridProps {
   projects: Project[];
   moduleColor?: string;
+  singleColumn?: boolean;
 }
 
-const BentoGrid: React.FC<BentoGridProps> = ({ projects, moduleColor = 'text-nist-protect' }) => {
+const BentoGrid: React.FC<BentoGridProps> = ({ projects, moduleColor = 'text-nist-protect', singleColumn = false }) => {
   const accentBorder = moduleColor.replace('text-', 'border-');
   const accentBg = moduleColor.replace('text-', 'bg-');
 
+  const gridClass = singleColumn
+    ? "grid grid-cols-1 gap-3 sm:gap-4 md:gap-6"
+    : "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-12 gap-3 sm:gap-4 md:gap-6";
+
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-12 gap-3 sm:gap-4 md:gap-6">
+    <div className={gridClass}>
       {projects.map((project, index) => {
-        const colSpan = project.cols ? `lg:col-span-${project.cols}` : 'lg:col-span-4';
-        const rowSpan = project.rows ? `lg:row-span-${project.rows}` : 'lg:row-span-1';
-        const heightClass = project.rows && project.rows > 1 ? 'min-h-[300px] sm:min-h-[350px] lg:min-h-[500px]' : 'min-h-[220px] sm:min-h-[250px]';
+        // In single column mode, ignore cols/rows for consistent sizing
+        const colSpan = singleColumn ? '' : (project.cols ? `lg:col-span-${project.cols}` : 'lg:col-span-4');
+        const rowSpan = singleColumn ? '' : (project.rows ? `lg:row-span-${project.rows}` : 'lg:row-span-1');
+        const heightClass = singleColumn ? '' : (project.rows && project.rows > 1 ? 'min-h-[300px] sm:min-h-[350px] lg:min-h-[500px]' : 'min-h-[220px] sm:min-h-[250px]');
         const Icon = project.icon;
 
         return (
@@ -28,6 +34,7 @@ const BentoGrid: React.FC<BentoGridProps> = ({ projects, moduleColor = 'text-nis
               bg-[#0A0A0A] border border-edition-border overflow-hidden
               hover:${accentBorder} transition-colors duration-300
               active:scale-[0.99] touch-manipulation
+              ${singleColumn ? 'py-4 sm:py-5 md:py-6' : ''}
             `}
           >
             <div className={`absolute top-0 left-0 w-2 h-2 border-t border-l ${accentBorder} opacity-50 group-hover:opacity-100 transition-opacity`}></div>
@@ -47,19 +54,14 @@ const BentoGrid: React.FC<BentoGridProps> = ({ projects, moduleColor = 'text-nis
             </div>
 
             <div className="relative z-10 p-4 sm:p-5 md:p-6 flex flex-col h-full justify-between">
-              <div className="flex justify-between items-start">
-                <div className={`flex items-center gap-1.5 sm:gap-2 text-sm sm:text-base font-mono uppercase tracking-widest ${moduleColor}`}>
-                  <Activity size={12} className="sm:w-4 sm:h-4" />
-                  <span>MODULE_{project.id.padStart(2, '0')}</span>
-                </div>
-                <div className={`${accentBg}/10 border ${accentBorder}/30 p-1 sm:p-1.5 rounded-sm group-hover:${accentBg} group-hover:text-black transition-all`}>
-                  <ArrowUpRight size={12} className="sm:w-3.5 sm:h-3.5" />
-                </div>
-              </div>
-
-              <div className="mt-3 sm:mt-4">
-                <div className="inline-block px-2 sm:px-3 py-1 mb-2 sm:mb-3 text-sm sm:text-base font-mono border border-gray-800 bg-black text-gray-400 uppercase">
-                  {project.category}
+              <div>
+                <div className="flex justify-between items-start mb-2 sm:mb-3">
+                  <div className="inline-block px-2 sm:px-3 py-1 text-sm sm:text-base font-mono border border-gray-800 bg-black text-gray-400 uppercase">
+                    {project.category}
+                  </div>
+                  <div className={`${accentBg}/10 border ${accentBorder}/30 p-1 sm:p-1.5 rounded-sm group-hover:${accentBg} group-hover:text-black transition-all`}>
+                    <ArrowUpRight size={12} className="sm:w-3.5 sm:h-3.5" />
+                  </div>
                 </div>
                 <h3 className="text-xl sm:text-2xl md:text-3xl font-display font-bold text-white mb-1.5 sm:mb-2 group-hover:text-white transition-colors leading-tight">
                   <ScrambleText text={project.title} duration={600} disableVisualGlitch={true} triggerReveal={true} autoRepeatInterval={10000} />

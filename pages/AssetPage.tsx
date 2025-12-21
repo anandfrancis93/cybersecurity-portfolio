@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Nav from '../components/Nav';
 import FooterBar from '../components/FooterBar';
 import SensorIntro from '../components/SensorIntro';
@@ -7,34 +7,46 @@ import ScrambleText from '../components/ScrambleText';
 import SteganographyRain from '../components/SteganographyRain';
 import { NIST_MODULES, PROFILE } from '../constants';
 import { User, Terminal, Cpu, ChevronDown, ChevronUp } from 'lucide-react';
+import { useIntro } from '../contexts/IntroContext';
 
 const IdentifyPage: React.FC = () => {
-    const [isIntroComplete, setIsIntroComplete] = useState(false);
+    const [isLocalIntroComplete, setIsLocalIntroComplete] = useState(false);
     const [showAllSkills, setShowAllSkills] = useState(false);
+    const { setIsIntroComplete } = useIntro();
 
     const module = NIST_MODULES.find(m => m.id === 'about-me')!;
     const accentColor = module.colorClass;
     const visibleSkills = showAllSkills ? PROFILE.skills : PROFILE.skills.slice(0, 6);
 
-    if (!isIntroComplete) {
-        return <SensorIntro moduleName="identify" accentColor="text-nist-identify" onComplete={() => setIsIntroComplete(true)} />;
+    const handleIntroComplete = () => {
+        setIsLocalIntroComplete(true);
+        setIsIntroComplete(true);
+    };
+
+    // Reset global intro state when navigating to this page
+    useEffect(() => {
+        setIsIntroComplete(false);
+    }, []);
+
+    if (!isLocalIntroComplete) {
+        return <SensorIntro moduleName="asset" accentColor="text-asset" onComplete={handleIntroComplete} />;
     }
 
     return (
-        <div className="min-h-screen bg-[#020202] text-white font-sans pt-24 md:pt-12 animate-fade-in selection:bg-nist-identify selection:text-black flex flex-col">
-            <SteganographyRain color="#4bb2e0" revealRadius={180} />
+        <div className="min-h-screen bg-[#020202] text-white font-sans pt-24 md:pt-12 animate-fade-in selection:bg-asset selection:text-black flex flex-col">
+            <SteganographyRain color="#22D3EE" revealRadius={180} />
             <Nav />
             <main className="max-w-[1600px] mx-auto px-3 sm:px-6 lg:px-8 pb-20 md:pb-32 flex-1">
                 <section className="py-12 sm:py-16 md:py-20 relative">
                     <div className="absolute inset-0 bg-cyber-grid opacity-30 pointer-events-none"></div>
-                    <div className="absolute top-0 right-0 w-1/2 h-full bg-gradient-to-l from-nist-identify/5 to-transparent pointer-events-none"></div>
+                    <div className="absolute top-0 right-0 w-1/2 h-full bg-gradient-to-l from-asset/5 to-transparent pointer-events-none"></div>
 
                     <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between mb-12 sm:mb-16 md:mb-24 relative z-10 gap-8 lg:gap-12">
                         {/* Left side - Name and details */}
                         <div className="max-w-4xl flex-1">
                             <h1 className="text-4xl sm:text-5xl md:text-7xl lg:text-9xl font-display font-bold tracking-tighter text-white leading-[0.9] sm:leading-[0.85] mb-6 sm:mb-8 md:mb-12">
-                                <ScrambleText text="ANAND" duration={600} disableVisualGlitch={true} triggerReveal={isIntroComplete} autoRepeatInterval={10000} /> <br />
-                                <ScrambleText text="FRANCIS" className="text-nist-identify" duration={600} disableVisualGlitch={true} triggerReveal={isIntroComplete} autoRepeatInterval={10000} />
+                                <ScrambleText text="ANAND" duration={600} disableVisualGlitch={true} triggerReveal={isLocalIntroComplete} autoRepeatInterval={10000} /> <br />
+                                <ScrambleText text="FRANCIS" className="text-asset" duration={600} disableVisualGlitch={true} triggerReveal={isLocalIntroComplete} autoRepeatInterval={10000} />
                             </h1>
 
                             <div className={`text-base sm:text-lg md:text-xl lg:text-2xl max-w-2xl font-mono leading-tight border-l-2 sm:border-l-4 ${module.borderClass} pl-4 sm:pl-6 md:pl-8 mb-6 md:mb-8 flex flex-col gap-1.5 sm:gap-2 text-white`}>

@@ -31,7 +31,7 @@ const FooterBar: React.FC = () => {
                         <span className="text-xs sm:text-sm text-gray-600 uppercase tracking-widest font-mono text-center sm:text-right">
                             © 2026 EDITION <span className="hidden sm:inline">//</span> <br className="sm:hidden" />RESPOND_PROTOCOL_ACTIVE
                         </span>
-                        <button onClick={scrollToTop} className="p-3 sm:p-4 border border-edition-border hover:bg-white hover:text-black transition-all">
+                        <button onClick={scrollToTop} className="w-12 h-12 sm:w-14 sm:h-14 flex items-center justify-center border border-edition-border hover:bg-white hover:text-black transition-all">
                             <ArrowUp className="w-4 h-4 sm:w-5 sm:h-5" />
                         </button>
                     </div>

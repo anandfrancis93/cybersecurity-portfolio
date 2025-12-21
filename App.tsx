@@ -6,19 +6,22 @@ import ReconPage from './pages/ReconPage';
 import ClearancePage from './pages/ClearancePage';
 import HandshakePage from './pages/HandshakePage';
 import ChatWidget from './components/ChatWidget';
+import { IntroProvider } from './contexts/IntroContext';
 
 const App: React.FC = () => {
    return (
       <Router>
-         <Routes>
-            <Route path="/" element={<Navigate to="/about-me" replace />} />
-            <Route path="/about-me" element={<AssetPage />} />
-            <Route path="/projects" element={<LabPage />} />
-            <Route path="/work-experience" element={<ReconPage />} />
-            <Route path="/certifications" element={<ClearancePage />} />
-            <Route path="/contact-us" element={<HandshakePage />} />
-         </Routes>
-         <ChatWidget />
+         <IntroProvider>
+            <Routes>
+               <Route path="/" element={<Navigate to="/about-me" replace />} />
+               <Route path="/about-me" element={<AssetPage />} />
+               <Route path="/projects" element={<LabPage />} />
+               <Route path="/work-experience" element={<ReconPage />} />
+               <Route path="/certifications" element={<ClearancePage />} />
+               <Route path="/contact-us" element={<HandshakePage />} />
+            </Routes>
+            <ChatWidget />
+         </IntroProvider>
       </Router>
    );
 };

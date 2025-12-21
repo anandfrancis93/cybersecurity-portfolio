@@ -1,9 +1,23 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { MessageSquare, X, Send, Terminal, Loader2, Minimize2 } from 'lucide-react';
+import { useLocation } from 'react-router-dom';
 import { sendMessageToGemini } from '../services/geminiService';
 import { ChatMessage, MessageRole } from '../types';
+import { useIntro } from '../contexts/IntroContext';
+
+// Map routes to their accent colors
+const ROUTE_COLORS: Record<string, { text: string; border: string; bg: string; hex: string }> = {
+  '/about-me': { text: 'text-asset', border: 'border-asset', bg: 'bg-asset', hex: '#22D3EE' },
+  '/projects': { text: 'text-lab', border: 'border-lab', bg: 'bg-lab', hex: '#A855F7' },
+  '/work-experience': { text: 'text-recon', border: 'border-recon', bg: 'bg-recon', hex: '#F59E0B' },
+  '/certifications': { text: 'text-clearance', border: 'border-clearance', bg: 'bg-clearance', hex: '#22C55E' },
+  '/contact-us': { text: 'text-handshake', border: 'border-handshake', bg: 'bg-handshake', hex: '#14B8A6' },
+};
+
+const DEFAULT_COLOR = { text: 'text-edition-accent', border: 'border-edition-accent', bg: 'bg-edition-accent', hex: '#00FF9D' };
 
 const ChatWidget: React.FC = () => {
+  const { isIntroComplete } = useIntro();
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState<ChatMessage[]>([
     {
@@ -16,6 +30,10 @@ const ChatWidget: React.FC = () => {
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const location = useLocation();
+
+  // Get color based on current route
+  const colors = ROUTE_COLORS[location.pathname] || DEFAULT_COLOR;
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -62,20 +80,30 @@ const ChatWidget: React.FC = () => {
     }
   };
 
+  // Hide chat widget during intro animation
+  if (!isIntroComplete) {
+    return null;
+  }
+
   return (
     <div className="fixed bottom-4 sm:bottom-6 right-3 sm:right-6 z-50 flex flex-col items-end font-mono">
       {/* Chat Window */}
       {isOpen && (
-        <div className="mb-3 sm:mb-4 w-[calc(100vw-24px)] sm:w-[380px] md:w-[400px] h-[70vh] sm:h-[500px] max-h-[600px] bg-black border border-edition-accent/30 flex flex-col overflow-hidden animate-slide-up shadow-[0_0_30px_rgba(0,255,157,0.1)]">
+        <div
+          className={`mb-3 sm:mb-4 w-[calc(100vw-24px)] sm:w-[380px] md:w-[400px] h-[70vh] sm:h-[500px] max-h-[600px] bg-black border ${colors.border}/30 flex flex-col overflow-hidden animate-slide-up`}
+          style={{ boxShadow: `0 0 30px ${colors.hex}20` }}
+        >
           {/* Header */}
-          <div className="p-2.5 sm:p-3 border-b border-edition-accent/30 flex justify-between items-center bg-edition-accent/10 backdrop-blur-sm shrink-0">
+          <div className={`p-2.5 sm:p-3 border-b ${colors.border}/30 flex justify-between items-center backdrop-blur-sm shrink-0`}
+            style={{ backgroundColor: `${colors.hex}10` }}
+          >
             <div className="flex items-center gap-2">
-              <Terminal className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-edition-accent" />
-              <span className="text-sm sm:text-base text-edition-accent uppercase tracking-widest truncate">SECURE_LINK <span className="hidden xs:inline">// V.2.0</span></span>
+              <Terminal className={`w-3.5 h-3.5 sm:w-4 sm:h-4 ${colors.text}`} />
+              <span className={`text-sm sm:text-base ${colors.text} uppercase tracking-widest truncate`}>SECURE_LINK <span className="hidden xs:inline">// V.2.0</span></span>
             </div>
             <button
               onClick={() => setIsOpen(false)}
-              className="text-edition-accent/50 hover:text-edition-accent transition-colors p-1 -mr-1"
+              className={`${colors.text}/50 hover:${colors.text} transition-colors p-1 -mr-1`}
             >
               <Minimize2 className="w-4 h-4" />
             </button>
@@ -90,7 +118,7 @@ const ChatWidget: React.FC = () => {
               >
                 <div
                   className={`max-w-[90%] p-2.5 sm:p-3 text-sm sm:text-base md:text-lg whitespace-pre-wrap ${msg.role === MessageRole.USER
-                    ? 'bg-edition-accent/10 text-edition-accent border border-edition-accent/30'
+                    ? `${colors.bg}/10 ${colors.text} border ${colors.border}/30`
                     : 'text-gray-300'
                     }`}
                 >
@@ -101,9 +129,9 @@ const ChatWidget: React.FC = () => {
             ))}
             {isLoading && (
               <div className="flex justify-start">
-                <div className="text-sm sm:text-base text-edition-accent flex items-center gap-2 animate-pulse">
+                <div className={`text-sm sm:text-base ${colors.text} flex items-center gap-2 animate-pulse`}>
                   <span>SYS &gt; Processing Query</span>
-                  <span className="inline-block w-2 h-4 bg-edition-accent"></span>
+                  <span className={`inline-block w-2 h-4 ${colors.bg}`}></span>
                 </div>
               </div>
             )}
@@ -111,9 +139,9 @@ const ChatWidget: React.FC = () => {
           </div>
 
           {/* Input */}
-          <form onSubmit={handleSubmit} className="p-2.5 sm:p-3 border-t border-edition-accent/30 bg-black shrink-0">
+          <form onSubmit={handleSubmit} className={`p-2.5 sm:p-3 border-t ${colors.border}/30 bg-black shrink-0`}>
             <div className="relative flex items-center gap-2">
-              <span className="text-edition-accent">{'>'}</span>
+              <span className={colors.text}>{'>'}</span>
               <input
                 type="text"
                 value={input}
@@ -125,7 +153,7 @@ const ChatWidget: React.FC = () => {
               <button
                 type="submit"
                 disabled={isLoading || !input.trim()}
-                className="text-edition-accent hover:text-white transition-colors disabled:opacity-30 p-1.5 -mr-1.5"
+                className={`${colors.text} hover:text-white transition-colors disabled:opacity-30 p-1.5 -mr-1.5`}
               >
                 <Send className="w-4 h-4 sm:w-5 sm:h-5" />
               </button>
@@ -137,13 +165,14 @@ const ChatWidget: React.FC = () => {
       {/* Toggle Button */}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="group relative flex items-center justify-center w-12 h-12 sm:w-14 sm:h-14 bg-black border border-edition-accent/50 hover:border-edition-accent transition-all duration-300 shadow-[0_0_15px_rgba(0,255,157,0.2)] active:scale-95"
+        className={`group relative flex items-center justify-center w-12 h-12 sm:w-14 sm:h-14 bg-black border ${colors.border}/50 hover:${colors.border} transition-all duration-300 active:scale-95`}
+        style={{ boxShadow: `0 0 15px ${colors.hex}30` }}
       >
-        <div className="absolute inset-0 bg-edition-accent/5"></div>
+        <div className={`absolute inset-0 ${colors.bg}/5`}></div>
         {isOpen ? (
-          <X className="w-5 h-5 sm:w-6 sm:h-6 text-edition-accent" />
+          <X className={`w-5 h-5 sm:w-6 sm:h-6 ${colors.text}`} />
         ) : (
-          <MessageSquare className="w-5 h-5 sm:w-6 sm:h-6 text-edition-accent" />
+          <MessageSquare className={`w-5 h-5 sm:w-6 sm:h-6 ${colors.text}`} />
         )}
       </button>
     </div>
