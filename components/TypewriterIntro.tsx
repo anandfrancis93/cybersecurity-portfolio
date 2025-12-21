@@ -261,9 +261,13 @@ const TypewriterIntro: React.FC<TypewriterIntroProps> = ({
             animationFrameId = requestAnimationFrame(draw);
         };
 
-        // Set canvas size
-        canvas.width = width;
-        canvas.height = height;
+        // Set canvas size with high DPI support for crisp text
+        const dpr = window.devicePixelRatio || 1;
+        canvas.width = width * dpr;
+        canvas.height = height * dpr;
+        canvas.style.width = `${width}px`;
+        canvas.style.height = `${height}px`;
+        ctx.scale(dpr, dpr);
 
         animationFrameId = requestAnimationFrame(draw);
 
