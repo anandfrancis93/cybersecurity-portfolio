@@ -167,7 +167,7 @@ const HandshakePage: React.FC = () => {
                                 <ScrambleText text="Handshake" duration={600} disableVisualGlitch={true} triggerReveal={isLocalIntroComplete} autoRepeatInterval={10000} />
                             </h2>
                             <p className="text-gray-400 max-w-2xl font-mono text-sm sm:text-base border-l-2 border-edition-border pl-3 sm:pl-4">
-                                Connection protocol initiated. Available for immediate deployment on select projects and security consultations.
+                                Secure communication channel for inquiries and collaboration.
                             </p>
                         </div>
                         <div className="flex flex-wrap gap-2 sm:gap-4 font-mono text-sm sm:text-base uppercase text-gray-600">

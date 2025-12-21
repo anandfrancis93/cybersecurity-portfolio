@@ -4,6 +4,7 @@ import AssetPage from './pages/AssetPage';
 import LabPage from './pages/LabPage';
 import ReconPage from './pages/ReconPage';
 import ClearancePage from './pages/ClearancePage';
+import LogsPage from './pages/LogsPage';
 import HandshakePage from './pages/HandshakePage';
 import ChatWidget from './components/ChatWidget';
 import { IntroProvider } from './contexts/IntroContext';
@@ -18,6 +19,7 @@ const App: React.FC = () => {
                <Route path="/projects" element={<LabPage />} />
                <Route path="/work-experience" element={<ReconPage />} />
                <Route path="/certifications" element={<ClearancePage />} />
+               <Route path="/logs" element={<LogsPage />} />
                <Route path="/contact-us" element={<HandshakePage />} />
             </Routes>
             <ChatWidget />

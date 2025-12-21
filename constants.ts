@@ -1,11 +1,12 @@
 import { Project, Experience, Certificate } from './types';
-import { Shield, Brain, Network, Terminal, Server, Smartphone, Code, Database, UserCheck, Users, Search, Activity, AlertCircle, RefreshCw, FileSearch, MessageSquare } from 'lucide-react';
+import { Shield, Brain, Network, Terminal, Server, Smartphone, Code, Database, UserCheck, Users, Search, Activity, AlertCircle, RefreshCw, FileSearch, MessageSquare, FileText } from 'lucide-react';
 
 export const NAV_LINKS = [
   { name: 'ASSET', href: '/about-me', color: 'bg-asset' },
   { name: 'LAB', href: '/projects', color: 'bg-lab' },
   { name: 'RECON', href: '/work-experience', color: 'bg-recon' },
   { name: 'CLEARANCE', href: '/certifications', color: 'bg-clearance' },
+  { name: 'LOGS', href: '/logs', color: 'bg-logs' },
   { name: 'HANDSHAKE', href: '/contact-us', color: 'bg-handshake' },
 ];
 
@@ -23,7 +24,7 @@ export const NIST_MODULES = [
     id: 'projects',
     title: 'LAB',
     icon: Shield,
-    description: 'Defense architectures and secure development projects.',
+    description: 'Offensive and defensive cybersecurity projects.',
     colorClass: 'text-gray-300',
     borderClass: 'border-gray-500',
     bgClass: 'bg-gray-500'
@@ -32,9 +33,7 @@ export const NIST_MODULES = [
     id: 'work-experience',
     title: 'RECON',
     icon: Activity,
-    description: `Analyzed AI governance frameworks
-Evaluated latest AI products
-Delivered enterprise and consumer technical support`,
+    description: 'Professional timeline and operational history.',
     colorClass: 'text-recon',
     borderClass: 'border-recon',
     bgClass: 'bg-recon'
@@ -43,10 +42,19 @@ Delivered enterprise and consumer technical support`,
     id: 'certifications',
     title: 'CLEARANCE',
     icon: RefreshCw,
-    description: 'Resilience through industry-standard certifications.',
+    description: 'Verified credentials and industry certifications.',
     colorClass: 'text-clearance',
     borderClass: 'border-clearance',
     bgClass: 'bg-clearance'
+  },
+  {
+    id: 'logs',
+    title: 'LOGS',
+    icon: FileText,
+    description: 'Technical journal covering cybersecurity topics and insights.',
+    colorClass: 'text-logs',
+    borderClass: 'border-logs',
+    bgClass: 'bg-logs'
   },
 ];
 

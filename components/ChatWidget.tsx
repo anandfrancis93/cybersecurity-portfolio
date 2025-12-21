@@ -11,6 +11,7 @@ const ROUTE_COLORS: Record<string, { text: string; border: string; bg: string; h
   '/projects': { text: 'text-lab', border: 'border-lab', bg: 'bg-lab', hex: '#A855F7' },
   '/work-experience': { text: 'text-recon', border: 'border-recon', bg: 'bg-recon', hex: '#F59E0B' },
   '/certifications': { text: 'text-clearance', border: 'border-clearance', bg: 'bg-clearance', hex: '#22C55E' },
+  '/logs': { text: 'text-logs', border: 'border-logs', bg: 'bg-logs', hex: '#F43F5E' },
   '/contact-us': { text: 'text-handshake', border: 'border-handshake', bg: 'bg-handshake', hex: '#14B8A6' },
 };
 
