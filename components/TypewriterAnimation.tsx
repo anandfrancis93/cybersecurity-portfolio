@@ -255,7 +255,17 @@ const TypewriterAnimation: React.FC = () => {
 
                 // 1. Title
                 if (textY < twTop) { // Only draw if above typewriter body
-                    ctx.font = 'bold 16px "JetBrains Mono", monospace';
+                    // Dynamic font sizing
+                    const maxTitleWidth = paperWidth - (contentPadding * 2);
+                    let fontSize = 16;
+                    ctx.font = `bold ${fontSize}px "JetBrains Mono", monospace`;
+
+                    // Measure full title to determine scale (using full title length)
+                    while (ctx.measureText(article.title).width > maxTitleWidth && fontSize > 10) {
+                        fontSize--;
+                        ctx.font = `bold ${fontSize}px "JetBrains Mono", monospace`;
+                    }
+
                     const titleToShow = phase === 'typing' ? article.title.substring(0, Math.floor((elapsed - 300) / 40)) : article.title;
                     if (titleToShow.length > 0) {
                         ctx.fillStyle = 'rgba(255, 255, 255, 0.9)';
