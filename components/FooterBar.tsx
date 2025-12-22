@@ -29,7 +29,7 @@ const FooterBar: React.FC = () => {
 
                     <div className="flex flex-col sm:flex-row items-center gap-4 order-1 sm:order-2">
                         <span className="text-xs sm:text-sm text-gray-600 uppercase tracking-widest font-mono text-center sm:text-right">
-                            © {new Date().getFullYear()} ANAND FRANCIS <span className="hidden sm:inline">//</span> <br className="sm:hidden" />SECURE BY DESIGN
+                            © 2026 ANAND FRANCIS <span className="hidden sm:inline">//</span> <br className="sm:hidden" />SECURE BY DESIGN
                         </span>
                         <button onClick={scrollToTop} className="w-12 h-12 sm:w-14 sm:h-14 flex items-center justify-center border border-edition-border hover:bg-white hover:text-black transition-all">
                             <ArrowUp className="w-4 h-4 sm:w-5 sm:h-5" />

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Nav from '../components/Nav';
 import FooterBar from '../components/FooterBar';
 import TypewriterIntro from '../components/TypewriterIntro';
-import RadarAnimation from '../components/RadarAnimation';
+import BarcodeScanAnimation from '../components/BarcodeScanAnimation';
 import ScrambleText from '../components/ScrambleText';
 import GlitchHover from '../components/GlitchHover';
 import SteganographyRain from '../components/SteganographyRain';
@@ -57,9 +57,9 @@ const IdentifyPage: React.FC = () => {
                             </div>
                         </div>
 
-                        {/* Right side - Radar Animation */}
+                        {/* Right side - Barcode Scan Animation */}
                         <div className="hidden md:flex flex-shrink-0 w-80 lg:w-[400px] h-80 lg:h-[400px] items-center justify-center">
-                            <RadarAnimation />
+                            <BarcodeScanAnimation />
                         </div>
                     </div>
 
