@@ -4,6 +4,7 @@ import FooterBar from '../components/FooterBar';
 import TypewriterIntro from '../components/TypewriterIntro';
 import CertificateCard from '../components/CertificateCard';
 import ScrambleText from '../components/ScrambleText';
+import GlitchHover from '../components/GlitchHover';
 import SteganographyRain from '../components/SteganographyRain';
 import ClearanceVerifier from '../components/ClearanceVerifier';
 import { CERTIFICATES, NIST_MODULES } from '../constants';

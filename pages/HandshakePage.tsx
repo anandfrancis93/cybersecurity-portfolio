@@ -4,6 +4,8 @@ import FooterBar from '../components/FooterBar';
 import TypewriterIntro from '../components/TypewriterIntro';
 import SteganographyRain from '../components/SteganographyRain';
 import ScrambleText from '../components/ScrambleText';
+import GlitchHover from '../components/GlitchHover';
+import TLSHandshakeAnimation from '../components/TLSHandshakeAnimation';
 import { useIntro } from '../contexts/IntroContext';
 import { ShieldCheck, Terminal, Send, Lock, X } from 'lucide-react';
 
@@ -159,8 +161,9 @@ const HandshakePage: React.FC = () => {
                 <section className="pt-6 pb-12 sm:pt-8 sm:pb-16 md:pt-10 md:pb-20 relative w-full">
 
 
-                    <div className="flex flex-col md:flex-row md:items-center justify-between mb-8 sm:mb-10 md:mb-12 gap-4 sm:gap-6 relative z-10 w-full">
-                        <div>
+                    <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between mb-8 sm:mb-10 md:mb-12 gap-8 lg:gap-12 relative z-10 w-full">
+                        {/* Left side - Title and description */}
+                        <div className="flex-1">
                             <h2 className="text-4xl sm:text-5xl md:text-7xl lg:text-9xl font-display font-bold tracking-tighter text-white leading-[0.9] sm:leading-[0.85] mb-6 sm:mb-8 md:mb-12 uppercase">
                                 <ScrambleText text="Handshake" duration={600} disableVisualGlitch={true} triggerReveal={isLocalIntroComplete} autoRepeatInterval={10000} />
                             </h2>
@@ -168,9 +171,10 @@ const HandshakePage: React.FC = () => {
                                 Secure communication channel for inquiries and collaboration.
                             </p>
                         </div>
-                        <div className="flex flex-wrap gap-2 sm:gap-4 font-mono text-sm sm:text-base uppercase text-gray-600">
-                            <div className="bg-handshake/5 px-2 sm:px-3 py-1 border border-handshake/20 text-handshake">Status: Available</div>
-                            <div className="px-2 sm:px-3 py-1 border border-edition-border">Protocol: Handshake</div>
+
+                        {/* Right side - TLS Handshake Animation */}
+                        <div className="hidden md:flex flex-shrink-0 w-80 lg:w-[320px] h-72 lg:h-[280px] items-center justify-center">
+                            <TLSHandshakeAnimation />
                         </div>
                     </div>
 

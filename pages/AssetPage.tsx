@@ -4,6 +4,7 @@ import FooterBar from '../components/FooterBar';
 import TypewriterIntro from '../components/TypewriterIntro';
 import RadarAnimation from '../components/RadarAnimation';
 import ScrambleText from '../components/ScrambleText';
+import GlitchHover from '../components/GlitchHover';
 import SteganographyRain from '../components/SteganographyRain';
 import { NIST_MODULES, PROFILE } from '../constants';
 import { User, Terminal, Cpu, ChevronDown, ChevronUp } from 'lucide-react';

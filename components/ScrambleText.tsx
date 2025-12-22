@@ -10,6 +10,7 @@ interface ScrambleTextProps {
     disableVisualGlitch?: boolean;
     triggerReveal?: boolean;
     autoRepeatInterval?: number; // Auto-repeat scramble every X milliseconds
+    scrambleOnTextChange?: boolean; // Whether to scramble when text changes (default true)
 }
 
 const ScrambleText: React.FC<ScrambleTextProps> = ({
@@ -22,6 +23,7 @@ const ScrambleText: React.FC<ScrambleTextProps> = ({
     disableVisualGlitch = false,
     triggerReveal = false,
     autoRepeatInterval,
+    scrambleOnTextChange = true,
 }) => {
     // Always start with the actual text - no scrambled initial state
     const [displayText, setDisplayText] = useState(text);
@@ -87,11 +89,12 @@ const ScrambleText: React.FC<ScrambleTextProps> = ({
     }, [isGlitchActive, disableVisualGlitch, settings.offset, settings.jitter, settings.frequency]);
 
     // Scramble function - runs the animation and always completes
-    const runScramble = () => {
+    const runScramble = (targetText?: string) => {
         if (isScrambling.current) return; // Don't start if already running
         isScrambling.current = true;
 
-        const chars = text.split('');
+        const textToUse = targetText ?? text;
+        const chars = textToUse.split('');
         const totalChars = chars.length;
         const iterations = Math.ceil(duration / 30);
         let currentIteration = 0;
@@ -115,18 +118,18 @@ const ScrambleText: React.FC<ScrambleTextProps> = ({
 
             if (currentIteration >= iterations) {
                 clearInterval(interval);
-                setDisplayText(text);
+                setDisplayText(textToUse);
                 isScrambling.current = false;
             }
         }, 30);
     };
 
-    // Hover scramble effect
-    useEffect(() => {
-        if (isHovering) {
-            runScramble();
-        }
-    }, [isHovering]);
+    // Hover scramble effect - DISABLED
+    // useEffect(() => {
+    //     if (isHovering) {
+    //         runScramble();
+    //     }
+    // }, [isHovering]);
 
     // Trigger reveal effect on mount
     useEffect(() => {
@@ -140,12 +143,18 @@ const ScrambleText: React.FC<ScrambleTextProps> = ({
         }
     }, [triggerReveal]);
 
-    // Update displayText when text prop changes (important for navigation)
+    // Update displayText when text prop changes - trigger scramble for smooth transitions
+    const prevTextRef = useRef(text);
     useEffect(() => {
-        if (!isScrambling.current) {
-            setDisplayText(text);
+        if (prevTextRef.current !== text) {
+            prevTextRef.current = text;
+            if (scrambleOnTextChange) {
+                runScramble(text);
+            } else {
+                setDisplayText(text);
+            }
         }
-    }, [text]);
+    }, [text, scrambleOnTextChange]);
 
     // Auto-repeat scramble effect - uses global sync event for all components
     useEffect(() => {
@@ -176,13 +185,9 @@ const ScrambleText: React.FC<ScrambleTextProps> = ({
 
     return (
         <span
-            className={`cursor-pointer select-none inline-block relative ${className}`}
-            onMouseEnter={() => setIsHovering(true)}
-            onMouseLeave={() => setIsHovering(false)}
+            className={`select-none inline-block relative ${className}`}
             style={{
                 fontVariantLigatures: 'none',
-                ...glitchStyle,
-                transition: isHovering ? 'none' : 'all 0.1s ease-out',
             }}
             data-text={displayText}
         >

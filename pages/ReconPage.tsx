@@ -5,6 +5,7 @@ import FooterBar from '../components/FooterBar';
 import TypewriterIntro from '../components/TypewriterIntro';
 import ExperienceCard from '../components/ExperienceCard';
 import ScrambleText from '../components/ScrambleText';
+import GlitchHover from '../components/GlitchHover';
 import SteganographyRain from '../components/SteganographyRain';
 import DossierScanner from '../components/DossierScanner';
 import { EXPERIENCES, NIST_MODULES } from '../constants';

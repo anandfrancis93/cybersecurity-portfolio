@@ -1,16 +1,29 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { NAV_LINKS } from '../constants';
-import { ShieldCheck, Menu, X } from 'lucide-react';
+import { Shield, FileKey, Eye, Network, Code, Cloud, Terminal, Menu, X } from 'lucide-react';
 import ScrambleText from './ScrambleText';
+import GlitchHover from './GlitchHover';
+
+const LOGO_TERMS = ['CYBERSECURITY', 'INFORMATION SECURITY', 'OPERATIONS SECURITY', 'NETWORK SECURITY', 'APPLICATION SECURITY', 'CLOUD SECURITY', 'DEVELOPER SECURITY'];
+const LOGO_ICONS = [Shield, FileKey, Eye, Network, Code, Cloud, Terminal];
 
 const Nav: React.FC = () => {
   const [time, setTime] = useState(new Date());
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [logoIndex, setLogoIndex] = useState(0);
   const location = useLocation();
 
   useEffect(() => {
     const timer = setInterval(() => setTime(new Date()), 1000);
+    return () => clearInterval(timer);
+  }, []);
+
+  // Cycle through logo terms every 10 seconds
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setLogoIndex(prev => (prev + 1) % LOGO_TERMS.length);
+    }, 10000);
     return () => clearInterval(timer);
   }, []);
 
@@ -29,26 +42,23 @@ const Nav: React.FC = () => {
         {/* LOGO */}
         <div className="flex items-center gap-6 z-10 relative">
           <Link to="/about-me" className={`flex items-center gap-2 text-white transition-colors group ${currentSection === 'about-me' ? 'hover:text-asset' :
-              currentSection === 'projects' ? 'hover:text-lab' :
-                currentSection === 'work-experience' ? 'hover:text-recon' :
-                  currentSection === 'certifications' ? 'hover:text-clearance' :
-                    currentSection === 'logs' ? 'hover:text-logs' :
-                      'hover:text-handshake'
+            currentSection === 'projects' ? 'hover:text-lab' :
+              currentSection === 'work-experience' ? 'hover:text-recon' :
+                currentSection === 'certifications' ? 'hover:text-clearance' :
+                  currentSection === 'logs' ? 'hover:text-logs' :
+                    'hover:text-handshake'
             }`}>
-            <ShieldCheck className={`w-4 h-4 animate-pulse ${currentSection === 'about-me' ? 'text-asset' :
-                currentSection === 'projects' ? 'text-lab' :
-                  currentSection === 'work-experience' ? 'text-recon' :
-                    currentSection === 'certifications' ? 'text-clearance' :
-                      currentSection === 'logs' ? 'text-logs' :
-                        'text-handshake'
-              }`} />
             <span className={`font-bold group-hover:underline underline-offset-4 ${currentSection === 'about-me' ? 'decoration-asset' :
-                currentSection === 'projects' ? 'decoration-lab' :
-                  currentSection === 'work-experience' ? 'decoration-recon' :
-                    currentSection === 'certifications' ? 'decoration-clearance' :
-                      currentSection === 'logs' ? 'decoration-logs' :
-                        'decoration-handshake'
-              }`}>ANAND.SYS</span>
+              currentSection === 'projects' ? 'decoration-lab' :
+                currentSection === 'work-experience' ? 'decoration-recon' :
+                  currentSection === 'certifications' ? 'decoration-clearance' :
+                    currentSection === 'logs' ? 'decoration-logs' :
+                      'decoration-handshake'
+              }`}>
+              <GlitchHover>
+                <ScrambleText text={LOGO_TERMS[logoIndex]} duration={800} triggerReveal={true} />
+              </GlitchHover>
+            </span>
           </Link>
         </div>
 
@@ -84,7 +94,13 @@ const Nav: React.FC = () => {
         <div className="flex items-center gap-4 md:gap-6 z-10 relative">
           <div className="hidden sm:block h-4 w-px bg-edition-border"></div>
           <div className="hidden sm:flex items-center gap-2 text-white">
-            <span>{time.toLocaleTimeString([], { hour12: true })}</span>
+            <ScrambleText
+              text={time.toLocaleTimeString([], { hour12: true })}
+              duration={600}
+              autoRepeatInterval={10000}
+              scrambleOnTextChange={false}
+              disableVisualGlitch={true}
+            />
           </div>
 
           <button
@@ -99,35 +115,37 @@ const Nav: React.FC = () => {
       </div>
 
       {/* MOBILE MENU DROPDOWN - Visible on screens smaller than lg */}
-      {isMenuOpen && (
-        <div className="lg:hidden absolute top-12 left-0 w-full bg-[#050505] border-b border-edition-border animate-fade-in flex flex-col shadow-2xl">
-          {NAV_LINKS.map((link) => {
-            const sectionId = link.href.substring(1);
-            const isActive = currentSection === sectionId;
-            return (
-              <Link
-                key={link.name}
-                to={`/${sectionId}`}
-                className={`
+      {
+        isMenuOpen && (
+          <div className="lg:hidden absolute top-12 left-0 w-full bg-[#050505] border-b border-edition-border animate-fade-in flex flex-col shadow-2xl">
+            {NAV_LINKS.map((link) => {
+              const sectionId = link.href.substring(1);
+              const isActive = currentSection === sectionId;
+              return (
+                <Link
+                  key={link.name}
+                  to={`/${sectionId}`}
+                  className={`
                   py-4 px-6 border-t border-edition-border/20 text-left transition-all duration-200 flex items-center gap-4
                   ${isActive
-                    ? `${link.color} text-black font-bold pl-8`
-                    : `text-gray-400 hover:text-black hover:pl-8 ${link.name === 'ASSET' ? 'hover:bg-asset' :
-                      link.name === 'LAB' ? 'hover:bg-lab' :
-                        link.name === 'RECON' ? 'hover:bg-recon' :
-                          link.name === 'CLEARANCE' ? 'hover:bg-clearance' :
-                            link.name === 'LOGS' ? 'hover:bg-logs' :
-                              'hover:bg-handshake'}`
-                  }
+                      ? `${link.color} text-black font-bold pl-8`
+                      : `text-gray-400 hover:text-black hover:pl-8 ${link.name === 'ASSET' ? 'hover:bg-asset' :
+                        link.name === 'LAB' ? 'hover:bg-lab' :
+                          link.name === 'RECON' ? 'hover:bg-recon' :
+                            link.name === 'CLEARANCE' ? 'hover:bg-clearance' :
+                              link.name === 'LOGS' ? 'hover:bg-logs' :
+                                'hover:bg-handshake'}`
+                    }
                 `}
-              >
-                <ScrambleText text={link.name} duration={600} disableVisualGlitch={true} triggerReveal={true} autoRepeatInterval={10000} />
-              </Link>
-            );
-          })}
-        </div>
-      )}
-    </nav>
+                >
+                  <ScrambleText text={link.name} duration={600} disableVisualGlitch={true} triggerReveal={true} autoRepeatInterval={10000} />
+                </Link>
+              );
+            })}
+          </div>
+        )
+      }
+    </nav >
   );
 };
 

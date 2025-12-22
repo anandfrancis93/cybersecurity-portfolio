@@ -4,6 +4,7 @@ import FooterBar from '../components/FooterBar';
 import TypewriterIntro from '../components/TypewriterIntro';
 import BentoGrid from '../components/BentoGrid';
 import ScrambleText from '../components/ScrambleText';
+import GlitchHover from '../components/GlitchHover';
 import SteganographyRain from '../components/SteganographyRain';
 import DigitalImmuneSystem from '../components/DigitalImmuneSystem';
 import { PROJECTS, NIST_MODULES } from '../constants';

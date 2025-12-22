@@ -15,7 +15,7 @@ const DossierScanner: React.FC = () => {
 
         // Colors
         const COLOR_AMBER = '#F59E0B';
-        const COLOR_DIM = 'rgba(245, 158, 11, 0.1)';
+        const COLOR_DIM = 'rgba(245, 158, 11, 0.4)';
         const COLOR_TEXT = 'rgba(245, 158, 11, 0.6)';
         const COLOR_SCAN = 'rgba(245, 158, 11, 0.8)';
 
@@ -28,6 +28,7 @@ const DossierScanner: React.FC = () => {
 
         // Scan line
         let scanY = 0;
+        let headerY = 0; // Will be set in initDocument
         const SCAN_SPEED = 1.5;
 
         // Text lines (simulated document content)
@@ -48,7 +49,7 @@ const DossierScanner: React.FC = () => {
             '> BYU-IDAHO // 2023-PRESENT',
             '> DELL // 2019-2023',
             '> GOOGLE // 2017-2019',
-            'SKILLS: [REDACTED]',
+            'SKILLS: SECURITY+, GRC, SIEM',
             'THREAT LVL: LOW',
             'TRUST SCORE: 100%',
         ];
@@ -61,11 +62,21 @@ const DossierScanner: React.FC = () => {
 
             textLines = [];
             const lineHeight = 22;
-            const startY = docTop + 38;
+
+            // Calculate vertical centering
+            const headerHeight = 16; // Header text height
+            const gapAfterHeader = 8; // Space between header and first line
+            const contentHeight = dataFragments.length * lineHeight;
+            const totalContentHeight = headerHeight + gapAfterHeader + contentHeight;
+            const availableHeight = docBottom - docTop;
+            const verticalPadding = Math.max(10, (availableHeight - totalContentHeight) / 2);
+
+            headerY = docTop + verticalPadding + 12; // Position header
+            const startY = docTop + verticalPadding + headerHeight + gapAfterHeader + 8;
 
             for (let i = 0; i < dataFragments.length; i++) {
                 const y = startY + i * lineHeight;
-                if (y > docBottom - 20) break;
+                if (y > docBottom - 10) break;
 
                 const text = dataFragments[i];
                 textLines.push({
@@ -195,7 +206,7 @@ const DossierScanner: React.FC = () => {
             // 5. Header text
             ctx.font = 'bold 12px monospace';
             ctx.fillStyle = COLOR_AMBER;
-            ctx.fillText('PERSONNEL FILE', docLeft + 15, docTop + 18);
+            ctx.fillText('PERSONNEL FILE', docLeft + 15, headerY);
 
             animationFrameId = requestAnimationFrame(draw);
         };
@@ -226,10 +237,9 @@ const DossierScanner: React.FC = () => {
         const handleGlobalScramble = () => {
             // Reset scan to top
             scanY = docTop - 20;
-            // Randomly toggle redactions to simulate changing intel
+            // Reset reveal state for re-scan effect
             textLines.forEach(line => {
-                line.isRedacted = Math.random() > 0.8;
-                line.revealed = 0; // Reset reveal state
+                line.revealed = 0;
             });
         };
 
