@@ -115,7 +115,11 @@ const TypewriterAnimation: React.FC = () => {
             { title: 'MSA', subject: 'Agreements', body: 'Master Service Agreement. A contract reaching an understanding on future transactions/agreements.' },
             { title: 'SOW', subject: 'Agreements', body: 'Statement of Work. A document defining project-specific activities, deliverables, and timelines.' },
             { title: 'BCP', subject: 'Resilience', body: 'Business Continuity Planning. Strategy to ensure operations continue during a disaster.' },
-            { title: 'COOP', subject: 'Resilience', body: 'Continuity of Operations Planning. Federal term for ensuring mission-critical functions continue.' }
+            { title: 'COOP', subject: 'Resilience', body: 'Continuity of Operations Planning. Federal term for ensuring mission-critical functions continue.' },
+            { title: 'CYBERSECURITY', subject: 'Discipline', body: 'The practice of protecting systems, networks, and data from digital attacks, theft, and damage.' },
+            { title: 'SHIFT LEFT', subject: 'DevSecOps', body: 'Integrating security earlier in the development lifecycle to catch vulnerabilities before deployment.' },
+            { title: 'MITRE ATT&CK', subject: 'Framework', body: 'A knowledge base of adversary tactics and techniques based on real-world observations of cyberattacks.' },
+            { title: 'MITRE ATLAS', subject: 'AI Security', body: 'Adversarial Threat Landscape for AI Systems. A framework for AI/ML security threats and mitigations.' }
         ];
 
         // Shred particle interface
