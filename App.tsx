@@ -9,9 +9,15 @@ import HandshakePage from './pages/HandshakePage';
 import ChatWidget from './components/ChatWidget';
 import { IntroProvider } from './contexts/IntroContext';
 
+import { initGA, AnalyticsTracker } from './components/AnalyticsTracker';
+
+// Initialize GA immediately
+initGA();
+
 const App: React.FC = () => {
    return (
       <Router>
+         <AnalyticsTracker />
          <IntroProvider>
             <Routes>
                <Route path="/" element={<Navigate to="/about-me" replace />} />
