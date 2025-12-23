@@ -45,7 +45,23 @@ const HandshakeModal: React.FC<HandshakeModalProps> = ({ isOpen, onClose }) => {
 
     return (
         <div className="fixed inset-0 z-[100] flex items-center justify-center p-3 sm:p-4 bg-black/80 backdrop-blur-md animate-fade-in selection:bg-handshake selection:text-black">
-            <div className="w-full max-w-lg bg-[#050505] border border-handshake/30 shadow-[0_0_50px_rgba(20,184,166,0.15)] rounded-sm overflow-hidden animate-slide-up max-h-[90vh] overflow-y-auto">
+            <div
+                className="w-full max-w-lg bg-[#0a0a0a] border border-rose-500/20 rounded-sm overflow-hidden animate-slide-up max-h-[90vh] overflow-y-auto relative"
+                style={{
+                    boxShadow: `
+                        0 25px 60px -15px rgba(0, 0, 0, 0.9),
+                        0 0 50px rgba(225, 29, 72, 0.1),
+                        inset 0 1px 0 0 rgba(255, 255, 255, 0.06)
+                    `
+                }}
+            >
+                {/* Glass reflection overlay */}
+                <div
+                    className="absolute top-0 left-0 right-0 h-20 pointer-events-none z-20"
+                    style={{
+                        background: 'linear-gradient(180deg, rgba(225, 29, 72, 0.04) 0%, transparent 100%)'
+                    }}
+                />
                 <div className="bg-handshake/10 border-b border-handshake/20 p-3 sm:p-4 flex justify-between items-center sticky top-0 z-10">
                     <div className="flex items-center gap-2 text-handshake text-sm sm:text-base font-mono tracking-[0.15em] sm:tracking-[0.2em] font-bold">
                         <Terminal size={14} className="sm:w-4 sm:h-4" />
@@ -178,7 +194,23 @@ const HandshakePage: React.FC = () => {
                         </div>
                     </div>
 
-                    <div className="flex flex-col lg:flex-row items-center justify-between gap-6 sm:gap-8 lg:gap-12 py-8 sm:py-10 lg:py-12 border border-edition-border/30 bg-[#050505] p-4 sm:p-6 lg:p-8 rounded-sm">
+                    <div
+                        className="flex flex-col lg:flex-row items-center justify-between gap-6 sm:gap-8 lg:gap-12 py-8 sm:py-10 lg:py-12 p-4 sm:p-6 lg:p-8 rounded-sm relative overflow-hidden bg-[#0a0a0a] border border-rose-500/10"
+                        style={{
+                            boxShadow: `
+                                0 25px 60px -15px rgba(0, 0, 0, 0.9),
+                                0 0 0 1px rgba(225, 29, 72, 0.05),
+                                inset 0 1px 0 0 rgba(255, 255, 255, 0.06)
+                            `
+                        }}
+                    >
+                        {/* Glass reflection overlay */}
+                        <div
+                            className="absolute top-0 left-0 right-0 h-16 pointer-events-none"
+                            style={{
+                                background: 'linear-gradient(180deg, rgba(225, 29, 72, 0.03) 0%, transparent 100%)'
+                            }}
+                        />
                         <div className="flex flex-col sm:flex-row items-center gap-4 sm:gap-6 text-center sm:text-left">
                             <div className="w-14 h-14 sm:w-16 sm:h-16 bg-handshake/10 flex items-center justify-center rounded-full border border-handshake/30 text-handshake shrink-0">
                                 <ShieldCheck size={28} className="sm:w-8 sm:h-8" />

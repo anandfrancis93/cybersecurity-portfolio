@@ -6,7 +6,6 @@ import BarcodeScanAnimation from '../components/BarcodeScanAnimation';
 import ScrambleText from '../components/ScrambleText';
 import GlitchHover from '../components/GlitchHover';
 import SteganographyRain from '../components/SteganographyRain';
-import TiltCard from '../components/TiltCard';
 import { NIST_MODULES, PROFILE } from '../constants';
 import { User, Terminal, Cpu, ChevronDown, ChevronUp } from 'lucide-react';
 import { useIntro } from '../contexts/IntroContext';
@@ -66,7 +65,7 @@ const IdentifyPage: React.FC = () => {
                     {/* Profile Card - 3D Effect Container */}
                     <div className="grid grid-cols-1 lg:grid-cols-[1fr_1.5fr] gap-6 sm:gap-8 md:gap-10 relative z-10">
                         {/* Left Card - Profile Info */}
-                        <TiltCard
+                        <div
                             className="bg-[#0a0a0a] border border-white/5 p-5 sm:p-6 md:p-8 space-y-5 sm:space-y-6 relative overflow-hidden group"
                             style={{
                                 boxShadow: `
@@ -75,8 +74,6 @@ const IdentifyPage: React.FC = () => {
                                     inset 0 1px 0 0 rgba(255, 255, 255, 0.06)
                                 `
                             }}
-                            maxTilt={6}
-                            scale={1.01}
                         >
                             {/* Glass reflection overlay */}
                             <div
@@ -112,10 +109,10 @@ const IdentifyPage: React.FC = () => {
                                     </div>
                                 ))}
                             </div>
-                        </TiltCard>
+                        </div>
 
                         {/* Right Card - Asset Description */}
-                        <TiltCard
+                        <div
                             className="bg-[#0a0a0a] border border-white/5 p-5 sm:p-6 md:p-8 space-y-5 sm:space-y-6 relative overflow-hidden group"
                             style={{
                                 boxShadow: `
@@ -124,8 +121,6 @@ const IdentifyPage: React.FC = () => {
                                     inset 0 1px 0 0 rgba(255, 255, 255, 0.06)
                                 `
                             }}
-                            maxTilt={6}
-                            scale={1.01}
                         >
                             {/* Glass reflection overlay */}
                             <div
@@ -166,7 +161,7 @@ const IdentifyPage: React.FC = () => {
                                     )}
                                 </div>
                             </div>
-                        </TiltCard>
+                        </div>
                     </div>
                 </section>
             </main>

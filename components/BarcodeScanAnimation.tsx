@@ -1,55 +1,4 @@
-import React, { useEffect, useRef, useState, useCallback } from 'react';
-
-// Reusable TiltWrapper for independent tilting
-const TiltWrapper: React.FC<{
-    children: React.ReactNode;
-    className?: string;
-    style?: React.CSSProperties;
-}> = ({ children, className = '', style = {} }) => {
-    const containerRef = useRef<HTMLDivElement>(null);
-    const [tilt, setTilt] = useState('rotateX(0deg) rotateY(0deg) scale(1)');
-
-    const handleMouseMove = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
-        if (!containerRef.current) return;
-
-        const rect = containerRef.current.getBoundingClientRect();
-        const centerX = rect.left + rect.width / 2;
-        const centerY = rect.top + rect.height / 2;
-
-        const mouseX = (e.clientX - centerX) / (rect.width / 2);
-        const mouseY = (e.clientY - centerY) / (rect.height / 2);
-
-        const tiltX = -mouseY * 15;
-        const tiltY = mouseX * 15;
-
-        setTilt(`perspective(600px) rotateX(${tiltX}deg) rotateY(${tiltY}deg) scale(1.03)`);
-    }, []);
-
-    const handleMouseLeave = useCallback(() => {
-        setTilt('rotateX(0deg) rotateY(0deg) scale(1)');
-    }, []);
-
-    return (
-        <div
-            ref={containerRef}
-            className={`cursor-pointer ${className}`}
-            style={style}
-            onMouseMove={handleMouseMove}
-            onMouseLeave={handleMouseLeave}
-        >
-            <div
-                className="w-full h-full transition-transform duration-100 ease-out"
-                style={{
-                    transform: tilt,
-                    transformStyle: 'preserve-3d',
-                    willChange: 'transform'
-                }}
-            >
-                {children}
-            </div>
-        </div>
-    );
-};
+import React, { useEffect, useRef } from 'react';
 
 // Top Card Canvas - Barcode
 const TopCardCanvas: React.FC<{ startTimeRef: React.RefObject<number> }> = ({ startTimeRef }) => {
@@ -324,34 +273,30 @@ const BarcodeScanAnimation: React.FC = () => {
     return (
         <div className="relative flex flex-col items-center gap-5">
             {/* Top Card - Barcode */}
-            <TiltWrapper>
-                <div className="relative">
-                    <TopCardCanvas startTimeRef={startTimeRef} />
-                    {/* Glass overlay */}
-                    <div
-                        className="absolute inset-0 pointer-events-none"
-                        style={{
-                            background: 'linear-gradient(180deg, rgba(255,255,255,0.06) 0%, transparent 50%)',
-                            boxShadow: 'inset 0 1px 0 0 rgba(255,255,255,0.1)'
-                        }}
-                    />
-                </div>
-            </TiltWrapper>
+            <div className="relative">
+                <TopCardCanvas startTimeRef={startTimeRef} />
+                {/* Glass overlay */}
+                <div
+                    className="absolute inset-0 pointer-events-none"
+                    style={{
+                        background: 'linear-gradient(180deg, rgba(255,255,255,0.06) 0%, transparent 50%)',
+                        boxShadow: 'inset 0 1px 0 0 rgba(255,255,255,0.1)'
+                    }}
+                />
+            </div>
 
             {/* Bottom Card - Data Screen */}
-            <TiltWrapper>
-                <div className="relative">
-                    <BottomCardCanvas startTimeRef={startTimeRef} />
-                    {/* Glass overlay */}
-                    <div
-                        className="absolute inset-0 pointer-events-none"
-                        style={{
-                            background: 'linear-gradient(180deg, rgba(255,255,255,0.04) 0%, transparent 40%)',
-                            boxShadow: 'inset 0 1px 0 0 rgba(255,255,255,0.08)'
-                        }}
-                    />
-                </div>
-            </TiltWrapper>
+            <div className="relative">
+                <BottomCardCanvas startTimeRef={startTimeRef} />
+                {/* Glass overlay */}
+                <div
+                    className="absolute inset-0 pointer-events-none"
+                    style={{
+                        background: 'linear-gradient(180deg, rgba(255,255,255,0.04) 0%, transparent 40%)',
+                        boxShadow: 'inset 0 1px 0 0 rgba(255,255,255,0.08)'
+                    }}
+                />
+            </div>
         </div>
     );
 };

@@ -60,9 +60,25 @@ const LabPage: React.FC = () => {
 
                     {/* Blue Team Section */}
                     {blueTeamProjects.length > 0 && (
-                        <div className="mb-12 md:mb-16 w-full">
+                        <div
+                            className="mb-12 md:mb-16 w-full bg-[#0a0a0a] border border-blue-500/10 p-5 sm:p-6 md:p-8 relative overflow-hidden"
+                            style={{
+                                boxShadow: `
+                                    0 25px 60px -15px rgba(0, 0, 0, 0.9),
+                                    0 0 0 1px rgba(59, 130, 246, 0.05),
+                                    inset 0 1px 0 0 rgba(255, 255, 255, 0.06)
+                                `
+                            }}
+                        >
+                            {/* Glass reflection overlay */}
+                            <div
+                                className="absolute top-0 left-0 right-0 h-16 pointer-events-none"
+                                style={{
+                                    background: 'linear-gradient(180deg, rgba(59, 130, 246, 0.03) 0%, transparent 100%)'
+                                }}
+                            />
                             {/* Header row - full width */}
-                            <div className="flex items-center justify-between w-full mb-4">
+                            <div className="flex items-center justify-between w-full mb-4 relative z-10">
                                 <div className="flex items-center gap-3">
                                     <div className="w-3 h-3 bg-blue-500 rounded-full animate-pulse flex-shrink-0"></div>
                                     <h3 className="text-xl sm:text-2xl font-display font-bold text-blue-400 uppercase tracking-wider">
@@ -82,12 +98,12 @@ const LabPage: React.FC = () => {
                                     )}
                                 </button>
                             </div>
-                            <p className="text-gray-500 font-mono text-sm mb-6 border-l-2 border-blue-500/30 pl-4 w-full">
+                            <p className="text-gray-500 font-mono text-sm mb-6 border-l-2 border-blue-500/30 pl-4 w-full relative z-10">
                                 Detection, monitoring, and incident response systems designed to protect infrastructure.
                             </p>
 
                             {isBlueTeamExpanded && (
-                                <div className="animate-fade-in w-full">
+                                <div className="animate-fade-in w-full relative z-10">
                                     <BentoGrid projects={blueTeamProjects} moduleColor="text-blue-400" singleColumn={true} />
                                 </div>
                             )}
@@ -96,9 +112,25 @@ const LabPage: React.FC = () => {
 
                     {/* Red Team Section */}
                     {redTeamProjects.length > 0 && (
-                        <div className="w-full">
+                        <div
+                            className="w-full bg-[#0a0a0a] border border-red-500/10 p-5 sm:p-6 md:p-8 relative overflow-hidden"
+                            style={{
+                                boxShadow: `
+                                    0 25px 60px -15px rgba(0, 0, 0, 0.9),
+                                    0 0 0 1px rgba(239, 68, 68, 0.05),
+                                    inset 0 1px 0 0 rgba(255, 255, 255, 0.06)
+                                `
+                            }}
+                        >
+                            {/* Glass reflection overlay */}
+                            <div
+                                className="absolute top-0 left-0 right-0 h-16 pointer-events-none"
+                                style={{
+                                    background: 'linear-gradient(180deg, rgba(239, 68, 68, 0.03) 0%, transparent 100%)'
+                                }}
+                            />
                             {/* Header row - full width */}
-                            <div className="flex items-center justify-between w-full mb-4">
+                            <div className="flex items-center justify-between w-full mb-4 relative z-10">
                                 <div className="flex items-center gap-3">
                                     <div className="w-3 h-3 bg-red-500 rounded-full animate-pulse flex-shrink-0"></div>
                                     <h3 className="text-xl sm:text-2xl font-display font-bold text-red-400 uppercase tracking-wider">
@@ -118,12 +150,12 @@ const LabPage: React.FC = () => {
                                     )}
                                 </button>
                             </div>
-                            <p className="text-gray-500 font-mono text-sm mb-6 border-l-2 border-red-500/30 pl-4 w-full">
+                            <p className="text-gray-500 font-mono text-sm mb-6 border-l-2 border-red-500/30 pl-4 w-full relative z-10">
                                 Penetration testing, vulnerability assessment, and adversary simulation tools.
                             </p>
 
                             {isRedTeamExpanded && (
-                                <div className="animate-fade-in w-full">
+                                <div className="animate-fade-in w-full relative z-10">
                                     <BentoGrid projects={redTeamProjects} moduleColor="text-red-400" singleColumn={true} />
                                 </div>
                             )}

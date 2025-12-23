@@ -19,11 +19,25 @@ const CertificateCard: React.FC<CertificateCardProps> = ({ certificate, accentCo
 
   return (
     <div
-      className={`group relative w-full bg-[#030303] border border-edition-border overflow-hidden transition-all duration-700 ease-[cubic-bezier(0.23,1,0.32,1)] flex flex-col ${isExpanded
-        ? `min-h-[650px] shadow-[0_0_60px_rgba(0,255,157,0.12)]`
-        : `min-h-[500px] md:h-[540px] hover:${accentBorder}/40 shadow-xl`
+      className={`group relative w-full bg-[#0a0a0a] border border-green-500/10 overflow-hidden transition-all duration-700 ease-[cubic-bezier(0.23,1,0.32,1)] flex flex-col ${isExpanded
+        ? `min-h-[650px]`
+        : `min-h-[500px] md:h-[540px]`
         }`}
+      style={{
+        boxShadow: `
+          0 25px 60px -15px rgba(0, 0, 0, 0.9),
+          0 0 0 1px rgba(34, 197, 94, 0.05),
+          inset 0 1px 0 0 rgba(255, 255, 255, 0.06)
+        `
+      }}
     >
+      {/* Glass reflection overlay */}
+      <div
+        className="absolute top-0 left-0 right-0 h-16 pointer-events-none z-20"
+        style={{
+          background: 'linear-gradient(180deg, rgba(34, 197, 94, 0.03) 0%, transparent 100%)'
+        }}
+      />
       <div className="absolute inset-0 z-0 opacity-[0.04] pointer-events-none">
         <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
           <defs>

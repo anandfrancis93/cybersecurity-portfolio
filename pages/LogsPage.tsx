@@ -72,12 +72,29 @@ const LogsPage: React.FC = () => {
 
                     <div className="grid gap-6">
                         {logs.map((log) => (
-                            <article key={log.id} className="group relative border border-edition-border bg-black/50 hover:bg-logs/5 transition-colors duration-300 p-6 sm:p-8">
-                                <div className="absolute top-0 right-0 p-4 opacity-50 text-xs font-mono text-gray-500">
+                            <article
+                                key={log.id}
+                                className="group relative bg-[#0a0a0a] border border-blue-500/10 hover:border-blue-500/20 transition-all duration-300 p-6 sm:p-8 overflow-hidden"
+                                style={{
+                                    boxShadow: `
+                                        0 25px 60px -15px rgba(0, 0, 0, 0.9),
+                                        0 0 0 1px rgba(59, 130, 246, 0.05),
+                                        inset 0 1px 0 0 rgba(255, 255, 255, 0.06)
+                                    `
+                                }}
+                            >
+                                {/* Glass reflection overlay */}
+                                <div
+                                    className="absolute top-0 left-0 right-0 h-16 pointer-events-none"
+                                    style={{
+                                        background: 'linear-gradient(180deg, rgba(59, 130, 246, 0.03) 0%, transparent 100%)'
+                                    }}
+                                />
+                                <div className="absolute top-0 right-0 p-4 opacity-50 text-xs font-mono text-gray-500 z-10">
                                     ID: {log.id}
                                 </div>
 
-                                <div className="flex flex-col gap-4">
+                                <div className="flex flex-col gap-4 relative z-10">
                                     <div className="flex items-center gap-3 text-xs sm:text-sm font-mono text-logs/80 uppercase tracking-widest">
                                         <span>{log.date}</span>
                                         <span className="w-px h-3 bg-edition-border"></span>
@@ -94,13 +111,13 @@ const LogsPage: React.FC = () => {
 
                                     <div className="flex gap-3 pt-2">
                                         {log.tags.map(tag => (
-                                            <span key={tag} className="text-xs font-mono text-gray-500 bg-edition-border/20 px-2 py-1">
+                                            <span key={tag} className="text-xs font-mono text-gray-500 bg-white/5 border border-white/5 px-2 py-1">
                                                 {tag}
                                             </span>
                                         ))}
                                     </div>
 
-                                    <div className="pt-4 mt-2 border-t border-edition-border/30 flex items-center gap-2 text-logs text-sm font-bold opacity-0 group-hover:opacity-100 transition-all transform translate-y-2 group-hover:translate-y-0 duration-300">
+                                    <div className="pt-4 mt-2 border-t border-white/5 flex items-center gap-2 text-logs text-sm font-bold opacity-0 group-hover:opacity-100 transition-all transform translate-y-2 group-hover:translate-y-0 duration-300">
                                         <span>ACCESS_FILE</span>
                                         <span className="text-lg">›</span>
                                     </div>

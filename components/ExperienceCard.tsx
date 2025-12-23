@@ -13,7 +13,23 @@ const ExperienceCard: React.FC<ExperienceCardProps> = ({ experience, accentColor
   const accentBg = accentColor.replace('text-', 'bg-');
 
   return (
-    <div className="w-full font-mono text-base border border-edition-border hover:bg-[#0c0c0c] transition-colors group bg-black">
+    <div
+      className="w-full font-mono text-base border border-white/5 hover:border-white/10 transition-all group bg-[#0a0a0a] relative overflow-hidden"
+      style={{
+        boxShadow: `
+          0 25px 60px -15px rgba(0, 0, 0, 0.9),
+          0 0 0 1px rgba(245, 158, 11, 0.03),
+          inset 0 1px 0 0 rgba(255, 255, 255, 0.06)
+        `
+      }}
+    >
+      {/* Glass reflection overlay */}
+      <div
+        className="absolute top-0 left-0 right-0 h-12 pointer-events-none z-0"
+        style={{
+          background: 'linear-gradient(180deg, rgba(245, 158, 11, 0.02) 0%, transparent 100%)'
+        }}
+      />
       <div
         onClick={() => setIsOpen(!isOpen)}
         className="grid grid-cols-1 md:grid-cols-[260px_1.5fr_1fr_auto] items-start md:items-center py-5 px-4 md:px-6 cursor-pointer gap-3 md:gap-8 relative"
