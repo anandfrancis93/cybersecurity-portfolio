@@ -56,24 +56,24 @@ const BentoGrid: React.FC<BentoGridProps> = ({ projects, moduleColor = 'text-nis
             <div className="relative z-10 p-4 sm:p-5 md:p-6 flex flex-col h-full justify-between">
               <div>
                 <div className="flex justify-between items-start mb-2 sm:mb-3">
-                  <div className="inline-block px-2 sm:px-3 py-1 text-sm sm:text-base font-mono border border-gray-800 bg-black text-gray-400 uppercase">
+                  <div className={`inline-block px-2 sm:px-3 py-1 text-sm sm:text-base font-mono border border-white/20 bg-black text-gray-400 uppercase group-hover:${moduleColor} group-hover:${accentBorder}/50 transition-colors duration-300`}>
                     {project.category}
                   </div>
-                  <div className={`${accentBg}/10 border ${accentBorder}/30 p-1 sm:p-1.5 rounded-sm group-hover:${accentBg} group-hover:text-black transition-all`}>
+                  <div className={`bg-white/10 border border-white/30 p-1 sm:p-1.5 rounded-sm group-hover:${accentBg} group-hover:text-black transition-all duration-300`}>
                     <ArrowUpRight size={12} className="sm:w-3.5 sm:h-3.5" />
                   </div>
                 </div>
-                <h3 className="text-xl sm:text-2xl md:text-3xl font-display font-bold text-white mb-1.5 sm:mb-2 group-hover:text-white transition-colors leading-tight">
+                <h3 className={`text-xl sm:text-2xl md:text-3xl font-display font-bold text-white mb-1.5 sm:mb-2 group-hover:${moduleColor} transition-colors duration-300 leading-tight`}>
                   <ScrambleText text={project.title} duration={600} disableVisualGlitch={true} triggerReveal={true} autoRepeatInterval={10000} />
                 </h3>
-                <p className="text-gray-400 font-mono text-sm sm:text-base md:text-lg leading-relaxed border-l-2 border-gray-800 pl-2.5 sm:pl-3 group-hover:${accentBorder}/50 transition-colors line-clamp-3 sm:line-clamp-none">
+                <p className={`text-gray-400 font-mono text-sm sm:text-base md:text-lg leading-relaxed border-l-2 border-white/30 pl-2.5 sm:pl-3 group-hover:${accentBorder}/50 transition-colors line-clamp-3 sm:line-clamp-none`}>
                   {project.description}
                 </p>
               </div>
 
-              <div className="mt-3 sm:mt-4 pt-3 sm:pt-4 border-t border-white/5 flex justify-between items-center text-sm sm:text-base font-mono uppercase text-gray-600">
+              <div className={`mt-3 sm:mt-4 pt-3 sm:pt-4 border-t border-white/5 flex justify-between items-center text-sm sm:text-base font-mono uppercase text-gray-600 group-hover:${moduleColor} transition-colors duration-300`}>
                 <div className="flex items-center gap-1 sm:gap-1.5">
-                  <div className={`w-1.5 h-1.5 sm:w-2 sm:h-2 ${accentBg} rounded-full animate-pulse`}></div>
+                  <div className={`w-1.5 h-1.5 sm:w-2 sm:h-2 bg-white group-hover:${accentBg} rounded-full animate-pulse transition-colors duration-300`}></div>
                   <span>System Active</span>
                 </div>
                 <span className="hidden xs:inline">SEC_LEVEL_5</span>

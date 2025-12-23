@@ -58,7 +58,7 @@ const ExperienceCard: React.FC<ExperienceCardProps> = ({ experience, accentColor
         </div>
 
         <div className="hidden md:flex justify-end">
-          <span className={`text-xs font-mono uppercase tracking-wider border px-3 py-1 transition-all ${isOpen ? `${accentColor} ${accentBorder}` : 'text-gray-500 border-gray-800 group-hover:border-gray-600 group-hover:text-gray-300'}`}>
+          <span className={`text-xs font-mono uppercase tracking-wider border px-3 py-1 transition-all duration-300 ${isOpen ? `${accentColor} ${accentBorder}` : 'text-gray-500 border-gray-800 group-hover:border-recon group-hover:text-recon'}`}>
             {isOpen ? 'Hide' : 'View'}
           </span>
         </div>

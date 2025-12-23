@@ -1,12 +1,12 @@
 import React, { useEffect, useRef, useState } from 'react';
 
-interface TypewriterIntroProps {
+interface PrinterIntroProps {
     moduleName: string;
     accentColor?: string;
     onComplete: () => void;
 }
 
-const TypewriterIntro: React.FC<TypewriterIntroProps> = ({
+const PrinterIntro: React.FC<PrinterIntroProps> = ({
     moduleName,
     accentColor = 'text-logs',
     onComplete,
@@ -243,7 +243,7 @@ const TypewriterIntro: React.FC<TypewriterIntroProps> = ({
                             break;
                         case 'body':
                             ctx.font = '11px "JetBrains Mono", monospace';
-                            ctx.fillStyle = 'rgba(255, 255, 255, 0.7)';
+                            ctx.fillStyle = 'rgba(255, 255, 255, 0.95)';
                             break;
                     }
 
@@ -373,4 +373,4 @@ const TypewriterIntro: React.FC<TypewriterIntroProps> = ({
     );
 };
 
-export default TypewriterIntro;
+export default PrinterIntro;

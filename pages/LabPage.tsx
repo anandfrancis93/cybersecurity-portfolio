@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Nav from '../components/Nav';
 import FooterBar from '../components/FooterBar';
-import TypewriterIntro from '../components/TypewriterIntro';
+import PrinterIntro from '../components/PrinterIntro';
 import BentoGrid from '../components/BentoGrid';
 import ScrambleText from '../components/ScrambleText';
 import GlitchHover from '../components/GlitchHover';
@@ -32,7 +32,7 @@ const LabPage: React.FC = () => {
     }, []);
 
     if (!isLocalIntroComplete) {
-        return <TypewriterIntro moduleName="lab" accentColor="text-white" onComplete={handleIntroComplete} />;
+        return <PrinterIntro moduleName="lab" accentColor="text-white" onComplete={handleIntroComplete} />;
     }
 
     return (
@@ -61,7 +61,7 @@ const LabPage: React.FC = () => {
                     {/* Blue Team Section */}
                     {blueTeamProjects.length > 0 && (
                         <div
-                            className="mb-12 md:mb-16 w-full bg-[#0a0a0a] border border-blue-500/10 p-5 sm:p-6 md:p-8 relative overflow-hidden"
+                            className="group/section mb-12 md:mb-16 w-full bg-[#0a0a0a] border border-blue-500/10 p-5 sm:p-6 md:p-8 relative overflow-hidden"
                             style={{
                                 boxShadow: `
                                     0 25px 60px -15px rgba(0, 0, 0, 0.9),
@@ -80,15 +80,15 @@ const LabPage: React.FC = () => {
                             {/* Header row - full width */}
                             <div className="flex items-center justify-between w-full mb-4 relative z-10">
                                 <div className="flex items-center gap-3">
-                                    <div className="w-3 h-3 bg-blue-500 rounded-full animate-pulse flex-shrink-0"></div>
-                                    <h3 className="text-xl sm:text-2xl font-display font-bold text-blue-400 uppercase tracking-wider">
+                                    <div className="w-3 h-3 bg-white group-hover/section:bg-blue-500 rounded-full animate-pulse flex-shrink-0 transition-colors duration-300"></div>
+                                    <h3 className="text-xl sm:text-2xl font-display font-bold text-white group-hover/section:text-blue-400 uppercase tracking-wider transition-colors duration-300">
                                         Blue Team
                                     </h3>
-                                    <span className="text-xs font-mono text-gray-500 border border-blue-500/30 px-2 py-0.5 rounded flex-shrink-0">DEFENSIVE</span>
+                                    <span className="text-xs font-mono text-gray-500 group-hover/section:text-blue-400 border border-white/30 group-hover/section:border-blue-500/30 px-2 py-0.5 rounded flex-shrink-0 transition-colors duration-300">DEFENSIVE</span>
                                 </div>
                                 <button
                                     onClick={() => setIsBlueTeamExpanded(!isBlueTeamExpanded)}
-                                    className="flex items-center gap-2 text-blue-400 hover:text-blue-300 transition-colors font-mono text-xs sm:text-sm uppercase tracking-wider flex-shrink-0"
+                                    className="flex items-center gap-2 text-gray-400 group-hover/section:text-blue-400 transition-colors duration-300 font-mono text-xs sm:text-sm uppercase tracking-wider flex-shrink-0"
                                 >
                                     <span>{isBlueTeamExpanded ? 'HIDE' : 'VIEW'} {blueTeamProjects.length} PROJECT{blueTeamProjects.length !== 1 ? 'S' : ''}</span>
                                     {isBlueTeamExpanded ? (
@@ -98,7 +98,7 @@ const LabPage: React.FC = () => {
                                     )}
                                 </button>
                             </div>
-                            <p className="text-gray-500 font-mono text-sm mb-6 border-l-2 border-blue-500/30 pl-4 w-full relative z-10">
+                            <p className="text-gray-500 font-mono text-sm mb-6 border-l-2 border-white/30 group-hover/section:border-blue-500/50 pl-4 w-full relative z-10 transition-colors duration-300">
                                 Detection, monitoring, and incident response systems designed to protect infrastructure.
                             </p>
 
@@ -113,7 +113,7 @@ const LabPage: React.FC = () => {
                     {/* Red Team Section */}
                     {redTeamProjects.length > 0 && (
                         <div
-                            className="w-full bg-[#0a0a0a] border border-red-500/10 p-5 sm:p-6 md:p-8 relative overflow-hidden"
+                            className="group/section w-full bg-[#0a0a0a] border border-red-500/10 p-5 sm:p-6 md:p-8 relative overflow-hidden"
                             style={{
                                 boxShadow: `
                                     0 25px 60px -15px rgba(0, 0, 0, 0.9),
@@ -132,15 +132,15 @@ const LabPage: React.FC = () => {
                             {/* Header row - full width */}
                             <div className="flex items-center justify-between w-full mb-4 relative z-10">
                                 <div className="flex items-center gap-3">
-                                    <div className="w-3 h-3 bg-red-500 rounded-full animate-pulse flex-shrink-0"></div>
-                                    <h3 className="text-xl sm:text-2xl font-display font-bold text-red-400 uppercase tracking-wider">
+                                    <div className="w-3 h-3 bg-white group-hover/section:bg-red-500 rounded-full animate-pulse flex-shrink-0 transition-colors duration-300"></div>
+                                    <h3 className="text-xl sm:text-2xl font-display font-bold text-white group-hover/section:text-red-400 uppercase tracking-wider transition-colors duration-300">
                                         Red Team
                                     </h3>
-                                    <span className="text-xs font-mono text-gray-500 border border-red-500/30 px-2 py-0.5 rounded flex-shrink-0">OFFENSIVE</span>
+                                    <span className="text-xs font-mono text-gray-500 group-hover/section:text-red-400 border border-white/30 group-hover/section:border-red-500/30 px-2 py-0.5 rounded flex-shrink-0 transition-colors duration-300">OFFENSIVE</span>
                                 </div>
                                 <button
                                     onClick={() => setIsRedTeamExpanded(!isRedTeamExpanded)}
-                                    className="flex items-center gap-2 text-red-400 hover:text-red-300 transition-colors font-mono text-xs sm:text-sm uppercase tracking-wider flex-shrink-0"
+                                    className="flex items-center gap-2 text-gray-400 group-hover/section:text-red-400 transition-colors duration-300 font-mono text-xs sm:text-sm uppercase tracking-wider flex-shrink-0"
                                 >
                                     <span>{isRedTeamExpanded ? 'HIDE' : 'VIEW'} {redTeamProjects.length} PROJECT{redTeamProjects.length !== 1 ? 'S' : ''}</span>
                                     {isRedTeamExpanded ? (
@@ -150,7 +150,7 @@ const LabPage: React.FC = () => {
                                     )}
                                 </button>
                             </div>
-                            <p className="text-gray-500 font-mono text-sm mb-6 border-l-2 border-red-500/30 pl-4 w-full relative z-10">
+                            <p className="text-gray-500 font-mono text-sm mb-6 border-l-2 border-white/30 group-hover/section:border-red-500/50 pl-4 w-full relative z-10 transition-colors duration-300">
                                 Penetration testing, vulnerability assessment, and adversary simulation tools.
                             </p>
 

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Nav from '../components/Nav';
 import FooterBar from '../components/FooterBar';
-import TypewriterIntro from '../components/TypewriterIntro';
+import PrinterIntro from '../components/PrinterIntro';
 import CertificateCard from '../components/CertificateCard';
 import ScrambleText from '../components/ScrambleText';
 import GlitchHover from '../components/GlitchHover';
@@ -27,7 +27,7 @@ const ClearancePage: React.FC = () => {
     }, []);
 
     if (!isLocalIntroComplete) {
-        return <TypewriterIntro moduleName="clearance" accentColor="text-clearance" onComplete={handleIntroComplete} />;
+        return <PrinterIntro moduleName="clearance" accentColor="text-clearance" onComplete={handleIntroComplete} />;
     }
 
     return (

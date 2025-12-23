@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { ChevronRight, Terminal, Building, ArrowUpRight } from 'lucide-react';
 import Nav from '../components/Nav';
 import FooterBar from '../components/FooterBar';
-import TypewriterIntro from '../components/TypewriterIntro';
+import PrinterIntro from '../components/PrinterIntro';
 import ExperienceCard from '../components/ExperienceCard';
 import ScrambleText from '../components/ScrambleText';
 import GlitchHover from '../components/GlitchHover';
@@ -28,7 +28,7 @@ const ReconPage: React.FC = () => {
     }, []);
 
     if (!isLocalIntroComplete) {
-        return <TypewriterIntro moduleName="recon" accentColor="text-recon" onComplete={handleIntroComplete} />;
+        return <PrinterIntro moduleName="recon" accentColor="text-recon" onComplete={handleIntroComplete} />;
     }
 
     return (

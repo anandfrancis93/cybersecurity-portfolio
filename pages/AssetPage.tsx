@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Nav from '../components/Nav';
 import FooterBar from '../components/FooterBar';
-import TypewriterIntro from '../components/TypewriterIntro';
+import PrinterIntro from '../components/PrinterIntro';
 import BarcodeScanAnimation from '../components/BarcodeScanAnimation';
 import ScrambleText from '../components/ScrambleText';
 import GlitchHover from '../components/GlitchHover';
@@ -30,7 +30,7 @@ const IdentifyPage: React.FC = () => {
     }, []);
 
     if (!isLocalIntroComplete) {
-        return <TypewriterIntro moduleName="asset" accentColor="text-asset" onComplete={handleIntroComplete} />;
+        return <PrinterIntro moduleName="asset" accentColor="text-asset" onComplete={handleIntroComplete} />;
     }
 
     return (
