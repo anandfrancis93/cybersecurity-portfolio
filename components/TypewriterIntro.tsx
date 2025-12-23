@@ -280,7 +280,7 @@ const TypewriterIntro: React.FC<TypewriterIntroProps> = ({
                     ctx.save();
                     ctx.translate(s.x, s.y);
                     ctx.rotate(s.angle);
-                    ctx.fillStyle = 'rgba(20, 30, 50, 0.9)';
+                    ctx.fillStyle = 'rgba(255, 255, 255, 0.9)';
                     ctx.fillRect(-s.width / 2, -s.height / 2, s.width, s.height);
                     ctx.restore();
 
