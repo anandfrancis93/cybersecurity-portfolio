@@ -56,12 +56,12 @@ const CertificateCard: React.FC<CertificateCardProps> = ({ certificate, accentCo
             <div className="w-2 h-2 bg-yellow-900/40"></div>
             <div className="w-2 h-2 bg-green-900/40"></div>
           </div>
-          <ShieldCheck size={14} className={accentColor} />
+          <ShieldCheck size={14} className={`text-white group-hover:${accentColor} transition-colors duration-300`} />
           <span className="text-sm md:text-base font-mono text-gray-400 uppercase tracking-[0.15em] font-medium truncate">
             VIEWER: {certificate.name.toUpperCase()}
           </span>
         </div>
-        <Key size={12} className={`${accentColor}/40 group-hover:${accentColor} transition-colors shrink-0`} />
+        <Key size={12} className={`text-white/40 group-hover:${accentColor} transition-colors duration-300 shrink-0`} />
       </div>
 
 
@@ -72,7 +72,7 @@ const CertificateCard: React.FC<CertificateCardProps> = ({ certificate, accentCo
               <div className={`absolute inset-0 ${accentBg}/5 blur-[40px]`}></div>
               <div className="relative w-20 h-20 md:w-24 md:h-24 border border-edition-border flex items-center justify-center shadow-inner bg-black/60">
                 <div className="absolute inset-[10%] border border-edition-border/40"></div>
-                <Award className={`${accentColor} w-9 h-9 md:w-10 md:h-10`} />
+                <Award className={`text-white group-hover:${accentColor} transition-colors duration-300 w-9 h-9 md:w-10 md:h-10`} />
               </div>
             </div>
 
@@ -87,8 +87,8 @@ const CertificateCard: React.FC<CertificateCardProps> = ({ certificate, accentCo
 
             <div className="flex flex-col items-center gap-4 md:gap-6 w-full pb-2">
               <div className="flex items-center gap-3 px-5 py-2 bg-black border border-white/5 shadow-md">
-                <div className={`w-1.5 h-1.5 ${accentBg} animate-pulse-fast`}></div>
-                <span className={`text-sm md:text-base font-mono font-bold uppercase tracking-[0.3em] ${statusColor}`}>
+                <div className={`w-1.5 h-1.5 bg-white group-hover:${accentBg} transition-colors duration-300 animate-pulse-fast`}></div>
+                <span className={`text-sm md:text-base font-mono font-bold uppercase tracking-[0.3em] text-white group-hover:${accentColor} transition-colors duration-300`}>
                   {certificate.status}
                 </span>
               </div>
@@ -97,9 +97,9 @@ const CertificateCard: React.FC<CertificateCardProps> = ({ certificate, accentCo
                 onClick={() => setIsExpanded(true)}
                 className={`group/btn relative w-full sm:w-auto flex items-center justify-center gap-3 px-8 py-3.5 bg-[#080808] border border-edition-border overflow-hidden transition-all duration-500 hover:${accentBorder} hover:shadow-[0_0_30px_rgba(0,255,157,0.1)] active:scale-95`}
               >
-                <Key size={12} className={`relative z-10 ${accentColor}`} />
-                <span className="relative z-10 font-mono text-sm font-bold uppercase tracking-[0.3em] text-gray-400 group-hover:text-white transition-colors">
-                  Unlock (Private Key)
+                <Key size={12} className={`relative z-10 text-white group-hover:${accentColor} transition-colors duration-300`} />
+                <span className={`relative z-10 font-mono text-sm font-bold uppercase tracking-[0.3em] text-white group-hover:${accentColor} transition-colors duration-300`}>
+                  Decrypt (Private Key)
                 </span>
                 <div className={`absolute inset-0 ${accentBg}/5 opacity-0 group-hover/btn:opacity-100 transition-opacity`}></div>
               </button>
@@ -170,10 +170,13 @@ const CertificateCard: React.FC<CertificateCardProps> = ({ certificate, accentCo
             <div className="pt-2 flex justify-center">
               <button
                 onClick={() => setIsExpanded(false)}
-                className="flex items-center gap-2.5 px-4 py-2 text-sm md:text-base font-mono text-gray-500 hover:text-white transition-colors uppercase tracking-[0.4em]"
+                className={`group/encrypt relative w-full sm:w-auto flex items-center justify-center gap-3 px-8 py-3.5 bg-[#080808] border border-edition-border overflow-hidden transition-all duration-500 hover:${accentBorder} hover:shadow-[0_0_30px_rgba(0,255,157,0.1)] active:scale-95`}
               >
-                <Lock size={14} />
-                <span>Encrypt (Public Key)</span>
+                <Lock size={12} className={`relative z-10 text-white group-hover/encrypt:${accentColor} transition-colors duration-300`} />
+                <span className={`relative z-10 font-mono text-sm font-bold uppercase tracking-[0.3em] text-white group-hover/encrypt:${accentColor} transition-colors duration-300`}>
+                  Encrypt (Public Key)
+                </span>
+                <div className={`absolute inset-0 ${accentBg}/5 opacity-0 group-hover/encrypt:opacity-100 transition-opacity`}></div>
               </button>
             </div>
           </div>
