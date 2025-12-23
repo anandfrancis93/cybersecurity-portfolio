@@ -6,6 +6,7 @@ import BarcodeScanAnimation from '../components/BarcodeScanAnimation';
 import ScrambleText from '../components/ScrambleText';
 import GlitchHover from '../components/GlitchHover';
 import SteganographyRain from '../components/SteganographyRain';
+import TiltCard from '../components/TiltCard';
 import { NIST_MODULES, PROFILE } from '../constants';
 import { User, Terminal, Cpu, ChevronDown, ChevronUp } from 'lucide-react';
 import { useIntro } from '../contexts/IntroContext';
@@ -40,7 +41,6 @@ const IdentifyPage: React.FC = () => {
             <main className="max-w-[1600px] mx-auto px-3 sm:px-6 lg:px-8 pb-20 md:pb-32 flex-1">
                 <section className="py-12 sm:py-16 md:py-20 relative">
                     <div className="absolute inset-0 bg-cyber-grid opacity-30 pointer-events-none"></div>
-                    <div className="absolute top-0 right-0 w-1/2 h-full bg-gradient-to-l from-asset/5 to-transparent pointer-events-none"></div>
 
                     <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between mb-12 sm:mb-16 md:mb-24 relative z-10 gap-8 lg:gap-12">
                         {/* Left side - Name and details */}
@@ -58,14 +58,33 @@ const IdentifyPage: React.FC = () => {
                         </div>
 
                         {/* Right side - Barcode Scan Animation */}
-                        <div className="hidden md:flex flex-shrink-0 w-80 lg:w-[400px] h-80 lg:h-[400px] items-center justify-center">
+                        <div className="hidden md:flex flex-shrink-0 w-[400px] h-[400px] items-center justify-center">
                             <BarcodeScanAnimation />
                         </div>
                     </div>
 
-                    {/* Profile Card */}
-                    <div className="grid grid-cols-1 lg:grid-cols-[1fr_1.5fr] gap-4 sm:gap-6 md:gap-8 relative z-10">
-                        <div className="bg-edition-card border border-edition-border p-4 sm:p-6 md:p-8 space-y-4 sm:space-y-6">
+                    {/* Profile Card - 3D Effect Container */}
+                    <div className="grid grid-cols-1 lg:grid-cols-[1fr_1.5fr] gap-6 sm:gap-8 md:gap-10 relative z-10">
+                        {/* Left Card - Profile Info */}
+                        <TiltCard
+                            className="bg-[#0a0a0a] border border-white/5 p-5 sm:p-6 md:p-8 space-y-5 sm:space-y-6 relative overflow-hidden group"
+                            style={{
+                                boxShadow: `
+                                    0 25px 60px -15px rgba(0, 0, 0, 0.9),
+                                    0 0 0 1px rgba(255, 255, 255, 0.03),
+                                    inset 0 1px 0 0 rgba(255, 255, 255, 0.06)
+                                `
+                            }}
+                            maxTilt={6}
+                            scale={1.01}
+                        >
+                            {/* Glass reflection overlay */}
+                            <div
+                                className="absolute top-0 left-0 right-0 h-20 pointer-events-none"
+                                style={{
+                                    background: 'linear-gradient(180deg, rgba(255,255,255,0.04) 0%, transparent 100%)'
+                                }}
+                            />
                             <div className="flex items-center gap-4 sm:gap-6">
                                 <div className={`${module.bgClass}/10 flex items-center justify-center w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 rounded-full border ${module.borderClass}/30 ${accentColor} shrink-0`}>
                                     <User size={24} className="sm:w-7 sm:h-7 md:w-8 md:h-8" />
@@ -75,9 +94,15 @@ const IdentifyPage: React.FC = () => {
                                     <p className="text-sm sm:text-base text-gray-500 font-mono">Based in ID, US</p>
                                 </div>
                             </div>
-                            <div className="grid grid-cols-2 gap-2 sm:gap-3">
+                            <div className="grid grid-cols-2 gap-2 sm:gap-3 relative z-10">
                                 {[0, 1, 2, 3].map((i) => (
-                                    <div key={i} className="bg-white/5 p-2.5 sm:p-3 border border-white/5">
+                                    <div
+                                        key={i}
+                                        className="bg-white/5 p-2.5 sm:p-3 border border-white/5 rounded-lg backdrop-blur-sm transition-all hover:bg-white/10 hover:border-white/10"
+                                        style={{
+                                            boxShadow: 'inset 0 1px 0 0 rgba(255, 255, 255, 0.05), 0 4px 12px -4px rgba(0, 0, 0, 0.4)'
+                                        }}
+                                    >
                                         <div className="text-sm sm:text-base text-gray-500 uppercase tracking-wider mb-0.5 sm:mb-1">
                                             {['Experience', 'Certifications', 'Projects', 'Status'][i]}
                                         </div>
@@ -87,9 +112,28 @@ const IdentifyPage: React.FC = () => {
                                     </div>
                                 ))}
                             </div>
-                        </div>
+                        </TiltCard>
 
-                        <div className="bg-edition-card border border-edition-border p-4 sm:p-6 md:p-8 space-y-4 sm:space-y-6">
+                        {/* Right Card - Asset Description */}
+                        <TiltCard
+                            className="bg-[#0a0a0a] border border-white/5 p-5 sm:p-6 md:p-8 space-y-5 sm:space-y-6 relative overflow-hidden group"
+                            style={{
+                                boxShadow: `
+                                    0 25px 60px -15px rgba(0, 0, 0, 0.9),
+                                    0 0 0 1px rgba(255, 255, 255, 0.03),
+                                    inset 0 1px 0 0 rgba(255, 255, 255, 0.06)
+                                `
+                            }}
+                            maxTilt={6}
+                            scale={1.01}
+                        >
+                            {/* Glass reflection overlay */}
+                            <div
+                                className="absolute top-0 left-0 right-0 h-20 pointer-events-none"
+                                style={{
+                                    background: 'linear-gradient(180deg, rgba(255,255,255,0.04) 0%, transparent 100%)'
+                                }}
+                            />
                             <div>
                                 <h4 className={`${accentColor} font-mono text-base sm:text-lg uppercase tracking-widest mb-2 sm:mb-3 md:mb-4 flex items-center gap-2`}>
                                     <Terminal size={12} className="sm:w-3.5 sm:h-3.5" />
@@ -122,7 +166,7 @@ const IdentifyPage: React.FC = () => {
                                     )}
                                 </div>
                             </div>
-                        </div>
+                        </TiltCard>
                     </div>
                 </section>
             </main>
