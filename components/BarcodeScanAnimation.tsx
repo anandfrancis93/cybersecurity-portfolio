@@ -189,12 +189,14 @@ const BottomCardCanvas: React.FC<{ startTimeRef: React.RefObject<number> }> = ({
             }
 
             // Screen Items
-            const startItemY = 25;
-            const rowH = 19;
+            const startItemY = 20;
+            const rowH = 20;
             ctx.font = '10px "JetBrains Mono", monospace';
+            ctx.textBaseline = 'middle';
 
             lineItems.forEach((item, idx) => {
-                const y = startItemY + idx * rowH;
+                const rowTop = startItemY + idx * rowH;
+                const textY = rowTop + rowH / 2; // Center text vertically in row
                 const itemStartP = 0.05 + (idx * 0.08);
                 const itemEndP = itemStartP + 0.15;
 
@@ -211,12 +213,12 @@ const BottomCardCanvas: React.FC<{ startTimeRef: React.RefObject<number> }> = ({
                 // Striped background
                 if (idx % 2 === 0) {
                     ctx.fillStyle = 'rgba(255,255,255,0.03)';
-                    ctx.fillRect(5, y - 10, width - 10, rowH);
+                    ctx.fillRect(5, rowTop, width - 10, rowH);
                 }
 
                 ctx.textAlign = 'left';
                 ctx.fillStyle = 'rgba(255,255,255,0.5)';
-                ctx.fillText(item.label, 15, y);
+                ctx.fillText(item.label, 15, textY);
 
                 ctx.textAlign = 'right';
                 let displayText = item.value;
@@ -229,7 +231,7 @@ const BottomCardCanvas: React.FC<{ startTimeRef: React.RefObject<number> }> = ({
                 } else {
                     ctx.fillStyle = item.label === 'STATUS' ? COLOR_SUCCESS : COLOR_PRIMARY;
                 }
-                ctx.fillText(displayText, width - 15, y);
+                ctx.fillText(displayText, width - 15, textY);
             });
 
             // Status Bar
