@@ -11,7 +11,8 @@ const LOGO_ICONS = [Shield, FileKey, Eye, Network, Code, Cloud, Terminal];
 const Nav: React.FC = () => {
   const [time, setTime] = useState(new Date());
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [logoIndex, setLogoIndex] = useState(0);
+  // Calculate logo index based on time to keep it synced across page navigations
+  const logoIndex = Math.floor(time.getTime() / 10000) % LOGO_TERMS.length;
   const location = useLocation();
 
   useEffect(() => {
@@ -19,13 +20,6 @@ const Nav: React.FC = () => {
     return () => clearInterval(timer);
   }, []);
 
-  // Cycle through logo terms every 10 seconds
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setLogoIndex(prev => (prev + 1) % LOGO_TERMS.length);
-    }, 10000);
-    return () => clearInterval(timer);
-  }, []);
 
   // Close menu when route changes
   useEffect(() => {
