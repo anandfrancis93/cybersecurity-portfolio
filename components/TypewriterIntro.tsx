@@ -22,123 +22,24 @@ const TypewriterIntro: React.FC<TypewriterIntroProps> = ({
 
         let animationFrameId: number;
         let width = 320;
-        let height = 400;
+        let height = 500; // Taller to accommodate A4 paper
 
         // Colors - dynamic based on module
         const moduleColors: Record<string, string> = {
-            'asset': '#22D3EE',      // Cyan
-            'lab': '#A855F7',         // Purple
-            'recon': '#F59E0B',       // Amber/orange
-            'clearance': '#22C55E',   // Green
-            'logs': '#3B82F6',        // Blue
-            'handshake': '#E11D48',   // Rose
+            'asset': '#22D3EE',
+            'lab': '#A855F7',
+            'recon': '#F59E0B',
+            'clearance': '#22C55E',
+            'logs': '#3B82F6',
+            'handshake': '#E11D48',
         };
         const COLOR_ACCENT = moduleColors[moduleName] || '#3B82F6';
-        const COLOR_PAPER = 'rgba(20, 20, 25, 0.95)';
-        const COLOR_PAPER_SHADOW = 'rgba(0, 0, 0, 0.5)';
-        const COLOR_TYPEWRITER = 'rgba(60, 60, 70, 1)';
-        const COLOR_DARK = 'rgba(40, 40, 50, 1)';
 
-        // 38 cybersecurity topics - same as TypewriterAnimation
-        const articles = [
-            { title: 'CONFIDENTIALITY', subject: 'CIA Triad', body: 'Keeping sensitive information private and only accessible to those who should see it.' },
-            { title: 'INTEGRITY', subject: 'CIA Triad', body: 'Making sure data stays accurate and unchanged unless modified by authorized users.' },
-            { title: 'AVAILABILITY', subject: 'CIA Triad', body: 'Ensuring systems and data are working and accessible when people need them.' },
-            { title: 'ZERO TRUST', subject: 'Architecture', body: 'A security model where nothing is trusted by default, even inside the network.' },
-            { title: 'IAM', subject: 'Access Control', body: 'Identity and Access Management. Managing who can access what systems.' },
-            { title: 'PKI', subject: 'Cryptography', body: 'Public Key Infrastructure. A system for managing digital certificates.' },
-            { title: 'INCIDENT RESPONSE', subject: 'Operations', body: 'The process of detecting, investigating, and recovering from security breaches.' },
-            { title: 'AAA', subject: 'Framework', body: 'Authentication, Authorization, Accounting. Verify who, what, and when.' },
-            { title: 'THREAT ACTOR', subject: 'Intelligence', body: 'Anyone who poses a cybersecurity threat, from hackers to nation-states.' },
-            { title: 'ATTACK SURFACE', subject: 'Risk', body: 'All the possible entry points where an attacker could try to break into a system.' },
-            { title: 'ATTACK VECTOR', subject: 'Methodology', body: 'The specific method or path an attacker uses to gain unauthorized access.' },
-            { title: 'ZERO-DAY', subject: 'Vulnerabilities', body: 'A security flaw that developers do not know about yet, making it very dangerous.' },
-            { title: 'MALWARE', subject: 'Threats', body: 'Software designed to harm computers, including viruses, ransomware, and trojans.' },
-            { title: 'ACL', subject: 'Access Control', body: 'Access Control List. Rules defining who can access what resources.' },
-            { title: 'LEAST PRIVILEGE', subject: 'Principle', body: 'Giving users only the minimum access they need to do their job, nothing extra.' },
-            { title: 'AIR-GAP', subject: 'Isolation', body: 'Physically disconnecting a computer from all networks for maximum security.' },
-            { title: 'DATA SOVEREIGNTY', subject: 'Compliance', body: 'Data must follow the laws of the country where it is stored or processed.' },
-            { title: 'DISASTER RECOVERY', subject: 'Continuity', body: 'Plans and procedures to restore systems and data after a major incident.' },
-            { title: 'OSINT', subject: 'Intelligence', body: 'Open Source Intelligence. Gathering info from public sources.' },
-            { title: 'PEN TESTING', subject: 'Assessment', body: 'Hiring ethical hackers to safely attack your systems and find weaknesses.' },
-            { title: 'DIGITAL FORENSICS', subject: 'Investigation', body: 'The science of collecting and analyzing digital evidence after a cyber incident.' },
-            { title: 'PROMPT INJECTION', subject: 'AI Security', body: 'Tricking AI chatbots into doing unintended things through specially crafted inputs.' },
-            { title: 'STUXNET', subject: 'APT Malware', body: 'A famous worm created by governments to sabotage Iran nuclear facilities in 2010.' },
-            { title: 'PEGASUS', subject: 'Spyware', body: 'Powerful spyware that can secretly take over phones without users clicking anything.' },
-            { title: 'NOTPETYA', subject: 'Wiper', body: 'A 2017 attack disguised as ransomware that destroyed data worldwide, causing $10B damage.' },
-            { title: 'WANNACRY', subject: 'Ransomware', body: 'A 2017 ransomware that spread globally, crippling hospitals and businesses.' },
-            { title: 'SOLARWINDS', subject: 'Supply Chain', body: 'A 2020 attack where hackers hid malware in software updates, affecting thousands.' },
-            { title: 'RED TEAM', subject: 'Offensive', body: 'Security professionals who simulate real attacks to test an organization defenses.' },
-            { title: 'BLUE TEAM', subject: 'Defensive', body: 'Security professionals who defend systems and respond to attacks in real-time.' },
-            { title: 'PURPLE TEAM', subject: 'Collaboration', body: 'Red and Blue teams working together to continuously improve security.' },
-            { title: 'YELLOW TEAM', subject: 'Development', body: 'Developers who focus on building security into software from the beginning.' },
-            { title: 'ORANGE TEAM', subject: 'Education', body: 'Teams that train employees to recognize phishing and other security threats.' },
-            { title: 'WHITE TEAM', subject: 'Governance', body: 'Management that oversees security exercises and sets the rules.' },
-            { title: 'RED HAT', subject: 'Vigilante', body: 'Hackers who fight back against malicious hackers using aggressive methods.' },
-            { title: 'BLUE HAT', subject: 'External Tester', body: 'Outside security experts hired to find bugs before software is released.' },
-            { title: 'GREEN HAT', subject: 'Newbie', body: 'Beginner hackers who are learning but may not understand the risks involved.' },
-            { title: 'PURPLE HAT', subject: 'Self-Taught', body: 'Hackers who practice and improve their skills by testing their own systems.' },
-            { title: 'PINK HAT', subject: 'Evaluator', body: 'Specialists who evaluate security systems with a focus on unique defensive methods.' },
-            { title: 'DEFENSE-IN-DEPTH', subject: 'Strategy', body: 'Layered security. Using multiple defensive lines so if one fails, another stops the attack.' },
-            { title: 'APT', subject: 'Threats', body: 'Advanced Persistent Threat. Sophisticated attackers who hide in a network for a long time.' },
-            { title: 'SHADOW IT', subject: 'Risk', body: 'Tech used without IT approval. Employees using unauthorized apps or devices.' },
-            { title: 'PAM', subject: 'Access Control', body: 'Privileged Access Management. Securing accounts with "god mode" access.' },
-            { title: 'XDR', subject: 'Operations', body: 'Extended Detection and Response. A tool that collects data everywhere to spot attacks.' },
-            { title: 'NIST CSF 2.0', subject: 'Framework', body: 'The standard framework for managing cyber risk: Govern, Identify, Protect, Detect, Respond, Recover.' },
-            { title: 'WHITE BOX', subject: 'Testing', body: 'Security testing where the hacker has full knowledge of the system, including source code and diagrams.' },
-            { title: 'BLACK BOX', subject: 'Testing', body: 'Security testing where the hacker has zero prior knowledge, simulating a real outside attack.' },
-            { title: 'GREY BOX', subject: 'Testing', body: 'A blended testing approach where the hacker has some limited knowledge, like low-level credentials.' },
-            { title: 'DEVSECOPS', subject: 'Methodology', body: 'Integrating security practices within the DevOps process. Security as code, from start to finish.' },
-            { title: 'NON-REPUDIATION', subject: 'Integrity', body: 'Ensuring a sender cannot deny sending a message. Proof of origin and integrity.' },
-            { title: 'SYMMETRIC ENCRYPTION', subject: 'Cryptography', body: 'Using the same secret key to both encrypt and decrypt information. Fast but requires key sharing.' },
-            { title: 'ASYMMETRIC ENCRYPTION', subject: 'Cryptography', body: 'Using a pair of keys (Public and Private). One effectively locks, the other unlocks.' },
-            { title: 'DIGITAL CERTIFICATE', subject: 'Identity', body: 'An electronic "passport" that verifies the identity of a user or server using PKI.' },
-            { title: 'DIGITAL SIGNATURE', subject: 'Authentication', body: 'A cryptographic mark that validates the authenticity and integrity of a message or document.' },
-            { title: 'PHISHING', subject: 'Social Engineering', body: 'Sending fraudulent emails that resemble reputable sources to steal sensitive data.' },
-            { title: 'VISHING', subject: 'Social Engineering', body: 'Voice Phishing. Attackers use phone calls to trick victims into revealing info.' },
-            { title: 'SMISHING', subject: 'Social Engineering', body: 'SMS Phishing. Deceptive text messages used to trick users into downloading malware.' },
-            { title: 'WATERING HOLE', subject: 'Attack Vector', body: 'Infecting a website that a specific target group is known to visit regularly.' },
-            { title: 'TYPOSQUATTING', subject: 'Social Engineering', body: 'URL Hijacking. Registering misspelled domain names (e.g., goggle.com) to trap users.' },
-            { title: 'RANSOMWARE', subject: 'Malware', body: 'Malicious software that blocks access to a system until a sum of money is paid.' },
-            { title: 'TROJAN', subject: 'Malware', body: 'Malware disguised as legitimate software. It hides inside harmless-looking apps.' },
-            { title: 'WORM', subject: 'Malware', body: 'Self-replicating malware that spreads across networks without needing human interaction.' },
-            { title: 'SPYWARE', subject: 'Malware', body: 'Software that secretly records user activity, passwords, and personal information.' },
-            { title: 'VIRUS', subject: 'Malware', body: 'Malicious code that attaches itself to clean files and spreads when those files are run.' },
-            { title: 'KEYLOGGER', subject: 'Spyware', body: 'Hardware or software that records every keystroke made on a computer.' },
-            { title: 'LOGIC BOMB', subject: 'Malware', body: 'Malicious code inserted into a program that runs only when specific conditions are met.' },
-            { title: 'ROOTKIT', subject: 'Malware', body: 'Tools designed to hide deep in the OS, giving attackers persistent "root" access.' },
-            { title: 'DDOS', subject: 'Attack', body: 'Distributed Denial of Service. Overwhelming a server with traffic from many sources to crash it.' },
-            { title: 'STEGANOGRAPHY', subject: 'Evasion', body: 'Hiding secret data within an ordinary file (like an image) to avoid detection.' },
-            { title: 'TOKENIZATION', subject: 'Data Protection', body: 'Replacing sensitive data with a non-sensitive equivalent (token) that has no intrinsic value.' },
-            { title: 'DATA MASKING', subject: 'Data Protection', body: 'Obfuscating specific data within a database so it remains usable but not personally identifiable.' },
-            { title: 'HASHING', subject: 'Cryptography', body: 'Converting data into a fixed-size string of characters. A one-way fingerprint of data.' },
-            { title: 'SALTING', subject: 'Cryptography', body: 'Adding random data to a password before hashing it to defend against dictionary attacks.' },
-            { title: 'CVE', subject: 'Vulnerability', body: 'Common Vulnerabilities and Exposures. A list of publicly disclosed cybersecurity flaws.' },
-            { title: 'CVSS', subject: 'Scoring', body: 'Common Vulnerability Scoring System. A standard for assessing the severity of security vulnerabilities.' },
-            { title: 'DATA OWNER', subject: 'Governance', body: 'The individual or entity with legal ownership and ultimate responsibility for a specific set of data.' },
-            { title: 'DATA CONTROLLER', subject: 'GDPR/Privacy', body: 'The entity that determines the purposes and means of processing personal data.' },
-            { title: 'DATA PROCESSOR', subject: 'GDPR/Privacy', body: 'An entity that processes personal data on behalf of the Data Controller.' },
-            { title: 'DATA CUSTODIAN', subject: 'Governance', body: 'Responsible for the safe custody, transport, and storage of data. Also called Data Steward.' },
-            { title: 'DATA SUBJECT', subject: 'GDPR/Privacy', body: 'The individual whom the personal data is about. The person whose data is being processed.' },
-            { title: 'SLE', subject: 'Risk Assessment', body: 'Single Loss Expectancy. The estimated financial loss from a single security incident. (AV x EF)' },
-            { title: 'ARO', subject: 'Risk Assessment', body: 'Annualized Rate of Occurrence. How many times a specific threat is expected to happen in a year.' },
-            { title: 'ALE', subject: 'Risk Assessment', body: 'Annualized Loss Expectancy. The total expected financial loss per year. (SLE x ARO)' },
-            { title: 'RTO', subject: 'Recovery', body: 'Recovery Time Objective. The maximum acceptable amount of time to get systems back online.' },
-            { title: 'RPO', subject: 'Recovery', body: 'Recovery Point Objective. The maximum acceptable amount of data loss measured in time.' },
-            { title: 'MTTR', subject: 'Metrics', body: 'Mean Time To Repair. The average time it takes to fix a failed component or system.' },
-            { title: 'MTBF', subject: 'Metrics', body: 'Mean Time Between Failures. The average time a system runs before it fails.' },
-            { title: 'SLA', subject: 'Agreements', body: 'Service Level Agreement. A contract defining the level of service derived from a service provider.' },
-            { title: 'MOA', subject: 'Agreements', body: 'Memorandum of Agreement. A legal document describing the terms of cooperation between parties.' },
-            { title: 'MOU', subject: 'Agreements', body: 'Memorandum of Understanding. A formal agreement between parties expressing a convergence of will.' },
-            { title: 'MSA', subject: 'Agreements', body: 'Master Service Agreement. A contract reaching an understanding on future transactions/agreements.' },
-            { title: 'SOW', subject: 'Agreements', body: 'Statement of Work. A document defining project-specific activities, deliverables, and timelines.' },
-            { title: 'BCP', subject: 'Resilience', body: 'Business Continuity Planning. Strategy to ensure operations continue during a disaster.' },
-            { title: 'COOP', subject: 'Resilience', body: 'Continuity of Operations Planning. Federal term for ensuring mission-critical functions continue.' },
-            { title: 'CYBERSECURITY', subject: 'Discipline', body: 'The practice of protecting systems, networks, and data from digital attacks, theft, and damage.' },
-            { title: 'SHIFT LEFT', subject: 'DevSecOps', body: 'Integrating security earlier in the development lifecycle to catch vulnerabilities before deployment.' },
-            { title: 'MITRE ATT&CK', subject: 'Framework', body: 'A knowledge base of adversary tactics and techniques based on real-world observations of cyberattacks.' },
-            { title: 'MITRE ATLAS', subject: 'AI Security', body: 'Adversarial Threat Landscape for AI Systems. A framework for AI/ML security threats and mitigations.' }
-        ];
+        // Dark Theme Colors
+        const COLOR_PAPER = '#0B1121';
+        const COLOR_PAPER_BORDER = 'rgba(255, 255, 255, 0.1)';
+        const COLOR_PRINTER_BODY = '#1C1C1E';
+        const COLOR_PRINTER_ACCENT = '#2D2D30';
 
         // Shred particle interface
         interface Shred {
@@ -153,281 +54,293 @@ const TypewriterIntro: React.FC<TypewriterIntroProps> = ({
         }
 
         let shreds: Shred[] = [];
-        let phase: 'typing' | 'reading' | 'shredding' = 'typing';
         let lastShredTime = 0;
 
-        // Configuration
-        const READING_TIME = 2000; // Shorter reading time for loading screen
-        const SHREDDING_DURATION = 1500;
+        // Cybersecurity topics
+        const articles = [
+            { title: 'CONFIDENTIALITY', subject: 'CIA Triad', body: 'Keeping sensitive information private and only accessible to those who should see it.' },
+            { title: 'INTEGRITY', subject: 'CIA Triad', body: 'Making sure data stays accurate and unchanged unless modified by authorized users.' },
+            { title: 'AVAILABILITY', subject: 'CIA Triad', body: 'Ensuring systems and data are working and accessible when people need them.' },
+            { title: 'ZERO TRUST', subject: 'Architecture', body: 'A security model where nothing is trusted by default, even inside the network.' },
+            { title: 'IAM', subject: 'Access Control', body: 'Identity and Access Management. Managing who can access what systems.' },
+            { title: 'PKI', subject: 'Cryptography', body: 'Public Key Infrastructure. A system for managing digital certificates.' },
+            { title: 'INCIDENT RESPONSE', subject: 'Operations', body: 'The process of detecting, investigating, and recovering from security breaches.' },
+            { title: 'THREAT ACTOR', subject: 'Intelligence', body: 'Anyone who poses a cybersecurity threat, from hackers to nation-states.' },
+            { title: 'ZERO-DAY', subject: 'Vulnerabilities', body: 'A security flaw that developers do not know about yet, making it dangerous.' },
+            { title: 'MALWARE', subject: 'Threats', body: 'Software designed to harm computers, including viruses, ransomware, and trojans.' },
+            { title: 'RANSOMWARE', subject: 'Malware', body: 'Malicious software that blocks access to a system until a ransom is paid.' },
+            { title: 'PHISHING', subject: 'Social Engineering', body: 'Sending fraudulent emails resembling reputable sources to steal sensitive data.' },
+            { title: 'DEFENSE-IN-DEPTH', subject: 'Strategy', body: 'Layered security. Using multiple defensive lines so if one fails, another stops the attack.' },
+            { title: 'RED TEAM', subject: 'Offensive', body: 'Security professionals who simulate real attacks to test organization defenses.' },
+            { title: 'BLUE TEAM', subject: 'Defensive', body: 'Security professionals who defend systems and respond to attacks in real-time.' },
+        ];
 
-        // Pick a random article for this load
+        let phase: 'printing' | 'reading' | 'shredding' = 'printing';
+
+        // Configuration
+        const LINE_PRINT_TIME = 800; // ms per line
+        const READING_TIME = 2000;
+        const SHREDDING_DURATION = 1200;
+
+        // Pick a random article
         const article = articles[Math.floor(Math.random() * articles.length)];
         const startTime = performance.now();
-        let frameCount = 0;
+
+        // Pre-calculate lines to print
+        interface PrintLine {
+            text: string;
+            style: 'title' | 'subject' | 'separator' | 'body';
+        }
+        const linesToPrint: PrintLine[] = [];
+
+        // Title
+        linesToPrint.push({ text: article.title, style: 'title' });
+
+        // Subject
+        linesToPrint.push({ text: `SUBJECT: ${article.subject}`, style: 'subject' });
+
+        // Separator line
+        linesToPrint.push({ text: '─'.repeat(24), style: 'separator' });
+
+        // Word-wrap body into lines
+        const bodyWords = article.body.split(' ');
+        let bodyLine = '';
+        for (const word of bodyWords) {
+            const testLine = bodyLine + (bodyLine ? ' ' : '') + word;
+            if (testLine.length > 25 && bodyLine) {
+                linesToPrint.push({ text: bodyLine, style: 'body' });
+                bodyLine = word;
+            } else {
+                bodyLine = testLine;
+            }
+        }
+        if (bodyLine) linesToPrint.push({ text: bodyLine, style: 'body' });
+
+        // Add empty lines for bottom spacing
+        linesToPrint.push({ text: '', style: 'body' });
+        linesToPrint.push({ text: '', style: 'body' });
+
+        const totalPrintDuration = linesToPrint.length * LINE_PRINT_TIME;
+        const lineHeight = 24;
 
         const draw = () => {
             const dpr = window.devicePixelRatio || 1;
-            // Ensure canvas size matches
             if (canvas.width !== width * dpr) {
                 canvas.width = width * dpr;
                 canvas.height = height * dpr;
+                ctx.setTransform(1, 0, 0, 1, 0, 0);
                 ctx.scale(dpr, dpr);
             }
 
             ctx.clearRect(0, 0, width, height);
-            frameCount++;
 
             const now = performance.now();
             const elapsed = now - startTime;
 
-            const centerX = width / 2;
+            // Printer dimensions
+            const printerWidth = width * 0.88;
+            const printerHeight = 75;
+            const printerTop = height - printerHeight - 15;
+            const printerLeft = (width - printerWidth) / 2;
 
-            // Typewriter dimensions
-            const twWidth = width * 0.85;
-            const twHeight = 65;
-            const twTop = height - 90;
-            const twLeft = (width - twWidth) / 2;
-
-            // Paper dimensions
-            const paperWidth = twWidth * 0.75;
-            const paperMaxHeight = twTop - 40;
+            // Paper dimensions (A4 aspect ratio: 1:1.414)
+            const paperWidth = 200; // Fixed width for A4 proportions
+            const paperMaxHeight = paperWidth * 1.414; // A4 height
             const paperLeft = (width - paperWidth) / 2;
+            const printHeadY = printerTop - 8; // Where new lines appear (just above the slot)
 
             // --- CALCULATE PHASES ---
-            // 1. Typing Duration
-            const typingDuration = 300 + article.title.length * 40 + 200 + (article.subject.length + 4) * 30 + 300 + article.body.length * 25;
+            let paperShredOffset = 0;
 
-            let paperYOffset = 0;
-
-            if (elapsed < typingDuration) {
-                phase = 'typing';
-            } else if (elapsed < typingDuration + READING_TIME) {
+            if (elapsed < totalPrintDuration) {
+                phase = 'printing';
+            } else if (elapsed < totalPrintDuration + READING_TIME) {
                 phase = 'reading';
-            } else if (elapsed < typingDuration + READING_TIME + SHREDDING_DURATION) {
+            } else if (elapsed < totalPrintDuration + READING_TIME + SHREDDING_DURATION) {
                 phase = 'shredding';
-            } else {
-                // Done!
-                if (!isComplete) setIsComplete(true);
-                return; // Stop animation
-            }
+                const shredProgress = (elapsed - (totalPrintDuration + READING_TIME)) / SHREDDING_DURATION;
+                paperShredOffset = 400 * shredProgress;
 
-            // Paper Animation Logic
-            // Emergance (start)
-            let paperVisibleHeight = paperMaxHeight;
-            if (phase === 'typing' && elapsed < 1000) {
-                paperVisibleHeight = paperMaxHeight * (elapsed / 1000);
-            }
-
-            // Shredding (end)
-            if (phase === 'shredding') {
-                const shredProgress = (elapsed - (typingDuration + READING_TIME)) / SHREDDING_DURATION;
-                paperYOffset = paperMaxHeight * shredProgress; // Move paper down
-
-                // Spawn shreds
-                if (now - lastShredTime > 40 && paperYOffset < paperMaxHeight * 0.9) {
+                if (now - lastShredTime > 35 && shredProgress < 0.85) {
                     lastShredTime = now;
-                    // Spawn a batch of shreds
-                    for (let k = 0; k < 3; k++) {
+                    for (let k = 0; k < 4; k++) {
                         shreds.push({
                             x: paperLeft + Math.random() * paperWidth,
-                            y: twTop + twHeight - 10,
-                            vx: (Math.random() - 0.5) * 2,
-                            vy: Math.random() * 2 + 2,
-                            width: Math.random() * 4 + 2,
-                            height: Math.random() * 8 + 4,
+                            y: printerTop + printerHeight - 5,
+                            vx: (Math.random() - 0.5) * 3,
+                            vy: Math.random() * 3 + 2,
+                            width: Math.random() * 5 + 2,
+                            height: Math.random() * 10 + 4,
                             angle: Math.random() * Math.PI * 2,
-                            rotSpeed: (Math.random() - 0.5) * 0.2
+                            rotSpeed: (Math.random() - 0.5) * 0.25
                         });
                     }
                 }
+            } else {
+                if (!isComplete) setIsComplete(true);
+                return;
             }
 
-            const paperTop = twTop - paperVisibleHeight + paperYOffset;
+            // Calculate how many lines have been printed (and how far through current line)
+            const linesPrinted = Math.floor(elapsed / LINE_PRINT_TIME);
+            const currentLineProgress = (elapsed % LINE_PRINT_TIME) / LINE_PRINT_TIME;
 
-            // === DRAW PAPER (behind typewriter) ===
+            // Paper grows as lines are printed
+            const printedLines = Math.min(linesPrinted + 1, linesToPrint.length);
+            const paperHeight = printedLines * lineHeight + 20; // 20 for top padding
+            const paperTop = printHeadY - paperHeight + paperShredOffset;
+
+            // === DRAW PAPER ===
             ctx.save();
             ctx.beginPath();
-            ctx.rect(0, 0, width, twTop + 10); // Clip everything below the slot line roughly
+            ctx.rect(0, 0, width, printerTop + 5);
             ctx.clip();
 
-            if (paperVisibleHeight - paperYOffset > 0) {
-                ctx.fillStyle = COLOR_PAPER_SHADOW;
-                ctx.fillRect(paperLeft + 4, paperTop + 4, paperWidth, paperVisibleHeight);
+            if (paperHeight > 10 && phase !== 'shredding') {
+                // Paper shadow
+                ctx.fillStyle = 'rgba(0, 0, 0, 0.3)';
+                ctx.fillRect(paperLeft + 4, paperTop + 4, paperWidth, paperHeight);
 
+                // Paper body
                 ctx.fillStyle = COLOR_PAPER;
-                ctx.fillRect(paperLeft, paperTop, paperWidth, paperVisibleHeight);
+                ctx.fillRect(paperLeft, paperTop, paperWidth, paperHeight);
 
-                ctx.strokeStyle = 'rgba(59, 130, 246, 0.3)';
+                // Paper border
+                ctx.strokeStyle = COLOR_PAPER_BORDER;
                 ctx.lineWidth = 1;
-                ctx.strokeRect(paperLeft, paperTop, paperWidth, paperVisibleHeight);
+                ctx.strokeRect(paperLeft, paperTop, paperWidth, paperHeight);
 
-                ctx.strokeStyle = 'rgba(59, 130, 246, 0.2)';
-                ctx.beginPath();
-                ctx.moveTo(paperLeft + 15, paperTop);
-                ctx.lineTo(paperLeft + 15, paperTop + paperVisibleHeight);
-                ctx.stroke();
-
-                const contentPadding = 25;
-                let textY = paperTop + 30;
-
+                // --- CONTENT ---
+                // Lines are positioned from the print head UPWARD
+                // Most recent line is at printHeadY, older lines are above
+                const contentPadding = 18;
                 ctx.textAlign = 'left';
 
-                // 1. Title
-                if (textY < twTop) {
-                    // Dynamic font sizing
-                    const maxTitleWidth = paperWidth - (contentPadding * 2);
-                    let fontSize = 16;
-                    ctx.font = `bold ${fontSize}px "JetBrains Mono", monospace`;
+                for (let i = 0; i < printedLines && i < linesToPrint.length; i++) {
+                    const line = linesToPrint[i];
 
-                    // Measure full title to determine scale (using full title length)
-                    while (ctx.measureText(article.title).width > maxTitleWidth && fontSize > 10) {
-                        fontSize--;
-                        ctx.font = `bold ${fontSize}px "JetBrains Mono", monospace`;
-                    }
+                    // Calculate Y position: newest line at bottom, older lines above
+                    // Line 0 (title) should be at the top of the visible content
+                    const lineIndex = i;
+                    const lineY = printHeadY - (printedLines - 1 - lineIndex) * lineHeight - 15;
 
-                    const titleToShow = phase === 'typing' ? article.title.substring(0, Math.floor((elapsed - 300) / 40)) : article.title;
-                    if (titleToShow.length > 0) {
-                        ctx.fillStyle = '#FFFFFF';
-                        ctx.fillText(titleToShow, paperLeft + contentPadding, textY);
-                    }
-                }
+                    // Only draw if visible (above printer slot, below top of canvas)
+                    if (lineY < 5 || lineY > printerTop) continue;
 
-                // 2. Subject Line
-                textY += 28;
-                if (textY < twTop) {
-                    ctx.font = '11px "JetBrains Mono", monospace';
-                    ctx.fillStyle = 'rgba(255, 255, 255, 0.5)';
-                    const subjectStart = 300 + article.title.length * 40 + 200;
-                    if (elapsed > subjectStart) {
-                        const subjectToShow = phase === 'typing' ? `RE: ${article.subject}`.substring(0, Math.floor((elapsed - subjectStart) / 40)) : `RE: ${article.subject}`;
-                        ctx.fillText(subjectToShow, paperLeft + contentPadding, textY);
-                    }
-                }
-
-                // Divider
-                textY += 15;
-                if (textY < twTop && elapsed > 1500) {
-                    ctx.strokeStyle = 'rgba(150, 150, 150, 0.3)';
-                    ctx.beginPath();
-                    ctx.moveTo(paperLeft + contentPadding, textY);
-                    ctx.lineTo(paperLeft + paperWidth - 15, textY);
-                    ctx.stroke();
-                }
-
-                // 3. Body
-                textY += 25;
-                if (textY < twTop) {
-                    ctx.font = '12px "JetBrains Mono", monospace';
-                    ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
-                    const bodyStart = 300 + article.title.length * 40 + 200 + (article.subject.length + 4) * 30 + 300;
-
-                    if (elapsed > bodyStart) {
-                        const bodyChars = phase === 'typing' ? Math.floor((elapsed - bodyStart) / 25) : article.body.length;
-                        const words = article.body.split(' ');
-                        let line = '';
-                        let currentBodyChars = 0;
-
-                        for (let i = 0; i < words.length; i++) {
-                            if (currentBodyChars >= bodyChars) break;
-
-                            const testLine = line + (line ? ' ' : '') + words[i];
-                            const maxWidth = paperWidth - contentPadding - 20;
-
-                            if (ctx.measureText(testLine).width > maxWidth && line) {
-                                if (textY < twTop) ctx.fillText(line, paperLeft + contentPadding, textY);
-                                textY += 18;
-                                line = words[i];
-                            } else {
-                                line = testLine;
-                            }
-                            currentBodyChars += words[i].length + 1;
-                        }
-                        if (line && textY < twTop) {
-                            ctx.fillText(line, paperLeft + contentPadding, textY);
-                        }
-
-                        // Cursor
-                        if (phase === 'typing' && Math.floor(frameCount / 10) % 2 === 0) {
-                            const lineWidth = ctx.measureText(line).width;
+                    // Set style based on line type
+                    switch (line.style) {
+                        case 'title':
+                            ctx.font = 'bold 16px "JetBrains Mono", monospace';
+                            ctx.fillStyle = 'rgba(255, 255, 255, 0.95)';
+                            break;
+                        case 'subject':
+                            ctx.font = '10px "JetBrains Mono", monospace';
                             ctx.fillStyle = COLOR_ACCENT;
-                            if (textY < twTop) ctx.fillRect(paperLeft + contentPadding + lineWidth + 1, textY - 10, 2, 13);
-                        }
+                            break;
+                        case 'separator':
+                            ctx.font = '10px "JetBrains Mono", monospace';
+                            ctx.fillStyle = 'rgba(255, 255, 255, 0.2)';
+                            break;
+                        case 'body':
+                            ctx.font = '11px "JetBrains Mono", monospace';
+                            ctx.fillStyle = 'rgba(255, 255, 255, 0.7)';
+                            break;
+                    }
+
+                    if (line.text) {
+                        ctx.fillText(line.text, paperLeft + contentPadding, lineY);
                     }
                 }
             }
-            ctx.restore(); // End clipping
 
-            // === DRAW SHREDS (FALLING PARTICLES) ===
+            // Paper being shredded
+            if (phase === 'shredding') {
+                const shredProgress = (elapsed - (totalPrintDuration + READING_TIME)) / SHREDDING_DURATION;
+                const fadeOut = Math.max(0, 1 - shredProgress * 1.5);
+
+                if (fadeOut > 0) {
+                    ctx.globalAlpha = fadeOut;
+                    ctx.fillStyle = COLOR_PAPER;
+                    ctx.fillRect(paperLeft, paperTop, paperWidth, paperHeight);
+                    ctx.globalAlpha = 1;
+                }
+            }
+
+            ctx.restore();
+
+            // === DRAW SHREDS ===
             if (shreds.length > 0) {
                 for (let i = shreds.length - 1; i >= 0; i--) {
                     const s = shreds[i];
                     s.y += s.vy;
-                    s.x += s.vx; // Slight drift
+                    s.x += s.vx;
+                    s.vy += 0.1;
                     s.angle += s.rotSpeed;
 
                     ctx.save();
                     ctx.translate(s.x, s.y);
                     ctx.rotate(s.angle);
-                    ctx.fillStyle = 'rgba(230, 230, 230, 0.9)'; // Paper color
+                    ctx.fillStyle = 'rgba(20, 30, 50, 0.9)';
                     ctx.fillRect(-s.width / 2, -s.height / 2, s.width, s.height);
                     ctx.restore();
 
-                    // Remove if off screen
-                    if (s.y > height + 20) {
+                    if (s.y > height + 30) {
                         shreds.splice(i, 1);
                     }
                 }
             }
 
-            // === DRAW TYPEWRITER ===
-            ctx.fillStyle = COLOR_TYPEWRITER;
+            // === DRAW PRINTER BODY ===
+            ctx.fillStyle = COLOR_PRINTER_BODY;
             ctx.beginPath();
-            ctx.roundRect(twLeft, twTop, twWidth, twHeight, 8);
+            ctx.roundRect(printerLeft, printerTop, printerWidth, printerHeight, [0, 0, 14, 14]);
             ctx.fill();
 
-            ctx.fillStyle = COLOR_DARK;
-            ctx.fillRect(twLeft + 10, twTop - 8, twWidth - 20, 12);
+            // Top edge / slot
+            ctx.fillStyle = COLOR_PRINTER_ACCENT;
+            ctx.fillRect(printerLeft, printerTop, printerWidth, 10);
 
-            ctx.fillStyle = 'rgba(20, 20, 25, 1)';
-            ctx.fillRect(twLeft + twWidth * 0.2, twTop - 3, twWidth * 0.6, 6);
+            // Paper slot opening
+            ctx.fillStyle = '#0a0a0a';
+            ctx.fillRect(printerLeft + printerWidth * 0.1, printerTop, printerWidth * 0.8, 6);
 
-            ctx.fillStyle = 'rgba(30, 30, 35, 1)';
-            ctx.fillRect(twLeft + 15, twTop + 35, twWidth - 30, 20);
-
-            // Keys
-            const keyCount = 10;
-            const keyWidth = (twWidth - 50) / keyCount;
-            const isTyping = phase === 'typing';
-            const pressedKey = isTyping ? Math.floor((Math.sin(frameCount * 0.03) * 5 + Math.cos(frameCount * 0.05) * 3 + 8) % keyCount) : -1;
-
-            for (let i = 0; i < keyCount; i++) {
-                const keyX = twLeft + 20 + i * keyWidth;
-                const isPressed = i === pressedKey && Math.floor(frameCount / 15) % 2 === 0;
-                ctx.fillStyle = isPressed ? 'rgba(80, 80, 90, 1)' : 'rgba(50, 50, 60, 1)';
-                ctx.beginPath();
-                ctx.roundRect(keyX, twTop + 37 + (isPressed ? 2 : 0), keyWidth - 4, 14, 2);
-                ctx.fill();
-            }
-
-            // Decorations
-            ctx.fillStyle = COLOR_ACCENT;
+            // Bottom panel
+            ctx.fillStyle = COLOR_PRINTER_ACCENT;
             ctx.beginPath();
-            ctx.arc(twLeft + 25, twTop + 18, 4, 0, Math.PI * 2);
-            ctx.fill();
-            ctx.beginPath();
-            ctx.arc(twLeft + twWidth - 25, twTop + 18, 4, 0, Math.PI * 2);
+            ctx.roundRect(printerLeft + 12, printerTop + printerHeight - 35, printerWidth - 24, 25, 5);
             ctx.fill();
 
-            ctx.font = 'bold 12px monospace';
-            ctx.fillStyle = COLOR_ACCENT;
+            // LED indicators
+            const ledY = printerTop + printerHeight - 22;
+            const COLOR_LED_GREEN = '#22C55E';
+            ctx.fillStyle = COLOR_LED_GREEN;
+            ctx.shadowColor = COLOR_LED_GREEN;
+            ctx.shadowBlur = 8;
+            ctx.beginPath();
+            ctx.arc(printerLeft + 35, ledY, 5, 0, Math.PI * 2);
+            ctx.fill();
+
+            // Activity LED
+            const isActive = phase === 'printing' && Math.floor(now / 150) % 2 === 0;
+            ctx.fillStyle = isActive ? COLOR_ACCENT : `${COLOR_ACCENT}40`;
+            ctx.shadowColor = isActive ? COLOR_ACCENT : 'transparent';
+            ctx.shadowBlur = isActive ? 8 : 0;
+            ctx.beginPath();
+            ctx.arc(printerLeft + 60, ledY, 5, 0, Math.PI * 2);
+            ctx.fill();
+
+            ctx.shadowBlur = 0;
+
+            // Label
+            ctx.font = 'bold 11px "JetBrains Mono", monospace';
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.5)';
             ctx.textAlign = 'center';
-            ctx.fillText('INTEL BRIEFING', centerX, twTop + 22);
+            ctx.fillText('INTEL BRIEF', width / 2, printerTop + printerHeight - 18);
             ctx.textAlign = 'left';
 
             animationFrameId = requestAnimationFrame(draw);
         };
 
-        // Set canvas size with high DPI support for crisp text
         const dpr = window.devicePixelRatio || 1;
         canvas.width = width * dpr;
         canvas.height = height * dpr;
@@ -440,9 +353,8 @@ const TypewriterIntro: React.FC<TypewriterIntroProps> = ({
         return () => {
             cancelAnimationFrame(animationFrameId);
         };
-    }, [moduleName]); // Removed isComplete dependency to avoid re-running effect
+    }, [moduleName]);
 
-    // Call onComplete when animation finishes
     useEffect(() => {
         if (isComplete) {
             onComplete();
@@ -452,7 +364,7 @@ const TypewriterIntro: React.FC<TypewriterIntroProps> = ({
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-[#020202]">
             <div className="flex flex-col items-center gap-6">
-                <canvas ref={canvasRef} className="w-80 h-100" />
+                <canvas ref={canvasRef} className="w-80 h-[500px]" />
                 <p className="text-gray-500 text-sm font-mono animate-pulse">
                     LOADING {moduleName.toUpperCase()}...
                 </p>
