@@ -90,13 +90,13 @@ const LogsPage: React.FC = () => {
                                 </div>
 
                                 <div className="flex flex-col gap-4 relative z-10">
-                                    <div className="flex items-center gap-3 text-xs sm:text-sm font-mono text-logs/80 uppercase tracking-widest">
+                                    <div className="flex items-center gap-3 text-xs sm:text-sm font-mono text-gray-400 group-hover:text-logs uppercase tracking-widest transition-colors duration-300">
                                         <span>{log.date}</span>
                                         <span className="w-px h-3 bg-edition-border"></span>
                                         <span>{log.readTime}</span>
                                     </div>
 
-                                    <h3 className="text-xl sm:text-2xl font-bold font-display group-hover:text-logs transition-colors">
+                                    <h3 className="text-xl sm:text-2xl font-bold font-display group-hover:text-logs transition-colors duration-300">
                                         {log.title}
                                     </h3>
 
@@ -112,7 +112,7 @@ const LogsPage: React.FC = () => {
                                         ))}
                                     </div>
 
-                                    <div className="pt-4 mt-2 border-t border-white/5 flex items-center gap-2 text-logs text-sm font-bold opacity-0 group-hover:opacity-100 transition-all transform translate-y-2 group-hover:translate-y-0 duration-300">
+                                    <div className="pt-4 mt-2 border-t border-white/5 flex items-center gap-2 text-gray-400 group-hover:text-logs text-sm font-bold transition-colors duration-300">
                                         <span>ACCESS_FILE</span>
                                         <span className="text-lg">›</span>
                                     </div>

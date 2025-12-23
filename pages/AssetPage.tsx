@@ -83,27 +83,27 @@ const IdentifyPage: React.FC = () => {
                                 }}
                             />
                             <div className="flex items-center gap-4 sm:gap-6">
-                                <div className={`${module.bgClass}/10 flex items-center justify-center w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 rounded-full border ${module.borderClass}/30 ${accentColor} shrink-0`}>
+                                <div className="bg-white/10 flex items-center justify-center w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 rounded-full border border-white/30 text-white group-hover:text-asset group-hover:border-asset/50 group-hover:bg-asset/10 shrink-0 transition-colors duration-300">
                                     <User size={24} className="sm:w-7 sm:h-7 md:w-8 md:h-8" />
                                 </div>
                                 <div className="min-w-0">
-                                    <h3 className="font-display font-bold text-lg sm:text-xl text-white truncate"><ScrambleText text="Anand Francis" duration={600} disableVisualGlitch={true} triggerReveal={true} autoRepeatInterval={10000} /></h3>
-                                    <p className="text-sm sm:text-base text-gray-500 font-mono">Based in ID, US</p>
+                                    <h3 className="font-display font-bold text-lg sm:text-xl text-white group-hover:text-asset truncate transition-colors duration-300"><ScrambleText text="Anand Francis" duration={600} disableVisualGlitch={true} triggerReveal={true} autoRepeatInterval={10000} /></h3>
+                                    <p className="text-sm sm:text-base text-gray-500 group-hover:text-asset font-mono transition-colors duration-300">Based in ID, US</p>
                                 </div>
                             </div>
                             <div className="grid grid-cols-2 gap-2 sm:gap-3 relative z-10">
                                 {[0, 1, 2, 3].map((i) => (
                                     <div
                                         key={i}
-                                        className="bg-white/5 p-2.5 sm:p-3 border border-white/5 rounded-lg backdrop-blur-sm transition-all hover:bg-white/10 hover:border-white/10"
+                                        className="bg-white/5 p-2.5 sm:p-3 border border-white/5 backdrop-blur-sm transition-all group-hover:bg-white/10 group-hover:border-white/10"
                                         style={{
                                             boxShadow: 'inset 0 1px 0 0 rgba(255, 255, 255, 0.05), 0 4px 12px -4px rgba(0, 0, 0, 0.4)'
                                         }}
                                     >
-                                        <div className="text-sm sm:text-base text-gray-500 uppercase tracking-wider mb-0.5 sm:mb-1">
+                                        <div className="text-sm sm:text-base text-gray-500 uppercase tracking-wider mb-0.5 sm:mb-1 group-hover:text-asset transition-colors duration-300">
                                             {['Experience', 'Certifications', 'Projects', 'Status'][i]}
                                         </div>
-                                        <div className={`text-sm sm:text-base font-mono ${accentColor} truncate`}>
+                                        <div className="text-sm sm:text-base font-mono text-white truncate group-hover:text-asset transition-colors duration-300">
                                             {['10+ Years', '3', '4', 'Available'][i]}
                                         </div>
                                     </div>
@@ -130,20 +130,20 @@ const IdentifyPage: React.FC = () => {
                                 }}
                             />
                             <div>
-                                <h4 className={`${accentColor} font-mono text-base sm:text-lg uppercase tracking-widest mb-2 sm:mb-3 md:mb-4 flex items-center gap-2`}>
+                                <h4 className={`text-white group-hover:${accentColor} font-mono text-base sm:text-lg uppercase tracking-widest mb-2 sm:mb-3 md:mb-4 flex items-center gap-2 transition-colors duration-300`}>
                                     <Terminal size={12} className="sm:w-3.5 sm:h-3.5" />
                                     <ScrambleText text="Asset Description" duration={600} disableVisualGlitch={true} triggerReveal={true} autoRepeatInterval={10000} />
                                 </h4>
-                                <p className="text-gray-400 leading-relaxed text-sm sm:text-base">{PROFILE.bio}</p>
+                                <p className="text-gray-400 group-hover:text-asset leading-relaxed text-sm sm:text-base transition-colors duration-300">{PROFILE.bio}</p>
                             </div>
                             <div>
-                                <h4 className="text-gray-500 font-mono text-sm sm:text-base uppercase tracking-widest mb-3 sm:mb-4 flex items-center gap-2">
+                                <h4 className="text-white group-hover:text-asset font-mono text-sm sm:text-base uppercase tracking-widest mb-3 sm:mb-4 flex items-center gap-2 transition-colors duration-300">
                                     <Cpu size={12} className="sm:w-3.5 sm:h-3.5" />
                                     <ScrambleText text="Capabilities" duration={600} disableVisualGlitch={true} triggerReveal={true} autoRepeatInterval={10000} />
                                 </h4>
                                 <div className="flex flex-wrap gap-1.5 sm:gap-2">
                                     {visibleSkills.map((skill, i) => (
-                                        <span key={i} className={`px-2 sm:px-3 py-1.5 ${module.bgClass}/5 ${accentColor} text-sm sm:text-base font-mono border ${module.borderClass}/20 animate-fade-in`}>
+                                        <span key={i} className="px-2 sm:px-3 py-1.5 bg-white/5 text-white text-sm sm:text-base font-mono border border-white/20 animate-fade-in group-hover:text-asset group-hover:border-asset/30 group-hover:bg-asset/5 transition-colors duration-300">
                                             {skill}
                                         </span>
                                     ))}

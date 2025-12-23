@@ -217,7 +217,7 @@ const BottomCardCanvas: React.FC<{ startTimeRef: React.RefObject<number> }> = ({
                 }
 
                 ctx.textAlign = 'left';
-                ctx.fillStyle = 'rgba(255,255,255,0.5)';
+                ctx.fillStyle = 'rgba(255,255,255,0.9)';
                 ctx.fillText(item.label, 15, textY);
 
                 ctx.textAlign = 'right';

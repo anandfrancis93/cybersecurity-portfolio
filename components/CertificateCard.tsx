@@ -77,10 +77,10 @@ const CertificateCard: React.FC<CertificateCardProps> = ({ certificate, accentCo
             </div>
 
             <div className="space-y-3">
-              <h3 className="text-xl md:text-2xl font-display font-bold text-white tracking-tight leading-tight">
+              <h3 className="text-xl md:text-2xl font-display font-bold text-white group-hover:text-clearance tracking-tight leading-tight transition-colors duration-300">
                 <ScrambleText text={certificate.name} duration={600} disableVisualGlitch={true} triggerReveal={true} autoRepeatInterval={10000} />
               </h3>
-              <p className="text-sm md:text-base text-gray-500 font-mono tracking-[0.4em] uppercase">
+              <p className="text-sm md:text-base text-gray-500 group-hover:text-clearance font-mono tracking-[0.4em] uppercase transition-colors duration-300">
                 {certificate.issuer}
               </p>
             </div>

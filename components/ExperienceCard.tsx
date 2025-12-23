@@ -36,7 +36,7 @@ const ExperienceCard: React.FC<ExperienceCardProps> = ({ experience, accentColor
       >
         <div className={`absolute left-0 top-0 bottom-0 w-[2px] transition-colors ${isOpen ? accentBg : 'bg-transparent group-hover:bg-edition-border'}`}></div>
 
-        <div className={`flex items-center gap-3 transition-colors ${isOpen ? accentColor : `text-gray-500 group-hover:${accentColor}`}`}>
+        <div className={`flex items-center gap-3 transition-colors duration-300 ${isOpen ? accentColor : 'text-gray-400 group-hover:text-recon'}`}>
           <div className={`transition-transform duration-200 shrink-0 ${isOpen ? `rotate-90 ${accentColor}` : ''}`}>
             <ChevronRight size={16} />
           </div>
@@ -45,11 +45,11 @@ const ExperienceCard: React.FC<ExperienceCardProps> = ({ experience, accentColor
           </span>
         </div>
 
-        <div className={`font-bold text-lg md:text-xl md:pr-4 leading-tight transition-colors ${accentColor}`}>
+        <div className={`font-bold text-lg md:text-xl md:pr-4 leading-tight transition-colors duration-300 ${isOpen ? accentColor : 'text-white group-hover:text-recon'}`}>
           {experience.role}
         </div>
 
-        <div className={`flex items-center gap-2 md:opacity-80 md:group-hover:opacity-100 transition-all text-sm sm:text-base ${isOpen ? accentColor : `text-gray-400 group-hover:${accentColor}`}`}>
+        <div className={`flex items-center gap-2 md:opacity-80 md:group-hover:opacity-100 transition-all duration-300 text-sm sm:text-base ${isOpen ? accentColor : 'text-gray-400 group-hover:text-recon'}`}>
           <span className="hidden md:inline text-gray-700 font-light">@</span>
           <span className="flex items-center gap-2 font-medium">
             <Building size={14} className="md:hidden opacity-50" />

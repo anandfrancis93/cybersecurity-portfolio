@@ -195,7 +195,7 @@ const HandshakePage: React.FC = () => {
                     </div>
 
                     <div
-                        className="flex flex-col lg:flex-row items-center justify-between gap-6 sm:gap-8 lg:gap-12 py-8 sm:py-10 lg:py-12 p-4 sm:p-6 lg:p-8 rounded-sm relative overflow-hidden bg-[#0a0a0a] border border-rose-500/10"
+                        className="group flex flex-col lg:flex-row items-center justify-between gap-6 sm:gap-8 lg:gap-12 py-8 sm:py-10 lg:py-12 p-4 sm:p-6 lg:p-8 rounded-sm relative overflow-hidden bg-[#0a0a0a] border border-rose-500/10"
                         style={{
                             boxShadow: `
                                 0 25px 60px -15px rgba(0, 0, 0, 0.9),
@@ -216,10 +216,10 @@ const HandshakePage: React.FC = () => {
                                 <ShieldCheck size={28} className="sm:w-8 sm:h-8" />
                             </div>
                             <div>
-                                <h3 className="text-lg sm:text-xl font-bold text-white font-display mb-1">
+                                <h3 className="text-lg sm:text-xl font-bold text-white group-hover:text-handshake font-display mb-1 transition-colors duration-300">
                                     <ScrambleText text="Establish Connection" duration={600} disableVisualGlitch={true} triggerReveal={isLocalIntroComplete} autoRepeatInterval={10000} />
                                 </h3>
-                                <p className="text-xs sm:text-sm text-gray-500 font-mono">Secure communication line available for professional inquiries.</p>
+                                <p className="text-xs sm:text-sm text-gray-500 group-hover:text-handshake font-mono transition-colors duration-300">Secure communication line available for professional inquiries.</p>
                             </div>
                         </div>
 
