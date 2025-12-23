@@ -90,29 +90,29 @@ const LogsPage: React.FC = () => {
                                 </div>
 
                                 <div className="flex flex-col gap-4 relative z-10">
-                                    <div className="flex items-center gap-3 text-xs sm:text-sm font-mono text-gray-400 group-hover:text-logs uppercase tracking-widest transition-colors duration-300">
+                                    <div className="flex items-center gap-3 text-xs sm:text-sm font-mono text-gray-400 hover:text-logs uppercase tracking-widest transition-colors duration-300 cursor-default w-fit">
                                         <span>{log.date}</span>
                                         <span className="w-px h-3 bg-edition-border"></span>
                                         <span>{log.readTime}</span>
                                     </div>
 
-                                    <h3 className="text-xl sm:text-2xl font-bold font-display group-hover:text-logs transition-colors duration-300">
+                                    <h3 className="text-xl sm:text-2xl font-bold font-display hover:text-logs transition-colors duration-300 cursor-pointer w-fit">
                                         {log.title}
                                     </h3>
 
-                                    <p className="text-gray-400 font-mono text-sm leading-relaxed max-w-3xl">
+                                    <p className="text-white hover:text-logs font-mono text-sm leading-relaxed max-w-3xl transition-colors duration-300 cursor-default">
                                         {log.summary}
                                     </p>
 
                                     <div className="flex gap-3 pt-2">
                                         {log.tags.map(tag => (
-                                            <span key={tag} className="text-xs font-mono text-gray-500 bg-white/5 border border-white/5 px-2 py-1">
+                                            <span key={tag} className="text-xs font-mono text-gray-500 hover:text-logs bg-white/5 border border-white/5 hover:border-logs/30 px-2 py-1 transition-colors duration-300 cursor-default">
                                                 {tag}
                                             </span>
                                         ))}
                                     </div>
 
-                                    <div className="pt-4 mt-2 border-t border-white/5 flex items-center gap-2 text-gray-400 group-hover:text-logs text-sm font-bold transition-colors duration-300">
+                                    <div className="pt-4 mt-2 border-t border-white/5 flex items-center gap-2 text-gray-400 hover:text-logs text-sm font-bold transition-colors duration-300 w-fit cursor-pointer">
                                         <span>ACCESS_FILE</span>
                                         <span className="text-lg">›</span>
                                     </div>
