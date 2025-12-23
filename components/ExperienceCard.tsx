@@ -78,7 +78,7 @@ const ExperienceCard: React.FC<ExperienceCardProps> = ({ experience, accentColor
 
                 <ul className="space-y-3">
                   {experience.description.map((point, index) => (
-                    <li key={index} className="flex items-start gap-3 text-gray-300 text-base leading-relaxed max-w-3xl">
+                    <li key={index} className={`flex items-start gap-3 text-white hover:${accentColor} transition-colors duration-300 text-base leading-relaxed max-w-3xl`}>
                       <span className={`${accentColor} mt-2 text-xs`}>◆</span>
                       <span>{point}</span>
                     </li>
