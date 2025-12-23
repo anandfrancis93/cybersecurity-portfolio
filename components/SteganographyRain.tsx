@@ -17,6 +17,8 @@ const SteganographyRain: React.FC<SteganographyRainProps> = ({
     const mouseRef = useRef({ x: -1000, y: -1000 });
     const animationRef = useRef<number>(0);
     const gridRef = useRef<{ x: number; y: number; char: string }[]>([]);
+    const dprRef = useRef(1);
+    const dimensionsRef = useRef({ width: 0, height: 0 });
 
     // Characters: hex codes and binary
     const chars = '0123456789ABCDEF01'.split('');
@@ -52,11 +54,23 @@ const SteganographyRain: React.FC<SteganographyRainProps> = ({
             const dpr = window.devicePixelRatio || 1;
             const width = window.innerWidth;
             const height = window.innerHeight;
+
+            // Store for later use
+            dprRef.current = dpr;
+            dimensionsRef.current = { width, height };
+
+            // Set canvas buffer size
             canvas.width = width * dpr;
             canvas.height = height * dpr;
+
+            // Set display size
             canvas.style.width = `${width}px`;
             canvas.style.height = `${height}px`;
+
+            // Reset transform and scale for DPI
+            ctx.setTransform(1, 0, 0, 1, 0, 0);
             ctx.scale(dpr, dpr);
+
             initGrid(width, height);
         };
 
@@ -90,11 +104,11 @@ const SteganographyRain: React.FC<SteganographyRainProps> = ({
 
         // Animation loop
         const draw = () => {
-            const { width, height } = canvas;
+            const { width, height } = dimensionsRef.current;
             const mouse = mouseRef.current;
             const grid = gridRef.current;
 
-            // Clear canvas
+            // Clear canvas using logical dimensions
             ctx.clearRect(0, 0, width, height);
 
             ctx.font = `${fontSize}px 'Courier New', monospace`;
