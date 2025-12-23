@@ -56,12 +56,7 @@ const LogsPage: React.FC = () => {
                             <p className="text-base sm:text-lg md:text-xl lg:text-2xl max-w-2xl font-mono leading-tight border-l-2 sm:border-l-4 border-edition-border pl-4 sm:pl-6 md:pl-8 text-white">
                                 {module.description}
                             </p>
-                            <div className="flex flex-wrap gap-2 sm:gap-4 font-mono text-sm sm:text-base uppercase text-gray-600 mt-4 pl-4 sm:pl-6 md:pl-8">
-                                <span className="text-logs flex items-center gap-2 border border-logs/30 bg-logs/5 px-3 py-1">
-                                    <Terminal size={12} />
-                                    [{logs.length}] RECORDS
-                                </span>
-                            </div>
+
                         </div>
 
                         {/* Right side - Typewriter Animation */}

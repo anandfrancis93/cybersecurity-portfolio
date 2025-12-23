@@ -47,12 +47,7 @@ const ReconPage: React.FC = () => {
                             <p className="text-base sm:text-lg md:text-xl lg:text-2xl max-w-2xl font-mono leading-tight border-l-2 sm:border-l-4 border-edition-border pl-4 sm:pl-6 md:pl-8 text-white">
                                 {module.description}
                             </p>
-                            <div className="flex flex-wrap gap-2 sm:gap-4 font-mono text-sm sm:text-base uppercase text-gray-600 mt-4 pl-4 sm:pl-6 md:pl-8">
-                                <span className="text-recon flex items-center gap-2 border border-recon/30 bg-recon/5 px-3 py-1">
-                                    <Terminal size={12} />
-                                    [{moduleExperience.length}] System Entries
-                                </span>
-                            </div>
+
                         </div>
 
                         {/* Right side - Dossier Scanner Animation */}
@@ -63,8 +58,8 @@ const ReconPage: React.FC = () => {
 
                     {moduleExperience.length > 0 && (
                         <div className="space-y-6 md:space-y-10">
-                            {moduleExperience.map((exp, index) => (
-                                <ExperienceCard key={exp.id} experience={exp} index={index} />
+                            {moduleExperience.map((exp) => (
+                                <ExperienceCard key={exp.id} experience={exp} />
                             ))}
                         </div>
                     )}
