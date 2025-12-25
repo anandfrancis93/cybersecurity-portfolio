@@ -42,7 +42,7 @@ const TopCardCanvas: React.FC<{ startTimeRef: React.RefObject<number> }> = ({ st
             const progress = isActive ? (elapsed / ACTIVE_DURATION) : 1;
 
             // Background
-            ctx.fillStyle = '#0F0F0F';
+            ctx.fillStyle = '#000000';
             ctx.strokeStyle = '#333';
             ctx.lineWidth = 1;
             ctx.fillRect(0, 0, width, height);
@@ -176,7 +176,7 @@ const BottomCardCanvas: React.FC<{ startTimeRef: React.RefObject<number> }> = ({
             const timeStep = Math.floor(now / 40);
 
             // Background
-            ctx.fillStyle = 'rgba(10, 10, 15, 0.98)';
+            ctx.fillStyle = '#000000';
             ctx.strokeStyle = '#333';
             ctx.lineWidth = 1;
             ctx.fillRect(0, 0, width, height);

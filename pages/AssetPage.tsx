@@ -34,7 +34,7 @@ const IdentifyPage: React.FC = () => {
     }
 
     return (
-        <div className="min-h-screen bg-[#020202] text-white font-sans pt-24 md:pt-12 animate-fade-in selection:bg-asset selection:text-black flex flex-col">
+        <div className="min-h-screen bg-[#0a0a0a] text-white font-sans pt-24 md:pt-12 animate-fade-in selection:bg-asset selection:text-black flex flex-col">
             <SteganographyRain color="#22D3EE" revealRadius={180} />
             <Nav />
             <main className="max-w-[1600px] mx-auto px-3 sm:px-6 lg:px-8 pb-20 md:pb-32 flex-1">
@@ -66,44 +66,33 @@ const IdentifyPage: React.FC = () => {
                     <div className="grid grid-cols-1 lg:grid-cols-[1fr_1.5fr] gap-6 sm:gap-8 md:gap-10 relative z-10">
                         {/* Left Card - Profile Info */}
                         <div
-                            className="bg-[#0a0a0a] border border-white/5 p-5 sm:p-6 md:p-8 space-y-5 sm:space-y-6 relative overflow-hidden group"
+                            className="bg-black border border-white/5 p-5 sm:p-6 md:p-8 space-y-5 sm:space-y-6 relative overflow-hidden group"
                             style={{
-                                boxShadow: `
-                                    0 25px 60px -15px rgba(0, 0, 0, 0.9),
-                                    0 0 0 1px rgba(255, 255, 255, 0.03),
-                                    inset 0 1px 0 0 rgba(255, 255, 255, 0.06)
-                                `
+                                border: '1px solid rgba(255, 255, 255, 0.1)'
                             }}
                         >
-                            {/* Glass reflection overlay */}
-                            <div
-                                className="absolute top-0 left-0 right-0 h-20 pointer-events-none"
-                                style={{
-                                    background: 'linear-gradient(180deg, rgba(255,255,255,0.04) 0%, transparent 100%)'
-                                }}
-                            />
-                            <div className="flex items-center gap-4 sm:gap-6">
-                                <div className="bg-white/10 flex items-center justify-center w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 rounded-full border border-white/30 text-white group-hover:text-asset group-hover:border-asset/50 group-hover:bg-asset/10 shrink-0 transition-colors duration-300">
+                            <div className="group/profile flex items-center gap-4 sm:gap-6 transition-colors duration-300 w-fit cursor-default">
+                                <div className="bg-white/10 flex items-center justify-center w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 rounded-full border border-white/30 text-white group-hover/profile:text-asset group-hover/profile:border-asset/50 group-hover/profile:bg-asset/10 shrink-0 transition-colors duration-300">
                                     <User size={24} className="sm:w-7 sm:h-7 md:w-8 md:h-8" />
                                 </div>
                                 <div className="min-w-0">
-                                    <h3 className="font-display font-bold text-lg sm:text-xl text-white group-hover:text-asset truncate transition-colors duration-300"><ScrambleText text="Anand Francis" duration={600} disableVisualGlitch={true} triggerReveal={true} autoRepeatInterval={10000} /></h3>
-                                    <p className="text-sm sm:text-base text-gray-500 group-hover:text-asset font-mono transition-colors duration-300">Based in ID, US</p>
+                                    <h3 className="font-display font-bold text-lg sm:text-xl text-white group-hover/profile:text-asset truncate transition-colors duration-300"><ScrambleText text="Anand Francis" duration={600} disableVisualGlitch={true} triggerReveal={true} autoRepeatInterval={10000} /></h3>
+                                    <p className="text-sm sm:text-base text-gray-500 group-hover/profile:text-asset font-mono transition-colors duration-300">Based in ID, US</p>
                                 </div>
                             </div>
                             <div className="grid grid-cols-2 gap-2 sm:gap-3 relative z-10">
                                 {[0, 1, 2, 3].map((i) => (
                                     <div
                                         key={i}
-                                        className="bg-white/5 p-2.5 sm:p-3 border border-white/5 backdrop-blur-sm transition-all group-hover:bg-white/10 group-hover:border-white/10"
+                                        className="group/stat bg-white/5 p-2.5 sm:p-3 border border-white/5 backdrop-blur-sm transition-all hover:bg-white/10 hover:border-white/10 cursor-default"
                                         style={{
                                             boxShadow: 'inset 0 1px 0 0 rgba(255, 255, 255, 0.05), 0 4px 12px -4px rgba(0, 0, 0, 0.4)'
                                         }}
                                     >
-                                        <div className="text-sm sm:text-base text-gray-500 uppercase tracking-wider mb-0.5 sm:mb-1 group-hover:text-asset transition-colors duration-300">
+                                        <div className="text-sm sm:text-base text-gray-500 group-hover/stat:text-asset uppercase tracking-wider mb-0.5 sm:mb-1 transition-colors duration-300">
                                             {['Experience', 'Certifications', 'Projects', 'Status'][i]}
                                         </div>
-                                        <div className="text-sm sm:text-base font-mono text-white truncate group-hover:text-asset transition-colors duration-300">
+                                        <div className="text-sm sm:text-base font-mono text-white group-hover/stat:text-asset truncate transition-colors duration-300">
                                             {['10+ Years', '3', '4', 'Available'][i]}
                                         </div>
                                     </div>
@@ -113,37 +102,26 @@ const IdentifyPage: React.FC = () => {
 
                         {/* Right Card - Asset Description */}
                         <div
-                            className="bg-[#0a0a0a] border border-white/5 p-5 sm:p-6 md:p-8 space-y-5 sm:space-y-6 relative overflow-hidden group"
+                            className="bg-black border border-white/5 p-5 sm:p-6 md:p-8 space-y-5 sm:space-y-6 relative overflow-hidden group"
                             style={{
-                                boxShadow: `
-                                    0 25px 60px -15px rgba(0, 0, 0, 0.9),
-                                    0 0 0 1px rgba(255, 255, 255, 0.03),
-                                    inset 0 1px 0 0 rgba(255, 255, 255, 0.06)
-                                `
+                                border: '1px solid rgba(255, 255, 255, 0.1)'
                             }}
                         >
-                            {/* Glass reflection overlay */}
-                            <div
-                                className="absolute top-0 left-0 right-0 h-20 pointer-events-none"
-                                style={{
-                                    background: 'linear-gradient(180deg, rgba(255,255,255,0.04) 0%, transparent 100%)'
-                                }}
-                            />
                             <div>
-                                <h4 className={`text-white group-hover:${accentColor} font-mono text-base sm:text-lg uppercase tracking-widest mb-2 sm:mb-3 md:mb-4 flex items-center gap-2 transition-colors duration-300`}>
+                                <h4 className="text-white hover:text-asset font-mono text-base sm:text-lg uppercase tracking-widest mb-2 sm:mb-3 md:mb-4 flex items-center gap-2 transition-colors duration-300 w-fit cursor-default">
                                     <Terminal size={12} className="sm:w-3.5 sm:h-3.5" />
                                     <ScrambleText text="Asset Description" duration={600} disableVisualGlitch={true} triggerReveal={true} autoRepeatInterval={10000} />
                                 </h4>
-                                <p className="text-gray-400 group-hover:text-asset leading-relaxed text-sm sm:text-base transition-colors duration-300">{PROFILE.bio}</p>
+                                <p className="text-gray-400 hover:text-asset leading-relaxed text-sm sm:text-base transition-colors duration-300 cursor-default">{PROFILE.bio}</p>
                             </div>
                             <div>
-                                <h4 className="text-white group-hover:text-asset font-mono text-sm sm:text-base uppercase tracking-widest mb-3 sm:mb-4 flex items-center gap-2 transition-colors duration-300">
+                                <h4 className="text-white hover:text-asset font-mono text-sm sm:text-base uppercase tracking-widest mb-3 sm:mb-4 flex items-center gap-2 transition-colors duration-300 w-fit cursor-default">
                                     <Cpu size={12} className="sm:w-3.5 sm:h-3.5" />
                                     <ScrambleText text="Capabilities" duration={600} disableVisualGlitch={true} triggerReveal={true} autoRepeatInterval={10000} />
                                 </h4>
                                 <div className="flex flex-wrap gap-1.5 sm:gap-2">
                                     {visibleSkills.map((skill, i) => (
-                                        <span key={i} className="px-2 sm:px-3 py-1.5 bg-white/5 text-white text-sm sm:text-base font-mono border border-white/20 animate-fade-in group-hover:text-asset group-hover:border-asset/30 group-hover:bg-asset/5 transition-colors duration-300">
+                                        <span key={i} className="px-2 sm:px-3 py-1.5 bg-white/5 text-white text-sm sm:text-base font-mono border border-white/20 animate-fade-in hover:text-asset hover:border-asset/30 hover:bg-asset/5 transition-colors duration-300 cursor-default">
                                             {skill}
                                         </span>
                                     ))}
