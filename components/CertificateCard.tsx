@@ -19,25 +19,11 @@ const CertificateCard: React.FC<CertificateCardProps> = ({ certificate, accentCo
 
   return (
     <div
-      className={`group relative w-full bg-[#0a0a0a] border border-green-500/10 overflow-hidden transition-all duration-700 ease-[cubic-bezier(0.23,1,0.32,1)] flex flex-col ${isExpanded
+      className={`group relative w-full bg-black border border-white/10 overflow-hidden transition-all duration-700 ease-[cubic-bezier(0.23,1,0.32,1)] flex flex-col ${isExpanded
         ? `min-h-[650px]`
         : `min-h-[500px] md:h-[540px]`
         }`}
-      style={{
-        boxShadow: `
-          0 25px 60px -15px rgba(0, 0, 0, 0.9),
-          0 0 0 1px rgba(34, 197, 94, 0.05),
-          inset 0 1px 0 0 rgba(255, 255, 255, 0.06)
-        `
-      }}
     >
-      {/* Glass reflection overlay */}
-      <div
-        className="absolute top-0 left-0 right-0 h-16 pointer-events-none z-20"
-        style={{
-          background: 'linear-gradient(180deg, rgba(34, 197, 94, 0.03) 0%, transparent 100%)'
-        }}
-      />
       <div className="absolute inset-0 z-0 opacity-[0.04] pointer-events-none">
         <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
           <defs>
@@ -57,7 +43,7 @@ const CertificateCard: React.FC<CertificateCardProps> = ({ certificate, accentCo
             <div className="w-2 h-2 bg-green-900/40"></div>
           </div>
           <ShieldCheck size={14} className={`text-white group-hover:${accentColor} transition-colors duration-300`} />
-          <span className="text-sm md:text-base font-mono text-gray-400 uppercase tracking-[0.15em] font-medium truncate">
+          <span className={`text-sm md:text-base font-mono text-gray-400 group-hover:${accentColor} uppercase tracking-[0.15em] font-medium truncate transition-colors duration-300`}>
             VIEWER: {certificate.name.toUpperCase()}
           </span>
         </div>
@@ -77,10 +63,10 @@ const CertificateCard: React.FC<CertificateCardProps> = ({ certificate, accentCo
             </div>
 
             <div className="space-y-3">
-              <h3 className="text-xl md:text-2xl font-display font-bold text-white group-hover:text-clearance tracking-tight leading-tight transition-colors duration-300">
+              <h3 className={`text-xl md:text-2xl font-display font-bold text-white group-hover:${accentColor} tracking-tight leading-tight transition-colors duration-300`}>
                 <ScrambleText text={certificate.name} duration={600} disableVisualGlitch={true} triggerReveal={true} autoRepeatInterval={10000} />
               </h3>
-              <p className="text-sm md:text-base text-gray-500 group-hover:text-clearance font-mono tracking-[0.4em] uppercase transition-colors duration-300">
+              <p className={`text-sm md:text-base text-gray-500 group-hover:${accentColor} font-mono tracking-[0.4em] uppercase transition-colors duration-300`}>
                 {certificate.issuer}
               </p>
             </div>
@@ -95,7 +81,7 @@ const CertificateCard: React.FC<CertificateCardProps> = ({ certificate, accentCo
 
               <button
                 onClick={() => setIsExpanded(true)}
-                className={`group/btn relative w-full sm:w-auto flex items-center justify-center gap-3 px-8 py-3.5 bg-[#080808] border border-edition-border overflow-hidden transition-all duration-500 hover:${accentBorder} hover:shadow-[0_0_30px_rgba(0,255,157,0.1)] active:scale-95`}
+                className={`group/btn relative w-full sm:w-auto flex items-center justify-center gap-3 px-8 py-3.5 bg-black border border-white/10 overflow-hidden transition-all duration-500 hover:${accentBorder} hover:shadow-[0_0_30px_rgba(0,255,157,0.1)] active:scale-95`}
               >
                 <Key size={12} className={`relative z-10 text-white group-hover:${accentColor} transition-colors duration-300`} />
                 <span className={`relative z-10 font-mono text-sm font-bold uppercase tracking-[0.3em] text-white group-hover:${accentColor} transition-colors duration-300`}>
@@ -114,19 +100,19 @@ const CertificateCard: React.FC<CertificateCardProps> = ({ certificate, accentCo
               <p className="text-sm md:text-base font-mono text-gray-500 uppercase tracking-[0.4em] px-2">OFFICIAL DIGITAL CREDENTIAL</p>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-px bg-edition-border overflow-hidden border border-edition-border shadow-xl">
-              <div className="bg-[#050505] p-4 md:p-5">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-px bg-white/10 overflow-hidden border border-white/10">
+              <div className="bg-black p-4 md:p-5">
                 <p className="text-sm text-gray-600 uppercase tracking-widest mb-1.5 font-mono">Date_Issued</p>
                 <p className="text-base md:text-lg text-white font-mono">{certificate.date}</p>
               </div>
-              <div className="bg-[#050505] p-4 md:p-5 border-t sm:border-t-0 sm:border-l border-edition-border">
+              <div className="bg-black p-4 md:p-5 border-t sm:border-t-0 sm:border-l border-white/10">
                 <p className="text-sm text-gray-600 uppercase tracking-widest mb-1.5 font-mono">Date_Expires</p>
                 <p className="text-base md:text-lg text-white font-mono">{certificate.expirationDate || 'N/A'}</p>
               </div>
             </div>
 
             <div className="space-y-6">
-              <div className="relative p-4 md:p-6 bg-black border border-edition-border overflow-hidden">
+              <div className="relative p-4 md:p-6 bg-black border border-white/10 overflow-hidden">
                 <div className="absolute top-0 right-0 p-4 opacity-[0.03] hidden sm:block">
                   <Fingerprint size={70} />
                 </div>
@@ -137,7 +123,7 @@ const CertificateCard: React.FC<CertificateCardProps> = ({ certificate, accentCo
                 <div className="space-y-5">
                   <div className="flex flex-col gap-1.5">
                     <span className="text-sm text-gray-600 uppercase font-mono tracking-widest">Verification ID Hash</span>
-                    <span className="text-sm md:text-base text-gray-300 font-mono bg-white/[0.02] p-3 border border-white/5 select-all break-all leading-relaxed shadow-inner">
+                    <span className="text-sm md:text-base text-gray-300 font-mono bg-black p-3 border border-white/10 select-all break-all leading-relaxed">
                       {certificate.verificationId}
                     </span>
                   </div>
@@ -156,7 +142,7 @@ const CertificateCard: React.FC<CertificateCardProps> = ({ certificate, accentCo
                   href={certificate.link}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className={`flex items-center justify-between p-4 md:p-5 ${accentBg}/5 border ${accentBorder}/20 group/link hover:${accentBg}/10 transition-all duration-300 active:scale-[0.98]`}
+                  className={`flex items-center justify-between p-4 md:p-5 bg-black border border-white/10 group/link hover:${accentBorder}/30 transition-all duration-300 active:scale-[0.98]`}
                 >
                   <div className="flex items-center gap-3">
                     <ExternalLink size={16} className={accentColor} shrink-0 />
@@ -170,7 +156,7 @@ const CertificateCard: React.FC<CertificateCardProps> = ({ certificate, accentCo
             <div className="pt-2 flex justify-center">
               <button
                 onClick={() => setIsExpanded(false)}
-                className={`group/encrypt relative w-full sm:w-auto flex items-center justify-center gap-3 px-8 py-3.5 bg-[#080808] border border-edition-border overflow-hidden transition-all duration-500 hover:${accentBorder} hover:shadow-[0_0_30px_rgba(0,255,157,0.1)] active:scale-95`}
+                className={`group/encrypt relative w-full sm:w-auto flex items-center justify-center gap-3 px-8 py-3.5 bg-black border border-white/10 overflow-hidden transition-all duration-500 hover:${accentBorder} hover:shadow-[0_0_30px_rgba(0,255,157,0.1)] active:scale-95`}
               >
                 <Lock size={12} className={`relative z-10 text-white group-hover/encrypt:${accentColor} transition-colors duration-300`} />
                 <span className={`relative z-10 font-mono text-sm font-bold uppercase tracking-[0.3em] text-white group-hover/encrypt:${accentColor} transition-colors duration-300`}>

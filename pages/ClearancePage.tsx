@@ -31,7 +31,7 @@ const ClearancePage: React.FC = () => {
     }
 
     return (
-        <div className="min-h-screen bg-[#020202] text-white font-sans pt-24 md:pt-12 animate-fade-in selection:bg-clearance selection:text-black flex flex-col">
+        <div className="min-h-screen bg-[#0a0a0a] text-white font-sans pt-24 md:pt-12 animate-fade-in selection:bg-clearance selection:text-black flex flex-col">
             <SteganographyRain color="#22C55E" revealRadius={180} />
             <Nav />
             <main className="max-w-[1600px] mx-auto px-3 sm:px-6 lg:px-8 pb-20 md:pb-32 flex-1">
