@@ -11,7 +11,7 @@ const TLSHandshakeAnimation: React.FC = () => {
 
         let animationFrameId: number;
         let width = 320;
-        let height = 220;
+        let height = 260;
 
         // Colors
         const COLOR_ACCENT = '#E11D48';
