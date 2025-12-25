@@ -31,16 +31,16 @@ const BentoGrid: React.FC<BentoGridProps> = ({ projects, moduleColor = 'text-nis
             key={project.id}
             className={`
               group relative ${colSpan} ${rowSpan} ${heightClass} 
-              bg-[#0A0A0A] border border-edition-border overflow-hidden
+              bg-black border border-white/10 overflow-hidden
               hover:${accentBorder} transition-colors duration-300
               active:scale-[0.99] touch-manipulation
               ${singleColumn ? 'py-4 sm:py-5 md:py-6' : ''}
             `}
           >
-            <div className={`absolute top-0 left-0 w-2 h-2 border-t border-l ${accentBorder} opacity-50 group-hover:opacity-100 transition-opacity`}></div>
-            <div className={`absolute top-0 right-0 w-2 h-2 border-t border-r ${accentBorder} opacity-50 group-hover:opacity-100 transition-opacity`}></div>
-            <div className={`absolute bottom-0 left-0 w-2 h-2 border-b border-l ${accentBorder} opacity-50 group-hover:opacity-100 transition-opacity`}></div>
-            <div className={`absolute bottom-0 right-0 w-2 h-2 border-b border-r ${accentBorder} opacity-50 group-hover:opacity-100 transition-opacity`}></div>
+            <div className={`absolute top-0 left-0 w-2 h-2 border-t border-l border-white/30 group-hover:${accentBorder} opacity-50 group-hover:opacity-100 transition-all duration-300`}></div>
+            <div className={`absolute top-0 right-0 w-2 h-2 border-t border-r border-white/30 group-hover:${accentBorder} opacity-50 group-hover:opacity-100 transition-all duration-300`}></div>
+            <div className={`absolute bottom-0 left-0 w-2 h-2 border-b border-l border-white/30 group-hover:${accentBorder} opacity-50 group-hover:opacity-100 transition-all duration-300`}></div>
+            <div className={`absolute bottom-0 right-0 w-2 h-2 border-b border-r border-white/30 group-hover:${accentBorder} opacity-50 group-hover:opacity-100 transition-all duration-300`}></div>
 
             <div className="absolute inset-0 z-0 opacity-10"
               style={{
