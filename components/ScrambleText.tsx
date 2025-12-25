@@ -32,6 +32,7 @@ const ScrambleText: React.FC<ScrambleTextProps> = ({
     const glitchIntervalRef = useRef<NodeJS.Timeout | null>(null);
     const isScrambling = useRef(false);
     const hasRevealedRef = useRef(false);
+    const prevTextRef = useRef(text);
 
     // Intensity settings
     const intensitySettings = {
@@ -88,40 +89,62 @@ const ScrambleText: React.FC<ScrambleTextProps> = ({
         }
     }, [isGlitchActive, disableVisualGlitch, settings.offset, settings.jitter, settings.frequency]);
 
+    const scrambleIntervalRef = useRef<NodeJS.Timeout | null>(null);
+
+    // Clean up scramble interval on unmount
+    useEffect(() => {
+        return () => {
+            if (scrambleIntervalRef.current) {
+                clearInterval(scrambleIntervalRef.current);
+            }
+        };
+    }, []);
+
     // Scramble function - runs the animation and always completes
     const runScramble = (targetText?: string) => {
-        if (isScrambling.current) return; // Don't start if already running
+        // If already scrambling, clear the previous interval and restart with new text
+        if (scrambleIntervalRef.current) {
+            clearInterval(scrambleIntervalRef.current);
+            scrambleIntervalRef.current = null;
+        }
+
         isScrambling.current = true;
 
-        const textToUse = targetText ?? text;
+        const textToUse = targetText ?? prevTextRef.current;
         const chars = textToUse.split('');
         const totalChars = chars.length;
         const iterations = Math.ceil(duration / 30);
         let currentIteration = 0;
 
-        const interval = setInterval(() => {
-            currentIteration++;
-            const progress = currentIteration / iterations;
-
-            const newText = chars.map((char, index) => {
+        const generateText = (progress: number) => {
+            return chars.map((char, index) => {
                 if (char === ' ' || char === '\n') return char;
                 const charResolvePoint = (index / totalChars) * 0.7 + 0.3;
-
                 if (progress >= charResolvePoint) {
                     return char;
                 } else {
                     return glitchChars[Math.floor(Math.random() * glitchChars.length)];
                 }
             }).join('');
+        };
 
-            setDisplayText(newText);
+        // Explicitly set initial scramble state immediately to prevent "lag" frames
+        setDisplayText(generateText(0));
+
+        const interval = setInterval(() => {
+            currentIteration++;
+            const progress = currentIteration / iterations;
+            setDisplayText(generateText(progress));
 
             if (currentIteration >= iterations) {
                 clearInterval(interval);
+                scrambleIntervalRef.current = null;
                 setDisplayText(textToUse);
                 isScrambling.current = false;
             }
         }, 30);
+
+        scrambleIntervalRef.current = interval;
     };
 
     // Hover scramble effect - DISABLED
@@ -144,7 +167,6 @@ const ScrambleText: React.FC<ScrambleTextProps> = ({
     }, [triggerReveal]);
 
     // Update displayText when text prop changes - trigger scramble for smooth transitions
-    const prevTextRef = useRef(text);
     useEffect(() => {
         if (prevTextRef.current !== text) {
             prevTextRef.current = text;
