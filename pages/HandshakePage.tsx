@@ -46,22 +46,8 @@ const HandshakeModal: React.FC<HandshakeModalProps> = ({ isOpen, onClose }) => {
     return (
         <div className="fixed inset-0 z-[100] flex items-center justify-center p-3 sm:p-4 bg-black/80 backdrop-blur-md animate-fade-in selection:bg-handshake selection:text-black">
             <div
-                className="w-full max-w-lg bg-[#0a0a0a] border border-rose-500/20 rounded-sm overflow-hidden animate-slide-up max-h-[90vh] overflow-y-auto relative"
-                style={{
-                    boxShadow: `
-                        0 25px 60px -15px rgba(0, 0, 0, 0.9),
-                        0 0 50px rgba(225, 29, 72, 0.1),
-                        inset 0 1px 0 0 rgba(255, 255, 255, 0.06)
-                    `
-                }}
+                className="w-full max-w-lg bg-black border border-white/10 rounded-sm overflow-hidden animate-slide-up max-h-[90vh] overflow-y-auto relative"
             >
-                {/* Glass reflection overlay */}
-                <div
-                    className="absolute top-0 left-0 right-0 h-20 pointer-events-none z-20"
-                    style={{
-                        background: 'linear-gradient(180deg, rgba(225, 29, 72, 0.04) 0%, transparent 100%)'
-                    }}
-                />
                 <div className="bg-handshake/10 border-b border-handshake/20 p-3 sm:p-4 flex justify-between items-center sticky top-0 z-10">
                     <div className="flex items-center gap-2 text-handshake text-sm sm:text-base font-mono tracking-[0.15em] sm:tracking-[0.2em] font-bold">
                         <Terminal size={14} className="sm:w-4 sm:h-4" />
@@ -89,7 +75,7 @@ const HandshakeModal: React.FC<HandshakeModalProps> = ({ isOpen, onClose }) => {
                     ) : (
                         <form onSubmit={handleExecute} className="space-y-4 sm:space-y-6">
                             <div className="space-y-1.5">
-                                <label className="text-sm sm:text-base text-gray-500 font-mono uppercase tracking-widest flex items-center gap-2">
+                                <label className="text-sm sm:text-base text-white font-mono uppercase tracking-widest flex items-center gap-2">
                                     <Lock size={12} className="text-handshake" />
                                     Encryption_Subject
                                 </label>
@@ -104,7 +90,7 @@ const HandshakeModal: React.FC<HandshakeModalProps> = ({ isOpen, onClose }) => {
                             </div>
 
                             <div className="space-y-1.5">
-                                <label className="text-sm sm:text-base text-gray-500 font-mono uppercase tracking-widest flex items-center gap-2">
+                                <label className="text-sm sm:text-base text-white font-mono uppercase tracking-widest flex items-center gap-2">
                                     <Terminal size={12} className="text-handshake" />
                                     Transmission_Payload
                                 </label>
@@ -139,7 +125,7 @@ const HandshakeModal: React.FC<HandshakeModalProps> = ({ isOpen, onClose }) => {
                                 </button>
                             </div>
 
-                            <div className="text-sm sm:text-base text-gray-600 font-mono uppercase tracking-widest text-center leading-relaxed">
+                            <div className="text-sm sm:text-base text-white font-mono uppercase tracking-widest text-center leading-relaxed">
                                 Cipher Suite: TLS_AES_256_GCM_SHA384 // ECDHE_RSA Active
                             </div>
                         </form>
@@ -169,7 +155,7 @@ const HandshakePage: React.FC = () => {
     }
 
     return (
-        <div className="min-h-screen bg-[#020202] text-white font-sans pt-24 md:pt-12 animate-fade-in selection:bg-handshake selection:text-black flex flex-col">
+        <div className="min-h-screen bg-[#0a0a0a] text-white font-sans pt-24 md:pt-12 animate-fade-in selection:bg-handshake selection:text-black flex flex-col">
             <SteganographyRain color="#E11D48" revealRadius={180} />
             <Nav />
 
@@ -195,40 +181,25 @@ const HandshakePage: React.FC = () => {
                     </div>
 
                     <div
-                        className="group flex flex-col lg:flex-row items-center justify-between gap-6 sm:gap-8 lg:gap-12 py-8 sm:py-10 lg:py-12 p-4 sm:p-6 lg:p-8 rounded-sm relative overflow-hidden bg-[#0a0a0a] border border-rose-500/10"
-                        style={{
-                            boxShadow: `
-                                0 25px 60px -15px rgba(0, 0, 0, 0.9),
-                                0 0 0 1px rgba(225, 29, 72, 0.05),
-                                inset 0 1px 0 0 rgba(255, 255, 255, 0.06)
-                            `
-                        }}
+                        className="flex flex-col lg:flex-row items-center justify-between gap-6 sm:gap-8 lg:gap-12 py-8 sm:py-10 lg:py-12 p-4 sm:p-6 lg:p-8 rounded-sm relative overflow-hidden bg-black border border-white/10"
                     >
-                        {/* Glass reflection overlay */}
-                        <div
-                            className="absolute top-0 left-0 right-0 h-16 pointer-events-none"
-                            style={{
-                                background: 'linear-gradient(180deg, rgba(225, 29, 72, 0.03) 0%, transparent 100%)'
-                            }}
-                        />
-                        <div className="flex flex-col sm:flex-row items-center gap-4 sm:gap-6 text-center sm:text-left">
-                            <div className="w-14 h-14 sm:w-16 sm:h-16 bg-handshake/10 flex items-center justify-center rounded-full border border-handshake/30 text-handshake shrink-0">
+                        <div className="group/content flex flex-col sm:flex-row items-center gap-4 sm:gap-6 text-center sm:text-left cursor-default">
+                            <div className="w-14 h-14 sm:w-16 sm:h-16 bg-handshake/10 flex items-center justify-center rounded-full border border-handshake/30 text-handshake group-hover/content:bg-handshake/20 group-hover/content:border-handshake/50 shrink-0 transition-colors duration-300">
                                 <ShieldCheck size={28} className="sm:w-8 sm:h-8" />
                             </div>
                             <div>
-                                <h3 className="text-lg sm:text-xl font-bold text-white group-hover:text-handshake font-display mb-1 transition-colors duration-300">
+                                <h3 className="text-lg sm:text-xl font-bold text-white group-hover/content:text-handshake font-display mb-1 transition-colors duration-300">
                                     <ScrambleText text="Establish Connection" duration={600} disableVisualGlitch={true} triggerReveal={isLocalIntroComplete} autoRepeatInterval={10000} />
                                 </h3>
-                                <p className="text-xs sm:text-sm text-gray-500 group-hover:text-handshake font-mono transition-colors duration-300">Secure communication line available for professional inquiries.</p>
+                                <p className="text-xs sm:text-sm text-gray-500 group-hover/content:text-handshake font-mono transition-colors duration-300">Secure communication line available for professional inquiries.</p>
                             </div>
                         </div>
 
                         <button
                             onClick={() => setIsModalOpen(true)}
-                            className="group relative inline-flex items-center justify-center w-full sm:w-auto px-8 sm:px-10 py-4 sm:py-5 bg-handshake text-black text-base sm:text-lg font-bold rounded-full overflow-hidden transition-all hover:scale-105 active:scale-95"
+                            className="inline-flex items-center justify-center w-full sm:w-auto px-8 sm:px-10 py-4 sm:py-5 bg-black border border-white/30 text-white text-base sm:text-lg font-bold rounded-full overflow-hidden transition-all hover:bg-handshake hover:text-black hover:border-handshake hover:scale-105 active:scale-95"
                         >
-                            <span className="relative z-10 group-hover:text-white transition-colors duration-300">Initiate Handshake</span>
-                            <div className="absolute inset-0 bg-black translate-y-[100%] group-hover:translate-y-0 transition-transform duration-300 ease-out"></div>
+                            <span>Initiate Handshake</span>
                         </button>
                     </div>
                 </section>
