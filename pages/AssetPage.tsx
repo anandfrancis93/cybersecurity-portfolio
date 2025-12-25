@@ -109,7 +109,7 @@ const IdentifyPage: React.FC = () => {
                                     <Terminal size={12} className="sm:w-3.5 sm:h-3.5" />
                                     <ScrambleText text="Asset Description" duration={600} disableVisualGlitch={true} triggerReveal={true} autoRepeatInterval={10000} />
                                 </h4>
-                                <p className="text-gray-400 hover:text-asset leading-relaxed text-sm sm:text-base transition-colors duration-300 cursor-default">{PROFILE.bio}</p>
+                                <p className="text-white hover:text-asset leading-relaxed text-sm sm:text-base transition-colors duration-300 cursor-default">{PROFILE.bio}</p>
                             </div>
                             <div>
                                 <h4 className="text-white hover:text-asset font-mono text-sm sm:text-base uppercase tracking-widest mb-3 sm:mb-4 flex items-center gap-2 transition-colors duration-300 w-fit cursor-default">
