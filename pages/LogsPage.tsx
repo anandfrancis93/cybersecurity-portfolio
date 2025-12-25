@@ -92,13 +92,13 @@ const LogsPage: React.FC = () => {
 
                                     <div className="flex gap-3 pt-2">
                                         {log.tags.map(tag => (
-                                            <span key={tag} className="text-xs font-mono text-gray-500 hover:text-logs bg-white/5 border border-white/5 hover:border-logs/30 px-2 py-1 transition-colors duration-300 cursor-default">
+                                            <span key={tag} className="text-xs font-mono text-white hover:text-logs bg-black border border-white/10 hover:border-logs/30 px-2 py-1 transition-colors duration-300 cursor-default">
                                                 {tag}
                                             </span>
                                         ))}
                                     </div>
 
-                                    <div className="pt-4 mt-2 border-t border-white/5 flex items-center gap-2 text-gray-400 hover:text-logs text-sm font-bold transition-colors duration-300 w-fit cursor-pointer">
+                                    <div className="pt-4 mt-2 border-t border-white/5 flex items-center gap-2 text-white hover:text-logs text-sm font-bold transition-colors duration-300 w-fit cursor-pointer">
                                         <span>ACCESS_FILE</span>
                                         <span className="text-lg">›</span>
                                     </div>
