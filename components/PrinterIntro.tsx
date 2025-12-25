@@ -21,8 +21,18 @@ const PrinterIntro: React.FC<PrinterIntroProps> = ({
         if (!ctx) return;
 
         let animationFrameId: number;
-        let width = 320;
-        let height = 500; // Taller to accommodate A4 paper
+        const width = 320;
+        const height = 500; // Taller to accommodate A4 paper
+
+        // Initial high-DPI setup - use minimum 2x for crisp text on all displays
+        const dpr = Math.max(2, window.devicePixelRatio || 1);
+        canvas.width = Math.floor(width * dpr);
+        canvas.height = Math.floor(height * dpr);
+        canvas.style.width = width + 'px';
+        canvas.style.height = height + 'px';
+        ctx.setTransform(1, 0, 0, 1, 0, 0);
+        ctx.scale(dpr, dpr);
+        ctx.imageSmoothingEnabled = false;
 
         // Colors - dynamic based on module
         const moduleColors: Record<string, string> = {
@@ -36,8 +46,8 @@ const PrinterIntro: React.FC<PrinterIntroProps> = ({
         const COLOR_ACCENT = moduleColors[moduleName] || '#3B82F6';
 
         // Dark Theme Colors
-        const COLOR_PAPER = '#0B1121';
-        const COLOR_PAPER_BORDER = 'rgba(255, 255, 255, 0.1)';
+        const COLOR_PAPER = '#000000';
+        const COLOR_PAPER_BORDER = 'rgba(255, 255, 255, 0.2)';
         const COLOR_PRINTER_BODY = '#1C1C1E';
         const COLOR_PRINTER_ACCENT = '#2D2D30';
 
@@ -124,14 +134,6 @@ const PrinterIntro: React.FC<PrinterIntroProps> = ({
         const lineHeight = 24;
 
         const draw = () => {
-            const dpr = window.devicePixelRatio || 1;
-            if (canvas.width !== width * dpr) {
-                canvas.width = width * dpr;
-                canvas.height = height * dpr;
-                ctx.setTransform(1, 0, 0, 1, 0, 0);
-                ctx.scale(dpr, dpr);
-            }
-
             ctx.clearRect(0, 0, width, height);
 
             const now = performance.now();
@@ -231,7 +233,7 @@ const PrinterIntro: React.FC<PrinterIntroProps> = ({
                     switch (line.style) {
                         case 'title':
                             ctx.font = 'bold 16px "JetBrains Mono", monospace';
-                            ctx.fillStyle = 'rgba(255, 255, 255, 0.95)';
+                            ctx.fillStyle = '#FFFFFF';
                             break;
                         case 'subject':
                             ctx.font = '10px "JetBrains Mono", monospace';
@@ -243,7 +245,7 @@ const PrinterIntro: React.FC<PrinterIntroProps> = ({
                             break;
                         case 'body':
                             ctx.font = '11px "JetBrains Mono", monospace';
-                            ctx.fillStyle = 'rgba(255, 255, 255, 0.95)';
+                            ctx.fillStyle = '#FFFFFF';
                             break;
                     }
 
@@ -292,9 +294,12 @@ const PrinterIntro: React.FC<PrinterIntroProps> = ({
 
             // === DRAW PRINTER BODY ===
             ctx.fillStyle = COLOR_PRINTER_BODY;
+            ctx.strokeStyle = 'rgba(255, 255, 255, 0.2)';
+            ctx.lineWidth = 1;
             ctx.beginPath();
             ctx.roundRect(printerLeft, printerTop, printerWidth, printerHeight, [0, 0, 14, 14]);
             ctx.fill();
+            ctx.stroke();
 
             // Top edge / slot
             ctx.fillStyle = COLOR_PRINTER_ACCENT;
@@ -309,12 +314,13 @@ const PrinterIntro: React.FC<PrinterIntroProps> = ({
             ctx.beginPath();
             ctx.roundRect(printerLeft + 12, printerTop + printerHeight - 35, printerWidth - 24, 25, 5);
             ctx.fill();
+            ctx.stroke();
 
             // LED indicators
             const ledY = printerTop + printerHeight - 22;
-            const COLOR_LED_GREEN = '#22C55E';
-            ctx.fillStyle = COLOR_LED_GREEN;
-            ctx.shadowColor = COLOR_LED_GREEN;
+            const COLOR_LED = '#FFFFFF';
+            ctx.fillStyle = COLOR_LED;
+            ctx.shadowColor = COLOR_LED;
             ctx.shadowBlur = 8;
             ctx.beginPath();
             ctx.arc(printerLeft + 35, ledY, 5, 0, Math.PI * 2);
@@ -333,20 +339,13 @@ const PrinterIntro: React.FC<PrinterIntroProps> = ({
 
             // Label
             ctx.font = 'bold 11px "JetBrains Mono", monospace';
-            ctx.fillStyle = 'rgba(255, 255, 255, 0.5)';
+            ctx.fillStyle = '#FFFFFF';
             ctx.textAlign = 'center';
             ctx.fillText('INTEL BRIEF', width / 2, printerTop + printerHeight - 18);
             ctx.textAlign = 'left';
 
             animationFrameId = requestAnimationFrame(draw);
         };
-
-        const dpr = window.devicePixelRatio || 1;
-        canvas.width = width * dpr;
-        canvas.height = height * dpr;
-        canvas.style.width = `${width}px`;
-        canvas.style.height = `${height}px`;
-        ctx.scale(dpr, dpr);
 
         animationFrameId = requestAnimationFrame(draw);
 
@@ -362,10 +361,10 @@ const PrinterIntro: React.FC<PrinterIntroProps> = ({
     }, [isComplete, onComplete]);
 
     return (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-[#020202]">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-[#0a0a0a]">
             <div className="flex flex-col items-center gap-6">
-                <canvas ref={canvasRef} className="w-80 h-[500px]" />
-                <p className="text-gray-500 text-sm font-mono animate-pulse">
+                <canvas ref={canvasRef} style={{ width: '320px', height: '500px' }} />
+                <p className="text-white text-sm font-mono animate-pulse">
                     LOADING {moduleName.toUpperCase()}...
                 </p>
             </div>

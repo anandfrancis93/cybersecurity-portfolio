@@ -12,14 +12,24 @@ const TypewriterAnimation: React.FC = () => {
         let animationFrameId: number;
         let width = 280;
         let height = 320;
+        const dpr = Math.max(2, window.devicePixelRatio || 1);
+
+        // Initial high-DPI setup
+        canvas.width = Math.floor(width * dpr);
+        canvas.height = Math.floor(height * dpr);
+        canvas.style.width = width + 'px';
+        canvas.style.height = height + 'px';
+        ctx.setTransform(1, 0, 0, 1, 0, 0);
+        ctx.scale(dpr, dpr);
+        ctx.imageSmoothingEnabled = false;
 
         // Colors
         const COLOR_BLUE = '#3B82F6';
         const COLOR_DIM = 'rgba(255, 255, 255, 0.2)';
-        const COLOR_PAPER = 'rgba(20, 20, 25, 0.95)';
+        const COLOR_PAPER = '#000000';
         const COLOR_PAPER_SHADOW = 'rgba(0, 0, 0, 0.5)';
-        const COLOR_TYPEWRITER = 'rgba(60, 60, 70, 1)';
-        const COLOR_DARK = 'rgba(40, 40, 50, 1)';
+        const COLOR_TYPEWRITER = '#1a1a1a';
+        const COLOR_DARK = '#0a0a0a';
 
         // Article content - 38 cybersecurity topics
         const articles = [
@@ -146,15 +156,6 @@ const TypewriterAnimation: React.FC = () => {
         const SHREDDING_DURATION = 1500; // Time to shred the paper
 
         const draw = () => {
-            // 1. Setup & Clear
-            const dpr = window.devicePixelRatio || 1;
-            // Ensure canvas size matches (usually handled by resize observer, but safe to verify)
-            if (canvas.width !== width * dpr) {
-                canvas.width = width * dpr;
-                canvas.height = height * dpr;
-                ctx.scale(dpr, dpr);
-            }
-
             ctx.clearRect(0, 0, width, height);
             frameCount++;
 
@@ -272,7 +273,7 @@ const TypewriterAnimation: React.FC = () => {
 
                     const titleToShow = phase === 'typing' ? article.title.substring(0, Math.floor((elapsed - 300) / 40)) : article.title;
                     if (titleToShow.length > 0) {
-                        ctx.fillStyle = 'rgba(255, 255, 255, 0.9)';
+                        ctx.fillStyle = '#FFFFFF';
                         ctx.fillText(titleToShow, paperLeft + contentPadding, textY);
                     }
                 }
@@ -309,7 +310,7 @@ const TypewriterAnimation: React.FC = () => {
                         let line = '';
                         let currentBodyChars = 0;
 
-                        ctx.fillStyle = 'rgba(200, 200, 200, 0.8)';
+                        ctx.fillStyle = '#FFFFFF';
 
                         for (let i = 0; i < words.length; i++) {
                             if (currentBodyChars >= bodyChars) break;
@@ -416,8 +417,6 @@ const TypewriterAnimation: React.FC = () => {
 
             animationFrameId = requestAnimationFrame(draw);
         };
-
-        const dpr = window.devicePixelRatio || 1;
 
         const observer = new ResizeObserver(entries => {
             const entry = entries[0];
