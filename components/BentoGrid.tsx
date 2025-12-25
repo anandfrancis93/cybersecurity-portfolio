@@ -66,7 +66,7 @@ const BentoGrid: React.FC<BentoGridProps> = ({ projects, moduleColor = 'text-nis
                 <h3 className={`text-xl sm:text-2xl md:text-3xl font-display font-bold text-white mb-1.5 sm:mb-2 group-hover:${moduleColor} transition-colors duration-300 leading-tight`}>
                   <ScrambleText text={project.title} duration={600} disableVisualGlitch={true} triggerReveal={true} autoRepeatInterval={10000} />
                 </h3>
-                <p className={`text-gray-400 font-mono text-sm sm:text-base md:text-lg leading-relaxed border-l-2 border-white/30 pl-2.5 sm:pl-3 group-hover:${accentBorder}/50 transition-colors line-clamp-3 sm:line-clamp-none`}>
+                <p className={`text-white font-mono text-sm sm:text-base md:text-lg leading-relaxed border-l-2 border-white/30 pl-2.5 sm:pl-3 group-hover:${accentBorder}/50 transition-colors line-clamp-3 sm:line-clamp-none`}>
                   {project.description}
                 </p>
               </div>

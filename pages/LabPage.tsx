@@ -74,7 +74,7 @@ const LabPage: React.FC = () => {
                                 </div>
                                 <button
                                     onClick={() => setIsBlueTeamExpanded(!isBlueTeamExpanded)}
-                                    className="flex items-center gap-2 text-gray-400 group-hover/section:text-blue-400 transition-colors duration-300 font-mono text-xs sm:text-sm uppercase tracking-wider flex-shrink-0"
+                                    className="flex items-center gap-2 text-white group-hover/section:text-blue-400 transition-colors duration-300 font-mono text-xs sm:text-sm uppercase tracking-wider flex-shrink-0"
                                 >
                                     <span>{isBlueTeamExpanded ? 'HIDE' : 'VIEW'} {blueTeamProjects.length} PROJECT{blueTeamProjects.length !== 1 ? 'S' : ''}</span>
                                     {isBlueTeamExpanded ? (
@@ -84,7 +84,7 @@ const LabPage: React.FC = () => {
                                     )}
                                 </button>
                             </div>
-                            <p className="text-gray-500 font-mono text-sm mb-6 border-l-2 border-white/30 group-hover/section:border-blue-500/50 pl-4 w-full relative z-10 transition-colors duration-300">
+                            <p className="text-white font-mono text-sm mb-6 border-l-2 border-white/30 group-hover/section:border-blue-500/50 pl-4 w-full relative z-10 transition-colors duration-300">
                                 Detection, monitoring, and incident response systems designed to protect infrastructure.
                             </p>
 
@@ -112,7 +112,7 @@ const LabPage: React.FC = () => {
                                 </div>
                                 <button
                                     onClick={() => setIsRedTeamExpanded(!isRedTeamExpanded)}
-                                    className="flex items-center gap-2 text-gray-400 group-hover/section:text-red-400 transition-colors duration-300 font-mono text-xs sm:text-sm uppercase tracking-wider flex-shrink-0"
+                                    className="flex items-center gap-2 text-white group-hover/section:text-red-400 transition-colors duration-300 font-mono text-xs sm:text-sm uppercase tracking-wider flex-shrink-0"
                                 >
                                     <span>{isRedTeamExpanded ? 'HIDE' : 'VIEW'} {redTeamProjects.length} PROJECT{redTeamProjects.length !== 1 ? 'S' : ''}</span>
                                     {isRedTeamExpanded ? (
@@ -122,7 +122,7 @@ const LabPage: React.FC = () => {
                                     )}
                                 </button>
                             </div>
-                            <p className="text-gray-500 font-mono text-sm mb-6 border-l-2 border-white/30 group-hover/section:border-red-500/50 pl-4 w-full relative z-10 transition-colors duration-300">
+                            <p className="text-white font-mono text-sm mb-6 border-l-2 border-white/30 group-hover/section:border-red-500/50 pl-4 w-full relative z-10 transition-colors duration-300">
                                 Penetration testing, vulnerability assessment, and adversary simulation tools.
                             </p>
 
