@@ -97,7 +97,7 @@ const CertificateCard: React.FC<CertificateCardProps> = ({ certificate, accentCo
               <div className="flex justify-center mb-4">
                 <BadgeCheck className={`${accentColor} w-10 h-10`} />
               </div>
-              <p className="text-sm md:text-base font-mono text-gray-500 uppercase tracking-[0.4em] px-2">OFFICIAL DIGITAL CREDENTIAL</p>
+              <p className="text-sm md:text-base font-mono text-white uppercase tracking-[0.4em] px-2">OFFICIAL DIGITAL CREDENTIAL</p>
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-px bg-white/10 overflow-hidden border border-white/10">
