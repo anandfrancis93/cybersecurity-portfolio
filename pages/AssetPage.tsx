@@ -72,7 +72,7 @@ const IdentifyPage: React.FC = () => {
                             }}
                         >
                             <div className="group/profile flex items-center gap-4 sm:gap-6 transition-colors duration-300 w-fit cursor-default">
-                                <div className="bg-white/10 flex items-center justify-center w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 rounded-full border border-white/30 text-white group-hover/profile:text-asset group-hover/profile:border-asset/50 group-hover/profile:bg-asset/10 shrink-0 transition-colors duration-300">
+                                <div className="bg-black flex items-center justify-center w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 rounded-full border border-white/30 text-white group-hover/profile:text-asset group-hover/profile:border-asset/50 shrink-0 transition-colors duration-300">
                                     <User size={24} className="sm:w-7 sm:h-7 md:w-8 md:h-8" />
                                 </div>
                                 <div className="min-w-0">
@@ -84,10 +84,7 @@ const IdentifyPage: React.FC = () => {
                                 {[0, 1, 2, 3].map((i) => (
                                     <div
                                         key={i}
-                                        className="group/stat bg-white/5 p-2.5 sm:p-3 border border-white/5 backdrop-blur-sm transition-all hover:bg-white/10 hover:border-white/10 cursor-default"
-                                        style={{
-                                            boxShadow: 'inset 0 1px 0 0 rgba(255, 255, 255, 0.05), 0 4px 12px -4px rgba(0, 0, 0, 0.4)'
-                                        }}
+                                        className="group/stat bg-black p-2.5 sm:p-3 border border-white/10 transition-all hover:border-white/20 cursor-default"
                                     >
                                         <div className="text-sm sm:text-base text-gray-500 group-hover/stat:text-asset uppercase tracking-wider mb-0.5 sm:mb-1 transition-colors duration-300">
                                             {['Experience', 'Certifications', 'Projects', 'Status'][i]}
@@ -121,7 +118,7 @@ const IdentifyPage: React.FC = () => {
                                 </h4>
                                 <div className="flex flex-wrap gap-1.5 sm:gap-2">
                                     {visibleSkills.map((skill, i) => (
-                                        <span key={i} className="px-2 sm:px-3 py-1.5 bg-white/5 text-white text-sm sm:text-base font-mono border border-white/20 animate-fade-in hover:text-asset hover:border-asset/30 hover:bg-asset/5 transition-colors duration-300 cursor-default">
+                                        <span key={i} className="px-2 sm:px-3 py-1.5 bg-black text-white text-sm sm:text-base font-mono border border-white/20 animate-fade-in hover:text-asset hover:border-asset/30 hover:bg-asset/5 transition-colors duration-300 cursor-default">
                                             {skill}
                                         </span>
                                     ))}
