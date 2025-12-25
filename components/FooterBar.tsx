@@ -20,7 +20,7 @@ const FooterBar: React.FC = () => {
                                 href={href}
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="text-gray-500 hover:text-white transition-colors p-2 -m-2"
+                                className="text-white hover:text-gray-400 transition-colors p-2 -m-2"
                             >
                                 <Icon className="w-5 h-5 sm:w-6 sm:h-6" />
                             </a>
@@ -28,10 +28,10 @@ const FooterBar: React.FC = () => {
                     </div>
 
                     <div className="flex flex-col sm:flex-row items-center gap-4 order-1 sm:order-2">
-                        <span className="text-xs sm:text-sm text-gray-600 uppercase tracking-widest font-mono text-center sm:text-right">
+                        <span className="text-xs sm:text-sm text-white uppercase tracking-widest font-mono text-center sm:text-right">
                             © 2026 ANAND FRANCIS <span className="hidden sm:inline">//</span> <br className="sm:hidden" />SECURE BY DESIGN
                         </span>
-                        <button onClick={scrollToTop} className="w-12 h-12 sm:w-14 sm:h-14 flex items-center justify-center border border-edition-border hover:bg-white hover:text-black transition-all">
+                        <button onClick={scrollToTop} className="w-12 h-12 sm:w-14 sm:h-14 flex items-center justify-center border border-white text-white hover:bg-white hover:text-black transition-all">
                             <ArrowUp className="w-4 h-4 sm:w-5 sm:h-5" />
                         </button>
                     </div>

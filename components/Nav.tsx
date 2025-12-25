@@ -30,7 +30,7 @@ const Nav: React.FC = () => {
   const currentSection = location.pathname.replace('/', '') || 'about-me';
 
   return (
-    <nav className="fixed top-0 left-0 w-full z-50 bg-[#050505] border-b border-edition-border text-sm md:text-base font-mono uppercase tracking-wider text-gray-400 selection:bg-asset selection:text-black">
+    <nav className="fixed top-0 left-0 w-full z-50 bg-[#050505] border-b border-edition-border text-sm md:text-base font-mono uppercase tracking-wider text-white selection:bg-asset selection:text-black">
       <div className="relative max-w-[1600px] mx-auto h-12 px-3 sm:px-6 lg:px-8 flex items-center justify-between">
 
         {/* LOGO */}
@@ -123,7 +123,7 @@ const Nav: React.FC = () => {
                   py-4 px-6 border-t border-edition-border/20 text-left transition-all duration-200 flex items-center gap-4
                   ${isActive
                       ? `${link.color} text-black font-bold pl-8`
-                      : `text-gray-400 hover:text-black hover:pl-8 ${link.name === 'ASSET' ? 'hover:bg-asset' :
+                      : `text-white hover:text-black hover:pl-8 ${link.name === 'ASSET' ? 'hover:bg-asset' :
                         link.name === 'LAB' ? 'hover:bg-lab' :
                           link.name === 'RECON' ? 'hover:bg-recon' :
                             link.name === 'CLEARANCE' ? 'hover:bg-clearance' :

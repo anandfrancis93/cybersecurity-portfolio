@@ -41,7 +41,7 @@ const LogsPage: React.FC = () => {
     }
 
     return (
-        <div className="min-h-screen bg-[#020202] text-white font-sans pt-24 md:pt-12 animate-fade-in selection:bg-logs selection:text-black flex flex-col">
+        <div className="min-h-screen bg-[#0a0a0a] text-white font-sans pt-24 md:pt-12 animate-fade-in selection:bg-logs selection:text-black flex flex-col">
             <SteganographyRain color="#3B82F6" revealRadius={180} />
             <Nav />
             <main className="max-w-[1600px] mx-auto px-3 sm:px-6 lg:px-8 pb-20 md:pb-32 flex-1 w-full">
@@ -69,22 +69,8 @@ const LogsPage: React.FC = () => {
                         {logs.map((log) => (
                             <article
                                 key={log.id}
-                                className="group relative bg-[#0a0a0a] border border-blue-500/10 hover:border-blue-500/20 transition-all duration-300 p-6 sm:p-8 overflow-hidden"
-                                style={{
-                                    boxShadow: `
-                                        0 25px 60px -15px rgba(0, 0, 0, 0.9),
-                                        0 0 0 1px rgba(59, 130, 246, 0.05),
-                                        inset 0 1px 0 0 rgba(255, 255, 255, 0.06)
-                                    `
-                                }}
+                                className="group relative bg-black border border-white/10 hover:border-white/20 transition-all duration-300 p-6 sm:p-8 overflow-hidden"
                             >
-                                {/* Glass reflection overlay */}
-                                <div
-                                    className="absolute top-0 left-0 right-0 h-16 pointer-events-none"
-                                    style={{
-                                        background: 'linear-gradient(180deg, rgba(59, 130, 246, 0.03) 0%, transparent 100%)'
-                                    }}
-                                />
                                 <div className="absolute top-0 right-0 p-4 opacity-50 text-xs font-mono text-gray-500 z-10">
                                     ID: {log.id}
                                 </div>
