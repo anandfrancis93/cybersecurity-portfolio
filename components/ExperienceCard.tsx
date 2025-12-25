@@ -14,22 +14,8 @@ const ExperienceCard: React.FC<ExperienceCardProps> = ({ experience, accentColor
 
   return (
     <div
-      className="w-full font-mono text-base border border-white/5 hover:border-white/10 transition-all group bg-[#0a0a0a] relative overflow-hidden"
-      style={{
-        boxShadow: `
-          0 25px 60px -15px rgba(0, 0, 0, 0.9),
-          0 0 0 1px rgba(245, 158, 11, 0.03),
-          inset 0 1px 0 0 rgba(255, 255, 255, 0.06)
-        `
-      }}
+      className="w-full font-mono text-base border border-white/10 hover:border-white/20 transition-all group bg-black relative overflow-hidden"
     >
-      {/* Glass reflection overlay */}
-      <div
-        className="absolute top-0 left-0 right-0 h-12 pointer-events-none z-0"
-        style={{
-          background: 'linear-gradient(180deg, rgba(245, 158, 11, 0.02) 0%, transparent 100%)'
-        }}
-      />
       <div
         onClick={() => setIsOpen(!isOpen)}
         className="grid grid-cols-1 md:grid-cols-[260px_1.5fr_1fr_auto] items-start md:items-center py-5 px-4 md:px-6 cursor-pointer gap-3 md:gap-8 relative"
@@ -65,7 +51,7 @@ const ExperienceCard: React.FC<ExperienceCardProps> = ({ experience, accentColor
       </div>
 
       <div className={`grid transition-[grid-template-rows] duration-300 ease-out ${isOpen ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]'}`}>
-        <div className="overflow-hidden bg-[#050505]">
+        <div className="overflow-hidden bg-black">
           <div className="p-6 md:pl-[204px] md:pr-12 pb-8 border-t border-edition-border/30 relative">
             <div className="absolute left-[21px] top-0 bottom-0 w-px bg-edition-border/30 hidden md:block border-l border-dashed border-gray-800"></div>
 
